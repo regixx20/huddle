@@ -15,6 +15,8 @@ public class Survey {
     @Setter
     private String description;
 
+    //private Niche; ??
+
     public Survey() {}
     public Survey(String title, String description) {
         this.setTitle(title);
