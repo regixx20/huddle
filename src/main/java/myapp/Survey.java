@@ -1,26 +1,24 @@
 package myapp;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.Setter;
+import org.springframework.stereotype.Component;
+
 
 //sondage
-@Entity
+@Getter
+@Component
 public class Survey {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Getter
+    @Setter
     private String title;
-    @Getter
+    @Setter
     private String description;
 
     public Survey() {}
     public Survey(String title, String description) {
-        this.title = title;
-        this.description=description;
+        this.setTitle(title);
+        this.setDescription(description);
     }
 
 }
