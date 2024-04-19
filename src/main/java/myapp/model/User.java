@@ -1,30 +1,29 @@
 package myapp.model;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.stereotype.Component;
 
-//utilisateur
-@Getter
-@Component
-public class User {
+import java.io.Serializable;
+import java.util.Collection;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class User implements Serializable {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Setter
-    private String nom;
-    @Setter
-    private String email;
+    String email;
+    private String firstName;
+    private String lastName;
+    @Basic
+    String password;
 
 
-
-
-
-    public User() {
-
-    }
 
 
 }
