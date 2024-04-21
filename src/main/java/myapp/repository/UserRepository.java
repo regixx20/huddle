@@ -3,6 +3,7 @@ package myapp.repository;
 import myapp.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository  extends JpaRepository<User, Long> {
@@ -10,8 +11,8 @@ public interface UserRepository  extends JpaRepository<User, Long> {
 
   User findByEmail(String email);
 
-  User findByfirstName(String firstName);
+  List<User> findByFirstName(String firstName);
 
-  User findBylastName(String lastName);
+  List<User> findByLastName(String lastName);
 
 }

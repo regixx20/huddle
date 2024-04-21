@@ -26,7 +26,7 @@ public class Poll implements Serializable {
 
     private Date limitDate;
 
-    @OneToMany(mappedBy = "poll", fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
+    @OneToMany( fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
     private List<Slot> slots;
 
     @OneToMany(mappedBy = "poll", fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
