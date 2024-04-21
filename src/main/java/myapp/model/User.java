@@ -23,6 +23,8 @@ public class User implements Serializable {
     @Basic
     String password;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Poll poll; ;
 
 
 
