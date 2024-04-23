@@ -2,8 +2,7 @@ package myapp;
 
 import myapp.model.Poll;
 import myapp.repository.PollRepository;
-import org.aspectj.lang.annotation.After;
-import org.hibernate.annotations.TimeZoneColumn;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.parameters.P;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
