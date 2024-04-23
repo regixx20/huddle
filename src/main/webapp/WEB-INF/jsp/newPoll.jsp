@@ -29,6 +29,7 @@
             </div>
             <div class="form-group my-1">
                 <label for="location">Lieu:</label>
+
                 <form:input class="form-control" path="location" />
                 <form:errors path="location" cssClass="alert alert-warning"
                              element="div" />
