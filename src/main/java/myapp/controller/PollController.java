@@ -60,6 +60,7 @@ public class PollController {
         pollService.deletePoll(p);
         return "redirect:/polls";
 
+
     }
 
 
