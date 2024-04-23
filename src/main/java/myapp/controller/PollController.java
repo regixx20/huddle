@@ -37,6 +37,7 @@ public class PollController {
         poll.setLocation("");
         return poll;
 
+
     }
 
     @GetMapping("/edit")
