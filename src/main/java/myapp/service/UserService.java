@@ -1,4 +1,4 @@
-package myapp.security;
+package myapp.service;
 
 
 import myapp.model.User;

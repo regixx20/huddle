@@ -34,6 +34,13 @@
             background-color: white;
             box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
         }
+        .poll-box {
+            padding: 10px;
+            background-color: #e0e0e0;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
         footer {
             background-color: #333;
             color: white;
@@ -55,11 +62,24 @@
 </header>
 
 <div class="container">
+    <a href="/homePage">Page d'accueil</a>
     <h2>Créer un nouveau sondage</h2>
-    <form action="/newPoll" method="post">
+    <form action="/polls/edit" method="get">
         <button type="submit">Créer Sondage</button>
     </form>
+</div>
 
+<div class="container">
+    <h2>Mes sondages</h2>
+    <%-- Ajout d'une boucle pour simuler l'affichage des sondages --%>
+    <c:forEach var="poll" items="${polls}">
+        <div class="poll-box">
+            <a href="/polls/details?id=${poll.id}">${poll.title}</a>
+        </div>
+    </c:forEach>
+    <form action="/polls" method="get">
+        <button type="submit">Voir mes sondages</button>
+    </form>
 </div>
 
 <footer>
@@ -67,4 +87,3 @@
 </footer>
 </body>
 </html>
-

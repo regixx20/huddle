@@ -1,4 +1,4 @@
-package myapp.security;
+package myapp.service;
 
 import myapp.model.Poll;
 import myapp.repository.PollRepository;
@@ -31,6 +31,14 @@ public class PollService {
 
     public List<Poll> findPollByLocation(String location) {
         return pollRepository.findByLocation(location);
+    }
+
+    public void savePoll(Poll p) {
+        pollRepository.save(p);
+    }
+
+    public void deletePoll(Poll p) {
+        pollRepository.delete(p);
     }
 
 
