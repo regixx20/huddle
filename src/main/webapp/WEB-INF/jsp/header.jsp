@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Club d'escalade</title>
+<title>AmuBooking/title>
     <style>
 
 
