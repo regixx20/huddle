@@ -1,5 +1,6 @@
 package myapp.controller;
 
+import jakarta.annotation.PostConstruct;
 import myapp.model.Poll;
 import myapp.service.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,6 @@ public class PollController {
         Poll p = pollService.findPollById(id);
         pollService.deletePoll(p);
         return "redirect:/polls";
-
 
     }
 
