@@ -41,6 +41,7 @@
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
+
         footer {
             background-color: #333;
             color: white;
@@ -73,9 +74,11 @@
     <h2>Mes sondages</h2>
     <%-- Ajout d'une boucle pour simuler l'affichage des sondages --%>
     <c:forEach var="poll" items="${polls}">
-        <div class="poll-box">
-            <a href="/polls/details?id=${poll.id}">${poll.title}</a>
-        </div>
+        <a href="/polls/details?id=${poll.id}" style="text-decoration: none;" >
+            <div class="poll-box" id="crenaux">
+                <p >${poll.title}</p>
+            </div>
+        </a>
     </c:forEach>
     <form action="/polls" method="get">
         <button type="submit">Voir mes sondages</button>
