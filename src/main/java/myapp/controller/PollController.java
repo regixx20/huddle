@@ -1,5 +1,6 @@
 package myapp.controller;
 
+import ch.qos.logback.core.model.Model;
 import jakarta.annotation.PostConstruct;
 import myapp.model.Poll;
 import myapp.service.PollService;
@@ -62,6 +63,8 @@ public class PollController {
         return "redirect:/polls";
 
     }
-
-
+    @GetMapping("/details")
+    public  String showDetails(@RequestParam(value = "id", required = false) Long id, Model model) {
+    return "pollDetails";
+    }
 }
