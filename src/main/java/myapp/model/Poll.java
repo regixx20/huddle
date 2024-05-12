@@ -1,5 +1,6 @@
 package myapp.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +33,7 @@ public class Poll implements Serializable {
     private List<Slot> slots;
 
     @OneToMany(mappedBy = "poll", fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
+    @JsonManagedReference
     private List<User> creator;
 
 

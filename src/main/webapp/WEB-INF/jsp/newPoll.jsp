@@ -15,7 +15,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
-
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.css' rel='stylesheet' />
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.css' rel='stylesheet' />
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.css' rel='stylesheet' />
@@ -24,12 +23,11 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
+                plugins: ['interaction', 'dayGrid', 'timeGrid'],
                 header: {
                     left: 'prev,next today',
                     center: 'title',
@@ -47,50 +45,45 @@
                 maxTime: '20:00:00',
                 height: 'auto',
                 contentHeight: 'auto',
+                editable: true,
                 eventClick: function(info) {
                     info.event.remove();
                 },
+
                 select: function(info) {
-                    const title = "Sélectionné de " + info.startStr + " à " + info.endStr;
                     calendar.addEvent({
-                        title: title,
-                        start: info.startStr,
-                        end: info.endStr,
+                        title: "Sélectionné de " + moment(info.start).format('HH:mm') + " à " + moment(info.end).format('HH:mm'),
+                        start: info.start,
+                        end: info.end,
                         allDay: info.allDay,
                         color: '#ff9f89'
                     });
 
-                    var events = calendar.getEvents();
-                    events.forEach(function(event) {
-                        var eventData = {
-                            start: event.start.toISOString(),
-                            end: event.end.toISOString(),
-                            allDay: event.allDay
-                        };
+                    var slot = {
+                        start: info.startStr,
+                        end: info.endStr,
+                        allDay: info.allDay
+                    };
+                    slots.push(slot);
+                    // Délogage pour vérifier
+                    //console.log('SlotQDSFFSF:', slots);
+                    //console.log(JSON.stringify(slots));
+                    updateSlotsInput();
+                    console.log($('#slotsInput').val());
 
-                        axios.post('/polls/edit', eventData, {
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                            .then(function(response) {
-                                console.log('Success:', response.data);
-                            })
-                            .catch(function(error) {
-                                console.error('Error:', error);
-                            });
-                    });
 
-                    calendar.unselect(); // Nettoie la sélection visuelle actuelle
                 },
                 editable: true,
                 eventLimit: true
             });
-
             calendar.render();
         });
-    </script>
+        function updateSlotsInput() {
+            $('#slotsInput').val(JSON.stringify(slots)); // Mise à jour du champ caché avec les slots en JSON
+        }
+        var slots = [];
 
+    </script>
     <style>
         #calendar-container {
             max-width: 600px;
@@ -98,16 +91,13 @@
             padding: 20px;
             box-shadow: 0 0 10px 0 rgba(0,0,0,0.3);
         }
-
     </style>
 </head>
 <h1>Création d'un nouveau sondage</h1>
 <div class="card bg-light">
     <div class="card-body">
         <form:form method="POST" modelAttribute="poll" >
-
             <form:errors path="*" cssClass="alert alert-danger" element="div" />
-
             <div class="form-group my-1">
                 <label for="title">Titre du sondage:</label>
                 <form:input class="form-control" path="title" />
@@ -122,7 +112,6 @@
             </div>
             <div class="form-group my-1">
                 <label for="location">Lieu:</label>
-
                 <form:input class="form-control" path="location" />
                 <form:errors path="location" cssClass="alert alert-warning"
                              element="div" />
@@ -133,21 +122,18 @@
                 <form:errors path="limitDate" cssClass="alert alert-warning"
                              element="div" />
             </div>
+
+            <input type="hidden" id="slotsInput" name="slots" value="" />
+
             <div id='calendar-container'>
                 <div id='calendar'></div>
             </div>
-
             <div class="form-group my-1">
                 <button type="submit" class="btn btn-info">Submit</button>
             </div>
-
         </form:form>
     </div>
-
-
 </div>
-
 <body>
-
 </body>
 </html>

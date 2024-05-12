@@ -19,6 +19,6 @@ public interface PollRepository extends JpaRepository<Poll, Long>{
     List<Poll> findByLocation(String location);
     List<Poll> findByLimitDate(Date limitDate);
 
-    List<Poll> findByCreator(User creator);
+    //List<Poll> findByCreator(User creator);
 
 }

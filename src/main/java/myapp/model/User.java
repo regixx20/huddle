@@ -3,6 +3,7 @@ package myapp.model;
 import java.io.Serializable;
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class User implements Serializable {
     String password;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference
     private Poll poll; ;
 
 

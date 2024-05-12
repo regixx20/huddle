@@ -1,15 +1,14 @@
 package myapp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Entity
 @Data
@@ -20,9 +19,19 @@ public class Slot implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
     private LocalDateTime start;
+
+
+    @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
+
     private LocalDateTime end;
     private boolean available;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    private Poll poll;
 
 
 }
