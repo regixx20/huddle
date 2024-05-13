@@ -23,14 +23,10 @@ public class Slot implements Serializable {
     @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
     private LocalDateTime start;
 
-
     @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
-
     private LocalDateTime end;
-    private boolean available;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
     private Poll poll;
 
 

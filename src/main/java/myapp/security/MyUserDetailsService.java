@@ -21,7 +21,6 @@ public class MyUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(email));
         return org.springframework.security.core.userdetails.User.withUsername(user.getEmail())
                 .password(user.getPassword())
-                .authorities(user.getAuthorities().toArray(new String[0]))
                 .disabled(false)
                 .accountExpired(false)
                 .accountLocked(false)

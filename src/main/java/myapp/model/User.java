@@ -26,14 +26,9 @@ public class User implements Serializable {
     private String email;
     private String firstName;
     private String lastName;
-    @Basic
-    String password;
+    private String password;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JsonBackReference
-    private Poll poll;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    Collection<String> authorities;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Poll> polls;
 
 }

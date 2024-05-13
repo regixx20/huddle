@@ -28,17 +28,19 @@ public class Poll implements Serializable {
 
     private String location;
 
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date limitDate;
 
     @OneToMany( fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
     private List<Slot> slots;
 
-    @OneToMany(mappedBy = "poll", fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
-    @JsonManagedReference
-    private List<User> creator;
+    @ManyToOne(fetch = FetchType.EAGER)
+    //@JoinColumn(name = "user_id") // Nom de la colonne dans la table Poll faisant référence à l'utilisateur créateur
+    private User creator;
 
+    private int numberOfParticipants;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Participant> participants;
 
 }
