@@ -2,6 +2,7 @@ package myapp.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,11 +21,13 @@ public class Poll implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+   // @NotBlank(message = "Le titre ne peut pas être vide")
     private String title;
 
     private String description;
 
     private String location;
+
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date limitDate;

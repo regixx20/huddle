@@ -73,7 +73,18 @@
             <p>${poll.description}</p>
             <p>${poll.limitDate}</p>
             <p>${poll.location}</p>
-            <p>${poll.slots}</p>
+            <ul>
+                <c:forEach var="slot" items="${poll.slots}">
+                <li>
+                    Date: ${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}<br>
+                    Horaire : ${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}<br>
+
+                </li>
+                </c:forEach>
+            </ul>
+
+
+            
         </div>
 
 

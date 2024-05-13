@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import myapp.model.Poll;
+import myapp.model.PollValidator;
 import myapp.model.Slot;
 import myapp.service.PollService;
 import myapp.service.SlotService;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,6 +33,9 @@ public class PollController {
 
     @Autowired
     private PollService pollService;
+
+    @Autowired
+    private PollValidator pollValidator;
 
     @Autowired
     private SlotService slotService;
@@ -57,6 +62,7 @@ public class PollController {
         poll.setTitle("");
         poll.setDescription("");
         poll.setLocation("");
+       // poll.setSlots(new ArrayList<>());
         return poll;
 
 
@@ -69,8 +75,19 @@ public class PollController {
 
     @PostMapping("/edit")
     public String savePoll(@RequestParam("slots") String slotsJson, @ModelAttribute Poll p, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        pollValidator.validate(p, bindingResult);
+        if (bindingResult.hasFieldErrors("title")) {
+            return "newPoll";
+        }
+      /*  if (slotsJson == null || slotsJson.isEmpty()) {
+            // JSON vide ou nul
+            // Gérer la situation de manière appropriée, par exemple en renvoyant une erreur
+            return "redirect:/polls";
+
+        }*/
+
         try {
-            List<Slot> slots = objectMapper.readValue(slotsJson, new TypeReference<List<Slot>>() {});
+           List<Slot> slots = objectMapper.readValue(slotsJson, new TypeReference<List<Slot>>() {});
             logger.info(p.getTitle());
             logger.info(p.getTitle());
             logger.info(p.getLocation());
@@ -99,7 +116,7 @@ public class PollController {
 
     }
     @GetMapping("/details")
-    public  String showDetails(@RequestParam(value = "id", required = false) Long id, Model model) {
+    public  String showDetails(@RequestParam(value = "id") Long id) {
     return "pollDetails";
     }
 }
