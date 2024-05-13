@@ -4,9 +4,11 @@ package myapp.service;
 import myapp.model.User;
 import myapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -20,7 +22,7 @@ public class UserService {
     public User findUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
-    public User findUserByEmail(String emailAddress) {
+    public Optional<User> findUserByEmail(String emailAddress) {
         return userRepository.findByEmail(emailAddress);
     }
 
@@ -32,4 +34,9 @@ public class UserService {
         return userRepository.findByLastName(lastName);
     }
 
+    public void saveUser(User user) {
+        var encoder = new BCryptPasswordEncoder();
+        user.setPassword(encoder.encode(user.getPassword()));
+        User savedUser = userRepository.save(user);
+    }
 }

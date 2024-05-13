@@ -89,5 +89,19 @@
     </form>
 </div>
 
+<div class="container">
+    <c:if test="${empty sessionScope.loggedInUser}">
+        <!-- Afficher ces boutons si l'utilisateur n'est pas connecté -->
+        <a href="/login" class="btn btn-primary">Login</a>
+        <a href="/register" class="btn btn-secondary">Register</a>
+    </c:if>
+    <c:if test="${not empty sessionScope.loggedInUser}">
+        <!-- Afficher ce bouton si l'utilisateur est connecté -->
+        <form action="/logout" method="post">
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+    </c:if>
+</div>
+
 </body>
 </html>
