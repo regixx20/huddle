@@ -64,7 +64,7 @@
 <div class="container">
     <a href="/homePage">Page d'accueil</a>
     <h2>Créer un nouveau sondage</h2>
-    <form action="/polls/edit" method="get">
+    <form action="/meeting/edit" method="get">
         <button type="submit">Créer Sondage</button>
     </form>
 </div>
@@ -74,10 +74,11 @@
     <%-- Ajout d'une boucle pour simuler l'affichage des sondages --%>
     <c:forEach var="poll" items="${polls}">
         <div class="poll-box">
-            <a href="/polls/details?id=${poll.id}" style="text-decoration: none;" >
-                ${poll.title}
+
+            <a href="/meeting/organize/${poll.id}" style="text-decoration: none;" >
+                    ${poll.title}
             </a>
-            <a href="/polls/edit?id=${poll.id}" style="text-decoration: none;">Edit</a>
+            <a href="/meeting/edit?id=${poll.id}" style="text-decoration: none;">Edit</a>
 
 
         </div>

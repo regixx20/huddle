@@ -6,11 +6,15 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.nio.ByteBuffer;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -18,8 +22,13 @@ import java.util.List;
 @AllArgsConstructor
 public class Poll implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    //@GeneratedValue(generator = "UUID")
+    //@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(generator = "custom-id-gen")
+    @GenericGenerator(name = "custom-id-gen", strategy = "myapp.service.CustomIdService")
+    private String id;
+
+
 
    // @NotBlank(message = "Le titre ne peut pas être vide")
     private String title;

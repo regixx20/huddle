@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Collection;
 
 @Controller
-@RequestMapping("")
+@RequestMapping("/dashboard")
 public class DashboardController {
 
     @Autowired

@@ -40,6 +40,9 @@ public class SpringSecurity {
         String[] anonymousRequests = {"/",
                 "/webjars/**",
                 "/homepage",
+                "/dashboard",
+                "/meeting",
+                "/meeting/**",
                 "/login",
                 "/register"
         };
@@ -71,7 +74,6 @@ public class SpringSecurity {
      */
     @PostConstruct
     public void init() {
-        var encoder = passwordEncoder();
         var user0 = new User();
         user0.setEmail("yoann.augier@etu.univ-amu.fr");
         user0.setFirstName("Yoann");

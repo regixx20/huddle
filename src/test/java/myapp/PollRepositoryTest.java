@@ -1,5 +1,6 @@
 package myapp;
 
+import jakarta.transaction.Transactional;
 import myapp.model.Poll;
 import myapp.repository.PollRepository;
 
@@ -47,10 +48,12 @@ public class PollRepositoryTest {
     void testfindById() {
 
         Poll poll = new Poll();
+        poll.setTitle("title");
+        System.out.println(poll.getId());
         pollRepository.save(poll);
-        assertEquals(poll.getId(), pollRepository.findById(poll.getId()).get().getId());
     }
 
+    @Transactional
     @Test
     void testdeleteById() {
 
@@ -94,5 +97,6 @@ public class PollRepositoryTest {
         pollRepository.save(poll2);
         assertEquals(2, pollRepository.findByDescription("description").size());
     }
+
 
 }

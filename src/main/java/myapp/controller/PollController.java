@@ -1,6 +1,6 @@
 package myapp.controller;
 
-import ch.qos.logback.core.model.Model;
+import org.springframework.ui.Model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -27,7 +27,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Controller
-@RequestMapping("/polls")
+@RequestMapping("/meeting")
 public class PollController {
     protected final Log logger = LogFactory.getLog(getClass());
 
@@ -54,7 +54,7 @@ public class PollController {
 
     @ModelAttribute
     public Poll newPoll(
-             @RequestParam(value = "id", required = false) Long id){
+             @RequestParam(value = "id", required = false) String id){
         if (id != null) {
             return pollService.findPollById(id);
         }
@@ -97,26 +97,35 @@ public class PollController {
             logger.info(slotService.findAllSlots());
             pollService.savePoll(p);
 
-            return "redirect:/polls"; // Redirection en cas de succès
+            return "redirect:/meeting"; // Redirection en cas de succès
         } catch (IOException e) {
             e.printStackTrace();
             return "redirect:/"; // Redirection en cas d'erreur
         }
     }
 
+    @GetMapping("/organize/{id}")
+    public String showDetails(@PathVariable("id") String id, Model model) {
+        Poll poll = pollService.findPollById(id);
+        if (poll != null) {
+            model.addAttribute("poll", poll);
+
+            return "pollDetails";
+        } else {
+            return "redirect:/meeting"; // Redirection si le poll n'est pas trouvé
+        }
+    }
 
 
 
 
     @RequestMapping("/delete")
-    public String deletePoll(@RequestParam(value = "id") Long id) {
+    public String deletePoll(@RequestParam(value = "id") String id) {
         Poll p = pollService.findPollById(id);
         pollService.deletePoll(p);
-        return "redirect:/polls";
+        return "redirect:/meeting";
 
     }
-    @GetMapping("/details")
-    public  String showDetails(@RequestParam(value = "id") Long id) {
-    return "pollDetails";
-    }
+
+
 }
