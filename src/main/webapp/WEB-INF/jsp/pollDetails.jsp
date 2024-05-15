@@ -13,7 +13,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>DOODLE 2.0</title>
+    <title>MeatEasy</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,19 +28,22 @@
             text-align: center;
         }
         .container {
-            width: 80%;
+            width: 70%; /* Ajustez la largeur de la container en pourcentage si nécessaire */
+            margin: 0 auto; /* Centrer la container horizontalement */
+        }
+
+        .poll-box {
+            width: 70vw;
+            height: 70vw;
+            max-width: 500px;
+            max-height: 500px;
             margin: 20px auto;
             padding: 20px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
             background-color: white;
-            box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
         }
-        .poll-box {
-            padding: 10px;
-            background-color: #e0e0e0;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
+
 
         footer {
             background-color: #333;
@@ -59,7 +62,7 @@
 </head>
 <body>
 <header>
-    <h1>Bienvenue sur DOODLE 2.0</h1>
+    <h1>MeatEasy</h1>
 </header>
 
 <div class="container">
@@ -68,24 +71,34 @@
     <c:url value="/polls/details" var="pollDetailsUrl">
         <c:param name="id" value="${poll.id}" />
     </c:url>
-        <h2>${poll.title}</h2> Participate to the poll <a href="/meeting/participate/${poll.id}">Participate</a>
-        <div class="poll-box" id="crenaux">
-            <p>${poll.description}</p>
-            <p>${poll.limitDate}</p>
-            <p>${poll.location}</p>
-            <ul>
-                <c:forEach var="slot" items="${poll.slots}">
-                <li>
-                    Date: ${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}<br>
-                    Horaire : ${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}<br>
-
-                </li>
-                </c:forEach>
-            </ul>
-
-
-
+        <div class="container">
+            <div class="poll-box" id="crenaux">
+                <div class="header">
+                    <h2>Détails du sondage</h2>
+                </div>
+                <div class="details">
+                    <div class="detail">
+                        <span class="label">Description :</span> <span class="value">${poll.description}</span>
+                    </div>
+                    <div class="detail">
+                        <span class="label">Date limite :</span> <span class="value">${poll.limitDate}</span>
+                    </div>
+                    <div class="detail">
+                        <span class="label">Emplacement :</span> <span class="value">${poll.location}</span>
+                    </div>
+                </div>
+                <div class="slots">
+                    <h3>Créneaux</h3>
+                    <c:forEach var="slot" items="${poll.slots}">
+                        <div class="slot">
+                            <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}</span>
+                            <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
         </div>
+
 
 
 </div>

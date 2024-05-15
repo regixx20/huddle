@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>AmuBooking - Planifiez vos rendez-vous facilement</title>
+    <title>MeatEasy - Planifiez vos rendez-vous facilement</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -59,7 +59,7 @@
 </head>
 <body>
 <header>
-    <h1>Bienvenue sur AmuBooking</h1>
+    <h1>MeatEasy</h1>
     <p>La plateforme de planification de rendez-vous conçue spécialement pour les étudiants de l'Université Aix-Marseille (AMU) et au-delà.</p>
 </header>
 

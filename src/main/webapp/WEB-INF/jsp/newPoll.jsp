@@ -91,10 +91,53 @@
             padding: 20px;
             box-shadow: 0 0 10px 0 rgba(0,0,0,0.3);
         }
+        .card {
+            max-width: 600px;
+            margin: 0 auto; /* Centrer horizontalement */
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+
+
+        .btn-info {
+            width: 100%; /* Rendre le bouton "Submit" aussi large que son conteneur */
+            padding: 10px 20px; /* Ajouter un remplissage pour le bouton */
+            font-size: 16px; /* Taille de police pour le bouton */
+            background-color: #007BFF; /* Couleur de fond du bouton */
+            border: 1px solid #007BFF; /* Bordure du bouton */
+            color: #fff; /* Couleur du texte du bouton */
+            border-radius: 4px; /* Bordure arrondie */
+            transition: all 0.3s ease; /* Ajouter une transition en douceur lors du survol */
+            margin-top: 20px;
+        }
+        .btn-info:hover {
+            background-color: #31b0d5; /* Couleur de fond du bouton au survol */
+            border-color: #269abc; /* Bordure du bouton au survol */
+        }
     </style>
+
 </head>
 <h1>Création d'un nouveau sondage</h1>
-<div class="card bg-light">
+<div class="card bg-light" >
     <div class="card-body">
         <form:form method="POST" modelAttribute="poll" >
             <form:errors path="*" cssClass="alert alert-danger" element="div" />
