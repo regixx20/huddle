@@ -164,18 +164,45 @@ public class PollController {
 
     @GetMapping("/participate/{id}/vote")
     public String vote(@PathVariable("id") String id, Model model, Principal principal) {
-        if (principal.getName().equals(pollService.findPollById(id).getCreator().getEmail())) {
+        if (principal == null) {
+            Poll poll = pollService.findPollById(id);
+            if (poll != null) {
+                model.addAttribute("poll", poll);
+
+                return "vote";
+            }
+            return "redirect:/meeting"; // Redirection si le poll n'est pas trouvé
+
+        }
+        else if (principal.getName().equals(pollService.findPollById(id).getCreator().getEmail())) {
             return "redirect:/meeting/organize/{id}";
         }
-        Poll poll = pollService.findPollById(id);
-        if (poll != null) {
-            model.addAttribute("poll", poll);
+        return "vote";
 
-            return "vote";
-        } else {
+    }
+
+    /*@GetMapping("/participate/{id}/vote")
+    public String vote(@PathVariable("id") String id, Model model, Principal principal) {
+        Poll poll = pollService.findPollById(id);
+        if (poll == null) {
             return "redirect:/meeting"; // Redirection si le poll n'est pas trouvé
         }
-    }
+
+        // À ce stade, `poll` est non null
+        model.addAttribute("poll", poll);
+
+        if (principal == null) {
+            return "vote"; // Afficher la page de vote si aucun utilisateur n'est connecté
+        }
+
+        // Vérifier si l'utilisateur connecté est le créateur du poll
+        if (principal.getName().equals(poll.getCreator().getEmail())) {
+            return "redirect:/meeting/organize/" + id; // Redirection spécifique pour le créateur
+        }
+
+        return "redirect:/dashboard"; // Redirection par défaut pour les autres utilisateurs connectés
+    }*/
+
 
 
 

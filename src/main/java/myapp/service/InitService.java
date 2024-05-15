@@ -5,6 +5,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.transaction.Transactional;
 import myapp.model.Poll;
 import myapp.model.Slot;
+import myapp.model.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,15 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Service
-
 public class InitService {
     @Autowired
     private PollService pollService;
 
     @Autowired
     private SlotService slotService;
+
+    @Autowired
+    private UserService userService;
 
     protected final Log logger = LogFactory.getLog(getClass());
 
@@ -32,6 +35,12 @@ public class InitService {
         p.setTitle("First Poll");
         p.setDescription("This is the first poll");
         p.setLocation("Marseille");
+
+        User creator = new User();
+        creator.setEmail("a@gmail.com");
+        userService.saveUser(creator);
+
+        p.setCreator(creator);
 
         /*//attribuer des exemples de slots
         ArrayList<Slot> slots = new ArrayList<>();
@@ -55,6 +64,11 @@ public class InitService {
         p.setTitle("Second Poll");
         p.setDescription("This is the second poll");
         p.setLocation("Paris");
+        User creator2 = new User();
+        creator2.setEmail("vincent@gmail.com");
+        p.setCreator(creator2);
+        userService.saveUser(creator2);
+
         pollService.savePoll(p);
         logger.info("id: " + p.getId());
 
@@ -63,6 +77,10 @@ public class InitService {
         p.setTitle("Third Poll");
         p.setDescription("This is the third poll");
         p.setLocation("Bruxelles");
+        User creator3 = new User();
+        creator3.setEmail("yoann@gmail.com");
+        p.setCreator(creator3);
+        userService.saveUser(creator3);
         pollService.savePoll(p);
     }
 }
