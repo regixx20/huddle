@@ -41,8 +41,8 @@ public class SpringSecurity {
                 "/webjars/**",
                 "/homepage",
                 "/dashboard",
-                "/meeting",
-                "/meeting/**",
+                //"/meeting",
+                //"/meeting/**",
                 "/login",
                 "/register"
         };

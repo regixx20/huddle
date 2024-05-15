@@ -1,5 +1,6 @@
 package myapp.service;
 
+import jakarta.transaction.Transactional;
 import myapp.model.Poll;
 import myapp.repository.PollRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 @Service
+
 public class PollService {
 
     @Autowired
@@ -34,6 +36,7 @@ public class PollService {
     public List<Poll> findPollByLocation(String location) {
         return pollRepository.findByLocation(location);
     }
+
 
     public void savePoll(Poll p) {
         /*if (p.getId() == null || p.getId().trim().isEmpty()) {

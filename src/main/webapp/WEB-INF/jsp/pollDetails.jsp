@@ -68,7 +68,7 @@
     <c:url value="/polls/details" var="pollDetailsUrl">
         <c:param name="id" value="${poll.id}" />
     </c:url>
-        <h2>${poll.title}</h2>
+        <h2>${poll.title}</h2> Participate to the poll <a href="/meeting/participate/${poll.id}">Participate</a>
         <div class="poll-box" id="crenaux">
             <p>${poll.description}</p>
             <p>${poll.limitDate}</p>

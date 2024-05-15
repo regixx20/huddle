@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -41,6 +42,7 @@ public class Poll implements Serializable {
     private Date limitDate;
 
     @OneToMany( fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
+    @ToString.Exclude
     private List<Slot> slots;
 
     @ManyToOne(fetch = FetchType.EAGER)

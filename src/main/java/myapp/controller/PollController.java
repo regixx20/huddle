@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -88,15 +89,22 @@ public class PollController {
 
         try {
            List<Slot> slots = objectMapper.readValue(slotsJson, new TypeReference<List<Slot>>() {});
-            logger.info(p.getTitle());
-            logger.info(p.getTitle());
-            logger.info(p.getLocation());
+
+           logger.info(p.getTitle());
+           logger.info(p.getTitle());
+           logger.info(p.getLocation());
+
+           for (Slot slot : slots) {
+               slot.setPoll(p);
+               slotService.saveSlot(slot);
+           }
 
             p.setSlots(slots);
+
+            pollService.savePoll(p);
             logger.info(p.getSlots());
             logger.info(slotService.findAllSlots());
-            pollService.savePoll(p);
-
+            logger.info("les slots sont : " + slotService.findAllSlots());
             return "redirect:/meeting"; // Redirection en cas de succès
         } catch (IOException e) {
             e.printStackTrace();
@@ -111,6 +119,27 @@ public class PollController {
             model.addAttribute("poll", poll);
 
             return "pollDetails";
+        } else {
+            return "redirect:/meeting"; // Redirection si le poll n'est pas trouvé
+        }
+    }
+
+    @GetMapping("/participate/{id}")
+    public String participate() {
+        return "redirect:/meeting/participate/{id}/vote";
+    }
+
+
+    @GetMapping("/participate/{id}/vote")
+    public String vote(@PathVariable("id") String id, Model model, Principal principal) {
+        if (principal.getName().equals("anonymousUser")) {
+            return "redirect:/meeting/participate/{id}/vote";
+        }
+        Poll poll = pollService.findPollById(id);
+        if (poll != null) {
+            model.addAttribute("poll", poll);
+
+            return "vote";
         } else {
             return "redirect:/meeting"; // Redirection si le poll n'est pas trouvé
         }
