@@ -31,8 +31,4 @@ public class Slot implements Serializable {
 
 
 
-    public Slot(String s, String s1) {
-        this.start = LocalDateTime.parse(s);
-        this.end = LocalDateTime.parse(s1);
-    }
 }

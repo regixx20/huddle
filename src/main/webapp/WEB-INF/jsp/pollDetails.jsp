@@ -63,6 +63,8 @@
 <body>
 <header>
     <h1>MeatEasy</h1>
+    <h2>${poll.title}</h2> Participate to the poll <a href="/meeting/participate/${poll.id}">Participate</a>
+
 </header>
 
 <div class="container">
@@ -96,6 +98,7 @@
                         </div>
                     </c:forEach>
                 </div>
+
             </div>
         </div>
 

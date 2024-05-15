@@ -1,5 +1,9 @@
 package myapp.controller;
 
+import myapp.model.User;
+import myapp.service.UserService;
+import java.util.Optional;
+
 import org.springframework.ui.Model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -40,6 +44,10 @@ public class PollController {
 
     @Autowired
     private SlotService slotService;
+
+    @Autowired
+    private UserService userService;
+
     @Autowired
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -75,7 +83,10 @@ public class PollController {
     }
 
     @PostMapping("/edit")
-    public String savePoll(@RequestParam("slots") String slotsJson, @ModelAttribute Poll p, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String savePoll(Model model, @RequestParam("slots") String slotsJson, @RequestParam("creator") String creator, @ModelAttribute Poll p, BindingResult bindingResult, Principal principal) {
+
+
+
         pollValidator.validate(p, bindingResult);
         if (bindingResult.hasFieldErrors("title")) {
             return "newPoll";
@@ -87,6 +98,7 @@ public class PollController {
 
         }*/
 
+
         try {
            List<Slot> slots = objectMapper.readValue(slotsJson, new TypeReference<List<Slot>>() {});
 
@@ -94,7 +106,27 @@ public class PollController {
            logger.info(p.getTitle());
            logger.info(p.getLocation());
             p.setSlots(slots);
+
+            if (principal != null) {
+                model.addAttribute("email", principal.getName());
+                String email = principal.getName(); // Récupère le nom d'utilisateur du Principal
+                //User creatorConnected = userService.findUserByEmail(email);
+                //creatorConnected.setEmail(email);
+                userService.findUserByEmail(email).ifPresent(p::setCreator);
+
+
+            }
+            else {
+                User creatorNotConnected = new User();
+                creatorNotConnected.setEmail(creator);
+                userService.saveUser(creatorNotConnected);
+                p.setCreator(creatorNotConnected);
+
+            }
+
             pollService.savePoll(p);
+
+            logger.info("createur : " + p.getCreator().getEmail());
 
            for (Slot slot : slots) {
                slot.setPoll(p);

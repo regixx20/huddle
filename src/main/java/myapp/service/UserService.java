@@ -34,9 +34,12 @@ public class UserService {
         return userRepository.findByLastName(lastName);
     }
 
+
     public void saveUser(User user) {
         var encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(user.getPassword()));
+        if (user.getPassword() != null ){
+            user.setPassword(encoder.encode(user.getPassword()));
+        }
         User savedUser = userRepository.save(user);
     }
 }

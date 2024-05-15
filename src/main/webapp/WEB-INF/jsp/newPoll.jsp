@@ -141,6 +141,15 @@
     <div class="card-body">
         <form:form method="POST" modelAttribute="poll" >
             <form:errors path="*" cssClass="alert alert-danger" element="div" />
+            <c:if test="${empty sessionScope.isLoggedIn}">
+                <label for="creator">Email</label>
+                <form:input class="form-control" path="creator" name="creator" />
+                <form:errors path="creator" cssClass="alert alert-warning"
+                             element="div" />
+            </c:if>
+            <c:if test="${!empty sessionScope.isLoggedIn}">
+                <input type="hidden" id="creator" name="creator" value="${email}" />
+            </c:if>
             <div class="form-group my-1">
                 <label for="title">Titre du sondage:</label>
                 <form:input class="form-control" path="title" />
@@ -165,6 +174,8 @@
                 <form:errors path="limitDate" cssClass="alert alert-warning"
                              element="div" />
             </div>
+
+
 
             <input type="hidden" id="slotsInput" name="slots" value="" />
 
