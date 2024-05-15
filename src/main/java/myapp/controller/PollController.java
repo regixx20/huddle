@@ -93,15 +93,15 @@ public class PollController {
            logger.info(p.getTitle());
            logger.info(p.getTitle());
            logger.info(p.getLocation());
+            p.setSlots(slots);
+            pollService.savePoll(p);
 
            for (Slot slot : slots) {
                slot.setPoll(p);
                slotService.saveSlot(slot);
            }
 
-            p.setSlots(slots);
 
-            pollService.savePoll(p);
             logger.info(p.getSlots());
             logger.info(slotService.findAllSlots());
             logger.info("les slots sont : " + slotService.findAllSlots());
@@ -132,8 +132,8 @@ public class PollController {
 
     @GetMapping("/participate/{id}/vote")
     public String vote(@PathVariable("id") String id, Model model, Principal principal) {
-        if (principal.getName().equals("anonymousUser")) {
-            return "redirect:/meeting/participate/{id}/vote";
+        if (principal.getName().equals(pollService.findPollById(id).getCreator().getEmail())) {
+            return "redirect:/meeting/organize/{id}";
         }
         Poll poll = pollService.findPollById(id);
         if (poll != null) {

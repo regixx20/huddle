@@ -23,8 +23,7 @@ public class InitService {
     private SlotService slotService;
 
     protected final Log logger = LogFactory.getLog(getClass());
-    @Autowired
-    private LocalContainerEntityManagerFactoryBean entityManagerFactory;
+
 
 
     @PostConstruct
