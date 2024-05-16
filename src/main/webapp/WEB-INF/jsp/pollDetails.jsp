@@ -80,6 +80,9 @@
                 </div>
                 <div class="details">
                     <div class="detail">
+                        <span class="label">Créé par :</span> <span class="value">${poll.creator} </span>
+                    </div>
+                    <div class="detail">
                         <span class="label">Description :</span> <span class="value">${poll.description}</span>
                     </div>
                     <div class="detail">
