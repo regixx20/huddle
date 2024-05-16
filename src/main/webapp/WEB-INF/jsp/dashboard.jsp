@@ -8,6 +8,7 @@
 <%@ include file="/WEB-INF/jsp/header.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -64,13 +65,13 @@
         }
 
         .btn-pill-primary {
-            background-color: #007BFF;
+            background-color: #3CE6A5;
             color: #fff;
             border: none;
         }
 
         .btn-pill-secondary {
-            background-color: #6c757d;
+            background-color: #E6B13C;
             color: #fff;
             border: none;
         }
@@ -88,16 +89,13 @@
 <header>
     <h1>MeatEasy</h1>
     <div >
-        <c:if test="${empty sessionScope.loggedInUser}">
+        <c:if test="${empty sessionScope.isLoggedIn}">
         <!-- Afficher ces boutons si l'utilisateur n'est pas connecté -->
         <button type="button" class="btn btn-primary btn-pill btn-pill-primary" onclick="window.location.href='/login'">Login</button>
         <button type="button" class="btn btn-secondary btn-pill btn-pill-secondary" onclick="window.location.href='/register'">Register</button>
         </c:if>
-        <c:if test="${not empty sessionScope.loggedInUser}">
-        <!-- Afficher ce bouton si l'utilisateur est connecté -->
-        <form action="/logout" method="post">
-            <button type="submit" class="btn btn-danger btn-pill btn-pill-danger">Logout</button>
-        </form>
+        <c:if test="${not empty sessionScope.isLoggedIn}">
+            <button type="button" class="btn btn-primary btn-pill btn-pill-danger" onclick="window.location.href='/logout'">Logout</button>
         </c:if>
 
 </header>
@@ -124,12 +122,7 @@
 
 
         </div>
-
-
     </c:forEach>
-    <form action="/polls" method="get">
-        <button type="submit">Voir mes sondages</button>
-    </form>
 </div>
 
 

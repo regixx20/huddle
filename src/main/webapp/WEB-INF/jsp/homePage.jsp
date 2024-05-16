@@ -14,43 +14,68 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            background-color: #f7f7f7;
         }
-
         header {
-            background-color: #007bff;
+            background-color: #007BFF;
             color: white;
-            padding: 20px;
+            padding: 10px 20px;
             text-align: center;
         }
-
-        main {
+        .container {
+            width: 80%;
+            margin: 20px auto;
             padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
         }
-
-        section {
-            margin-bottom: 30px;
-        }
-
-        h1, h2 {
-            color: #007bff;
-        }
-
-        p {
-            line-height: 1.6;
-        }
-
-        ul, ol {
-            padding-left: 20px;
-        }
-
-        footer {
-            background-color: #343a40;
-            color: white;
+        .poll-box {
             padding: 10px;
+            background-color: #e0e0e0;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        footer {
+            background-color: #333;
+            color: white;
             text-align: center;
+            padding: 10px 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        input{
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-pill {
+            border-radius: 20px;
+            margin-bottom: 10px;
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        .btn-pill-primary {
+            background-color: #3CE6A5;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-pill-secondary {
+            background-color: #E6B13C;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-pill-danger {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
         }
 
 
@@ -60,8 +85,35 @@
 <body>
 <header>
     <h1>MeatEasy</h1>
-    <p>La plateforme de planification de rendez-vous conçue spécialement pour les étudiants de l'Université Aix-Marseille (AMU) et au-delà.</p>
+    <div >
+        <c:if test="${empty sessionScope.isLoggedIn}">
+        <!-- Afficher ces boutons si l'utilisateur n'est pas connecté -->
+        <button type="button" class="btn btn-primary btn-pill btn-pill-primary" onclick="window.location.href='/login'">Login</button>
+        <button type="button" class="btn btn-secondary btn-pill btn-pill-secondary" onclick="window.location.href='/register'">Register</button>
+        </c:if>
+        <c:if test="${not empty sessionScope.isLoggedIn}">
+        <!-- Afficher ce bouton si l'utilisateur est connecté -->
+
+        <button type="button" class="btn btn-primary btn-pill btn-pill-danger" onclick="window.location.href='/logout'">Logout</button>
+        </c:if>
+
 </header>
+
+<div class="container">
+    <h2>Créer un nouveau sondage</h2>
+    <form action="/meeting/edit" method="get">
+        <button type="submit">Créer Sondage</button>
+    </form>
+</div>
+
+<div class="container">
+    <c:if test="${not empty sessionScope.isLoggedIn}">
+        <h2>Accéder à mon espace</h2>
+        <form action="/dashboard" method="get">
+            <button type="submit">Mon espace</button>
+        </form>
+    </c:if>
+</div>
 
 <main>
     <section id="purpose">

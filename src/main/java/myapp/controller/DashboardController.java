@@ -1,13 +1,23 @@
 package myapp.controller;
 
 import myapp.model.Poll;
+import myapp.model.User;
 import myapp.service.PollService;
+import myapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/dashboard")
@@ -15,13 +25,28 @@ public class DashboardController {
 
     @Autowired
     private PollService pollService;
+
+    @Autowired
+    private UserService userService;
+
     @RequestMapping("")
     public String dashboard(){
         return "dashboard";
     }
     @ModelAttribute("polls")
-    Collection<Poll> polls() {
-        return pollService.findAllPolls();
+    Collection<Poll> polls(Principal principal) {
+        String email = principal.getName();
+        Optional<User> optionalUser = userService.findUserByEmail(email);
+        if (optionalUser.isPresent()) {
+            return optionalUser.get().getPolls();
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        return "redirect:/dashboard";
     }
 
 }
