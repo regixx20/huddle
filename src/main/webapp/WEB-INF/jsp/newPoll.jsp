@@ -145,7 +145,7 @@
             <c:if test="${empty sessionScope.isLoggedIn}">
             <div class="form-group my-1">
                 <label  for="creator" >Email :</label>
-                <form:input class="form-control" path="creator" name="creator" />
+                <input class="form-control" id="creator" name="creator" />
                 <form:errors path="creator" cssClass="alert alert-warning"
                              element="div" />
             </c:if>

@@ -2,7 +2,8 @@ package myapp.controller;
 
 import myapp.model.User;
 import myapp.service.UserService;
-import java.util.Optional;
+
+import java.util.*;
 
 import org.springframework.ui.Model;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,9 +28,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Controller
 @RequestMapping("/meeting")
@@ -57,10 +55,15 @@ public class PollController {
     }
 
     @ModelAttribute("polls")
-    Collection<Poll> polls() {
-        return pollService.findAllPolls();
+    Collection<Poll> polls(Principal principal) {
+        String email = principal.getName();
+        Optional<User> optionalUser = userService.findUserByEmail(email);
+        if (optionalUser.isPresent()) {
+            return optionalUser.get().getPolls();
+        } else {
+            return Collections.emptyList();
+        }
     }
-
     @ModelAttribute
     public Poll newPoll(
              @RequestParam(value = "id", required = false) String id){
@@ -114,6 +117,13 @@ public class PollController {
                 //creatorConnected.setEmail(email);
                 userService.findUserByEmail(email).ifPresent(p::setCreator);
 
+                //userService.saveUser(p.getCreator());
+
+                p.getCreator().getPolls().add(p);
+
+
+
+
 
             }
             else {
@@ -126,6 +136,7 @@ public class PollController {
 
             pollService.savePoll(p);
 
+
             logger.info("createur : " + p.getCreator().getEmail());
 
            for (Slot slot : slots) {
@@ -137,6 +148,12 @@ public class PollController {
             logger.info(p.getSlots());
             logger.info(slotService.findAllSlots());
             logger.info("les slots sont : " + slotService.findAllSlots());
+
+            for (Poll s : pollService.findPollByTitle("Sondage pour Setondji")){
+                logger.info("le createur de setondji est : " + s.getCreator().getEmail());
+
+            }
+            logger.info("le createur de setondji est : " + pollService.findPollByTitle("Sondage pour Setondji"));
             return "redirect:/meeting"; // Redirection en cas de succès
         } catch (IOException e) {
             e.printStackTrace();
@@ -162,22 +179,27 @@ public class PollController {
     }
 
 
+
+
     @GetMapping("/participate/{id}/vote")
     public String vote(@PathVariable("id") String id, Model model, Principal principal) {
+        Poll poll = pollService.findPollById(id);
+        if (poll == null) {
+            return "redirect:/dashboard"; // Redirection si le poll n'est pas trouvé
+        }
+        model.addAttribute("poll", poll);
+
         if (principal == null) {
-            Poll poll = pollService.findPollById(id);
-            if (poll != null) {
-                model.addAttribute("poll", poll);
-
-                return "vote";
-            }
-            return "redirect:/meeting"; // Redirection si le poll n'est pas trouvé
-
+            logger.info("slots je");
+            return "vote";
         }
         else if (principal.getName().equals(pollService.findPollById(id).getCreator().getEmail())) {
             return "redirect:/meeting/organize/{id}";
         }
-        return "vote";
+        else {
+            logger.info("slots je"+ poll.getSlots());
+            return "vote";
+        }
 
     }
 
