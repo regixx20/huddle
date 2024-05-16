@@ -117,7 +117,7 @@
 
 <main>
     <section id="purpose">
-        <h2>Pourquoi utiliser AmuBooking ?</h2>
+        <h2>Pourquoi utiliser MeetEasy ?</h2>
         <p>AmuBooking simplifie la planification de vos rendez-vous et réunions, que vous soyez étudiant à l'AMU ou non. Voici comment :</p>
         <ul>
             <li>Organisez facilement des sondages pour trouver le meilleur créneau horaire pour vos réunions de groupe, vos projets de cours, ou vos rencontres informelles.</li>
@@ -128,7 +128,7 @@
     </section>
 
     <section id="how-to-use">
-        <h2>Comment utiliser AmuBooking ?</h2>
+        <h2>Comment utiliser MeetEasy ?</h2>
         <p>C'est simple ! Suivez ces étapes pour commencer :</p>
         <ol>
             <li>Inscrivez-vous gratuitement sur AmuBooking en créant un compte étudiant ou en vous connectant avec vos identifiants AMU.</li>
@@ -140,7 +140,7 @@
     </section>
 
     <section id="benefits">
-        <h2>Les avantages d'AmuBooking</h2>
+        <h2>Les avantages d'MeetEasy</h2>
         <ul>
             <li>Facile d'utilisation</li>
             <li>Compatible avec tous les appareils, que ce soit un ordinateur, une tablette ou un smartphone.</li>
@@ -150,7 +150,7 @@
 </main>
 
 <footer>
-    <p>&copy; 2024 MeetEay - Tous droits réservés.</p>
+    <p>&copy; 2024 MeetEasy - Tous droits réservés.</p>
 </footer>
 </body>
 </html>
