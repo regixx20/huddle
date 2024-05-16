@@ -28,7 +28,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class SpringSecurity {
 
     @Autowired
-    UserService userServices;
+    UserService userService;
 
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
@@ -80,24 +80,6 @@ public class SpringSecurity {
      */
     @PostConstruct
     public void init() {
-        var user0 = new User();
-        user0.setEmail("yoann.augier@etu.univ-amu.fr");
-        user0.setFirstName("Yoann");
-        user0.setLastName("Augier");
-        user0.setPassword("yoann");
-        userServices.saveUser(user0);
-        var user1 = new User();
-        user1.setEmail("setondji.mededji@etu.univ-amu.fr");
-        user1.setFirstName("Setondji");
-        user1.setLastName("Mededji");
-        user1.setPassword("setondji");
-        userServices.saveUser(user1);
-        var user2 = new User();
-        user2.setEmail("vincent.nze@etu.univ-amu.fr");
-        user2.setFirstName("Vicent");
-        user2.setLastName("Nze");
-        user2.setPassword("vincent");
-        userServices.saveUser(user2);
         System.out.println("--- INIT SPRING SECURITY");
     }
 

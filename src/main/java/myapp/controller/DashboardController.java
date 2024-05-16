@@ -30,7 +30,13 @@ public class DashboardController {
     private UserService userService;
 
     @RequestMapping("")
-    public String dashboard(){
+    public String dashboard(Model model, Principal principal){
+        String email = principal.getName();
+        Optional<User> optionalUser = userService.findUserByEmail(email);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            model.addAttribute("user", user);
+        }
         return "dashboard";
     }
     @ModelAttribute("polls")
@@ -44,9 +50,8 @@ public class DashboardController {
         }
     }
 
-    @GetMapping("/logout")
-    public String logout() {
-        return "redirect:/dashboard";
-    }
+
+
+
 
 }

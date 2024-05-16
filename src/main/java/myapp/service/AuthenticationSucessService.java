@@ -23,6 +23,6 @@ public class AuthenticationSucessService implements AuthenticationSuccessHandler
         session.setAttribute("isLoggedIn", true);
         logger.info("User logged in");
         // Redirection vers une page après la connexion
-        response.sendRedirect("/");
+        response.sendRedirect("/dashboard");
     }
 }

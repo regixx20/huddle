@@ -31,56 +31,52 @@ public class InitService {
 
     @PostConstruct
     public void init() {
-        Poll p = new Poll();
-        p.setTitle("First Poll");
-        p.setDescription("This is the first poll");
-        p.setLocation("Marseille");
+        User user0 = new User();
+        user0.setEmail("yoann.augier@etu.univ-amu.fr");
+        user0.setFirstName("Yoann");
+        user0.setLastName("Augier");
+        user0.setPassword("yoann");
+        userService.saveUser(user0);
+        User user1 = new User();
+        user1.setEmail("setondji.mededji@etu.univ-amu.fr");
+        user1.setFirstName("Setondji");
+        user1.setLastName("Mededji");
+        user1.setPassword("setondji");
+        userService.saveUser(user1);
+        User user2 = new User();
+        user2.setEmail("vincent.nze@etu.univ-amu.fr");
+        user2.setFirstName("Vicent");
+        user2.setLastName("Nze");
+        user2.setPassword("vincent");
+        userService.saveUser(user2);
 
-        User creator = new User();
-        creator.setEmail("a@gmail.com");
-        userService.saveUser(creator);
+        //Create a poll for user0 and user1 and user2
+        Poll poll = new Poll();
+        poll.setTitle("Sondage pour Yoann");
+        poll.setDescription("Ceci est un sondage pour Yoann");
+        poll.setLocation("Marseille");
+        poll.setCreator(user0);
+        pollService.savePoll(poll);
+        logger.info("id: " + poll.getId());
+        logger.info("creators: " + user0.getPolls());
 
-        p.setCreator(creator);
+        poll = new Poll();
+        poll.setTitle("Sondage pour Setondji");
+        poll.setDescription("Ceci est un sondage pour Setondji");
+        poll.setLocation("Paris");
+        poll.setCreator(user1);
+        pollService.savePoll(poll);
+        logger.info("id: " + poll.getId());
 
-        /*//attribuer des exemples de slots
-        ArrayList<Slot> slots = new ArrayList<>();
-        slots.add(new Slot("2021-12-01T08:00:00", "2021-12-01T09:00:00"));
-        p.setSlots(slots);
-        for (Slot s : slots) {
-            s.setPoll(p);
-
-        }*/
-
-        pollService.savePoll(p);
-        logger.info("slots: " + slotService.findAllSlots());
-        logger.info("id: " + p.getId());
-        /*Slot s = new Slot("2021-12-01T10:00:00", "2021-12-01T11:00:00");
-        s.setPoll(p);
-        slotService.saveSlot(s);
-        logger.info("slots: " + slotService.findAllSlots());*/
-
-
-        p = new Poll();
-        p.setTitle("Second Poll");
-        p.setDescription("This is the second poll");
-        p.setLocation("Paris");
-        User creator2 = new User();
-        creator2.setEmail("vincent@gmail.com");
-        p.setCreator(creator2);
-        userService.saveUser(creator2);
-
-        pollService.savePoll(p);
-        logger.info("id: " + p.getId());
+        poll = new Poll();
+        poll.setTitle("Sondage pour Vincent");
+        poll.setDescription("Ceci est un sondage pour Vincent");
+        poll.setLocation("Bruxelles");
+        poll.setCreator(user2);
+        pollService.savePoll(poll);
+        logger.info("id: " + poll.getId());
 
 
-        p = new Poll();
-        p.setTitle("Third Poll");
-        p.setDescription("This is the third poll");
-        p.setLocation("Bruxelles");
-        User creator3 = new User();
-        creator3.setEmail("yoann@gmail.com");
-        p.setCreator(creator3);
-        userService.saveUser(creator3);
-        pollService.savePoll(p);
+
     }
 }
