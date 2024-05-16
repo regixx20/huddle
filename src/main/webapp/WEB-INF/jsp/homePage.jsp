@@ -84,7 +84,7 @@
 </head>
 <body>
 <header>
-    <h1>MeatEasy</h1>
+    <h1>MeetEasy</h1>
     <div >
         <c:if test="${empty sessionScope.isLoggedIn}">
         <!-- Afficher ces boutons si l'utilisateur n'est pas connecté -->
@@ -150,7 +150,7 @@
 </main>
 
 <footer>
-    <p>&copy; 2024 AmuBooking - Tous droits réservés.</p>
+    <p>&copy; 2024 MeetEay - Tous droits réservés.</p>
 </footer>
 </body>
 </html>

@@ -62,7 +62,7 @@
 </head>
 <body>
 <header>
-    <h1>MeatEasy</h1>
+    <h1>MeetEasy</h1>
     <h2>${poll.title}</h2> Participate to the poll <a href="/meeting/participate/${poll.id}/vote">Participate</a>
 
 </header>
@@ -96,7 +96,7 @@
                     <h3>Créneaux</h3>
                     <c:forEach var="slot" items="${poll.slots}">
                         <div class="slot">
-                            <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}</span>
+                            <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year} </span>
                             <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
                         </div>
                     </c:forEach>

@@ -29,11 +29,20 @@
             text-align: center;
         }
         .container {
-            width: 80%;
+            width: 76%;
             margin: 20px auto;
             padding: 20px;
             background-color: white;
             box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+        }
+        #my-container{
+            width: 20%;
+            height: 300px;
+            margin: 20px auto 20px 150px;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+
         }
         .poll-box {
             padding: 10px;
@@ -101,7 +110,7 @@
 </header>
 
 
-<div class="container">
+<div id="my-container" class="container">
     <a href="/homePage">Page d'accueil</a>
     <h2>Créer un nouveau sondage</h2>
     <form action="/meeting/edit" method="get">
@@ -109,15 +118,14 @@
     </form>
 </div>
 
-<div class="container">
+<div  class="container">
     <h2>Mes sondages</h2>
     <%-- Ajout d'une boucle pour simuler l'affichage des sondages --%>
     <c:forEach var="poll" items="${polls}">
         <div class="poll-box">
 
-            <a href="/meeting/organize/${poll.id}" style="text-decoration: none;" >
-                    ${poll.title}
-            </a>
+            <a href="/meeting/organize/${poll.id}" style="text-decoration: none;" >${poll.title}</a>
+
             <a href="/meeting/edit?id=${poll.id}" style="text-decoration: none;">Edit</a>
 
 

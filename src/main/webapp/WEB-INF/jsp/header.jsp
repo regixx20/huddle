@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>AmuBooking</title>
+<title>MeetEasy</title>
     <style>
 
 
