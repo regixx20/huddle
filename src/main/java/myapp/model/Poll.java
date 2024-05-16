@@ -41,12 +41,11 @@ public class Poll implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date limitDate;
 
-    @OneToMany( fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
     @ToString.Exclude
     private List<Slot> slots;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    //@JoinColumn(name = "user_id") // Nom de la colonne dans la table Poll faisant référence à l'utilisateur créateur
     private User creator;
 
     private int numberOfParticipants;

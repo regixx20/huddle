@@ -5,7 +5,8 @@
   Time: 20:37
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/jsp/header.jsp"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -106,14 +107,15 @@
     </form>
 </div>
 
-<div class="container">
-    <c:if test="${not empty sessionScope.isLoggedIn}">
-        <h2>Accéder à mon espace</h2>
-        <form action="/dashboard" method="get">
-            <button type="submit">Mon espace</button>
-        </form>
-    </c:if>
-</div>
+<c:if test="${not empty sessionScope.isLoggedIn}">
+    <div class="container">
+
+            <h2>Accéder à mon espace</h2>
+            <form action="/dashboard" method="get">
+                <button type="submit">Mon espace</button>
+            </form>
+    </div>
+</c:if>
 
 <main>
     <section id="purpose">

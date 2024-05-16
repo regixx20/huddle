@@ -11,12 +11,12 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "User")
 public class User implements Serializable {
 
     @Id
@@ -29,7 +29,9 @@ public class User implements Serializable {
     private String lastName;
     private String password;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "creator", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Poll> polls;
+
 
 }
