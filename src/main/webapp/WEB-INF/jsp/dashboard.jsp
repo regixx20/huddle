@@ -96,7 +96,7 @@
 </head>
 <body>
 <header>
-    <h1>MeatEasy</h1>
+    <h1>MeetEasy</h1>
     <div >
         <c:if test="${empty sessionScope.isLoggedIn}">
         <!-- Afficher ces boutons si l'utilisateur n'est pas connecté -->
