@@ -25,20 +25,52 @@
             padding: 10px 20px;
             text-align: center;
         }
+        .main-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px; /* espace entre les divs */
+        }
+
         .container {
-            width: 80%;
-            margin: 20px auto;
+            width: 20%;
+            height: 300px;
+            margin: 20px auto 20px 150px;
             padding: 20px;
             background-color: white;
             box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+
+
+
         }
-        .poll-box {
-            padding: 10px;
-            background-color: #e0e0e0;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+
+        .container h2 {
+            margin-bottom: 20px;
         }
+
+        .container form {
+            display: flex;
+            justify-content: center;
+        }
+
+        .container button {
+            background-color: #007BFF;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .container button:hover {
+            background-color: #0056b3;
+        }
+
         footer {
             background-color: #333;
             color: white;
@@ -99,7 +131,7 @@
         </c:if>
 
 </header>
-
+<div class="main-container">
 <div class="container">
     <h2>Créer un nouveau sondage</h2>
     <form action="/meeting/edit" method="get">
@@ -116,7 +148,7 @@
             </form>
     </div>
 </c:if>
-
+</div>
 <main>
     <section id="purpose">
         <h2>Pourquoi utiliser MeetEasy ?</h2>
@@ -142,7 +174,7 @@
     </section>
 
     <section id="benefits">
-        <h2>Les avantages d'MeetEasy</h2>
+        <h2>Les avantages de MeetEasy</h2>
         <ul>
             <li>Facile d'utilisation</li>
             <li>Compatible avec tous les appareils, que ce soit un ordinateur, une tablette ou un smartphone.</li>

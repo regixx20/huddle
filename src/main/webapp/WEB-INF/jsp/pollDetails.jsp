@@ -63,12 +63,11 @@
 <body>
 <header>
     <h1>MeetEasy</h1>
-    <h2>${poll.title}</h2> Participate to the poll <a href="/meeting/participate/${poll.id}/vote">Participate</a>
 
 </header>
 
 <div class="container">
-
+    <h2 style="text-align:center">${poll.title}</h2>
     <%-- Ajout d'une boucle pour simuler l'affichage des sondages --%>
     <c:url value="/polls/details" var="pollDetailsUrl">
         <c:param name="id" value="${poll.id}" />
@@ -101,6 +100,8 @@
                         </div>
                     </c:forEach>
                 </div>
+
+                Participate to the poll <a href="/meeting/participate/${poll.id}/vote">Participate</a>
 
             </div>
         </div>
