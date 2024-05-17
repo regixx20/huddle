@@ -38,6 +38,7 @@ public class PollService {
     }
 
 
+
     public void savePoll(Poll p) {
         /*if (p.getId() == null || p.getId().trim().isEmpty()) {
             p.setId(generateRandomString(16)); // Génère un ID de longueur 16

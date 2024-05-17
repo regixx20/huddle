@@ -4,6 +4,8 @@ import myapp.model.Poll;
 import myapp.model.User;
 import myapp.service.PollService;
 import myapp.service.UserService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +24,8 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/dashboard")
 public class DashboardController {
+    protected final Log logger = LogFactory.getLog(getClass());
+
 
     @Autowired
     private PollService pollService;
@@ -29,7 +33,7 @@ public class DashboardController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("")
+    @GetMapping("")
     public String dashboard(Model model, Principal principal){
         String email = principal.getName();
         Optional<User> optionalUser = userService.findUserByEmail(email);
@@ -37,6 +41,10 @@ public class DashboardController {
             User user = optionalUser.get();
             model.addAttribute("user", user);
         }
+        for (User user : userService.findAllUsers()) {
+            logger.info("LES CREATEURS DE CHAQUE      USER  " + user.getPolls());
+        }
+        logger.info(userService.findAllUsers().toString());
         return "dashboard";
     }
     @ModelAttribute("polls")
