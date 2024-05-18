@@ -48,7 +48,7 @@ public class Poll implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private User creator;
 
-    private int numberOfParticipants;
+    private int numberOfParticipants = 0;
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<Participant> participants;

@@ -35,6 +35,9 @@ public class DashboardController {
 
     @GetMapping("")
     public String dashboard(Model model, Principal principal){
+        if (principal == null) {
+            return "dashboard";
+        }
         String email = principal.getName();
         Optional<User> optionalUser = userService.findUserByEmail(email);
         if (optionalUser.isPresent()) {
@@ -49,6 +52,9 @@ public class DashboardController {
     }
     @ModelAttribute("polls")
     Collection<Poll> polls(Principal principal) {
+        if(principal == null){
+            return pollService.findAllPolls();
+        }
         String email = principal.getName();
         Optional<User> optionalUser = userService.findUserByEmail(email);
         if (optionalUser.isPresent()) {

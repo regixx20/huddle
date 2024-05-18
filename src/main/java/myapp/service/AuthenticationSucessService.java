@@ -21,6 +21,7 @@ public class AuthenticationSucessService implements AuthenticationSuccessHandler
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         HttpSession session = request.getSession();
         session.setAttribute("isLoggedIn", true);
+        session.setAttribute("user", authentication.getName());
         logger.info("User logged in");
         // Redirection vers une page après la connexion
         response.sendRedirect("/dashboard");

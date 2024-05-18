@@ -21,6 +21,10 @@ public class SlotService {
         slotRepository.save(s);
     }
 
+    public Slot findSlotById(Long id) {
+        return slotRepository.findById(id).orElse(null);
+    }
+
     public void deleteSlot(Slot s) {
         slotRepository.delete(s);
     }

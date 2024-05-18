@@ -29,6 +29,10 @@ public class Slot implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Poll poll;
 
+    private String participantVote;
+
+
+
 
 
 }

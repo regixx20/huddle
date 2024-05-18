@@ -18,7 +18,8 @@ public class Participant {
     @GeneratedValue
     private Long id;
 
-    @Column(unique = true)
+
     private String email;
+
 
 }

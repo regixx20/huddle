@@ -1,6 +1,7 @@
 package myapp.controller;
 
-import myapp.model.User;
+import myapp.model.*;
+import myapp.service.ParticipantService;
 import myapp.service.UserService;
 
 import java.util.*;
@@ -11,9 +12,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
-import myapp.model.Poll;
-import myapp.model.PollValidator;
-import myapp.model.Slot;
 import myapp.service.PollService;
 import myapp.service.SlotService;
 import org.apache.commons.logging.Log;
@@ -47,6 +45,9 @@ public class PollController {
     private UserService userService;
 
     @Autowired
+    private ParticipantService participantService;
+
+    @Autowired
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @GetMapping("")
@@ -56,6 +57,9 @@ public class PollController {
 
     @ModelAttribute("polls")
     Collection<Poll> polls(Principal principal) {
+        if(principal == null){
+            return pollService.findAllPolls();
+        }
         String email = principal.getName();
         Optional<User> optionalUser = userService.findUserByEmail(email);
         if (optionalUser.isPresent()) {
@@ -64,6 +68,8 @@ public class PollController {
             return Collections.emptyList();
         }
     }
+
+
     @ModelAttribute
     public Poll newPoll(
              @RequestParam(value = "id", required = false) String id){
@@ -78,6 +84,16 @@ public class PollController {
         return poll;
 
 
+    }
+
+    @ModelAttribute
+    public Slot slotForVote(
+            @RequestParam(value = "idSlot", required = false) Long id) {
+        if (id != null) {
+            return slotService.findSlotById(id);
+        }
+
+        return new Slot();
     }
 
     @GetMapping("/edit")
@@ -203,29 +219,55 @@ public class PollController {
 
     }
 
-    /*@GetMapping("/participate/{id}/vote")
-    public String vote(@PathVariable("id") String id, Model model, Principal principal) {
+
+    @PostMapping("/participate/{id}/vote")
+    public String vote(@PathVariable("id") String id, @RequestParam Map<String, String> allParams, @RequestParam("participant") String participant) {
         Poll poll = pollService.findPollById(id);
-        if (poll == null) {
-            return "redirect:/meeting"; // Redirection si le poll n'est pas trouvé
+
+
+
+
+        //supprimer les deux derniers éléments de allParams
+        allParams.remove("participant");
+        allParams.remove("_csrf");
+
+        Iterator<Slot> slotIterator = poll.getSlots().iterator();
+        for (String key : allParams.keySet()) {
+            if (slotIterator.hasNext()) {
+                Slot slot = slotIterator.next();
+                slot.setParticipantVote(allParams.get(key));
+            }
+        }
+        logger.info("allParams : " + allParams);
+
+
+        for (Participant p : poll.getParticipants()) {
+
+            System.out.println(p.getEmail());
+            if (p.getEmail().equals(participant)) {
+
+                logger.info("Vous avez déjà voté");
+                return "voted";
+            }
         }
 
-        // À ce stade, `poll` est non null
-        model.addAttribute("poll", poll);
+        Participant p = new Participant();
+        p.setEmail(participant);
+        participantService.saveParticipant(p);
+        poll.getParticipants().add(p);
+        poll.setNumberOfParticipants(poll.getNumberOfParticipants() + 1);
 
-        if (principal == null) {
-            return "vote"; // Afficher la page de vote si aucun utilisateur n'est connecté
-        }
+        pollService.savePoll(poll);
+        logger.info("le nombre de participants est : " + poll.getNumberOfParticipants());
 
-        // Vérifier si l'utilisateur connecté est le créateur du poll
-        if (principal.getName().equals(poll.getCreator().getEmail())) {
-            return "redirect:/meeting/organize/" + id; // Redirection spécifique pour le créateur
-        }
-
-        return "redirect:/dashboard"; // Redirection par défaut pour les autres utilisateurs connectés
-    }*/
+        logger.info("liste de slots : " + poll.getSlots());
+        //pollService.savePoll(poll);
 
 
+
+        return "redirect:/";
+
+    }
 
 
 
