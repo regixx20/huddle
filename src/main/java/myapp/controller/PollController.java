@@ -110,13 +110,11 @@ public class PollController {
         if (bindingResult.hasFieldErrors("title")) {
             return "newPoll";
         }
-      /*  if (slotsJson == null || slotsJson.isEmpty()) {
-            // JSON vide ou nul
-            // Gérer la situation de manière appropriée, par exemple en renvoyant une erreur
-            return "redirect:/polls";
 
-        }*/
-
+        if (slotsJson == null || slotsJson.isEmpty()) {
+            bindingResult.rejectValue("slots", "error.slots", "Veuillez sélectionner au moins un créneau horaire.");
+            return "newPoll";
+        }
 
         try {
            List<Slot> slots = objectMapper.readValue(slotsJson, new TypeReference<List<Slot>>() {});

@@ -2,6 +2,7 @@ package myapp.security;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.DispatcherType;
+import jakarta.servlet.http.HttpServletResponse;
 import myapp.model.User;
 import myapp.repository.UserRepository;
 import myapp.service.AuthenticationSucessService;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +23,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -34,6 +38,8 @@ public class SpringSecurity {
     WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> {
             web.ignoring().requestMatchers("/webjars/**");
+            web.ignoring().requestMatchers("/images/**");
+            web.ignoring().requestMatchers("/css/**");
         };
     }
 
@@ -42,11 +48,12 @@ public class SpringSecurity {
         String[] anonymousRequests = {"/",
                 "/webjars/**",
                 "/homepage",
-                "/dashboard",
+                "dashboard",
                 "/meeting",
                 "/meeting/**",
                 "/login",
-                "/register"
+                "/register",
+                "/contact"
         };
         http.authorizeHttpRequests(config -> {//
             config.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll();
@@ -66,7 +73,8 @@ public class SpringSecurity {
         http.logout(config -> {
             config.permitAll();
             config.logoutSuccessUrl("/");
-
+            config.invalidateHttpSession(true);
+            config.deleteCookies("JSESSIONID");
         });
         // Nous activons CSRF pour les actions protégées
         http.csrf(config -> {

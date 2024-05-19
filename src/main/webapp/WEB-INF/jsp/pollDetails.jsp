@@ -21,12 +21,7 @@
             margin: 0;
             padding: 0;
         }
-        header {
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-        }
+
         .container {
             width: 70%; /* Ajustez la largeur de la container en pourcentage si nécessaire */
             margin: 0 auto; /* Centrer la container horizontalement */
@@ -61,11 +56,7 @@
     </style>
 </head>
 <body>
-<header>
-    <h1>MeetEasy</h1>
 
-
-</header>
 
 <div class="container">
     <h2 style="text-align:center">${poll.title}</h2>

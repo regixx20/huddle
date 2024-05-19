@@ -1,5 +1,6 @@
 package myapp.controller;
 
+import jakarta.servlet.http.HttpSession;
 import myapp.model.Poll;
 import myapp.model.User;
 import myapp.service.PollService;
@@ -26,7 +27,6 @@ import java.util.Optional;
 public class DashboardController {
     protected final Log logger = LogFactory.getLog(getClass());
 
-
     @Autowired
     private PollService pollService;
 
@@ -34,7 +34,7 @@ public class DashboardController {
     private UserService userService;
 
     @GetMapping("")
-    public String dashboard(Model model, Principal principal){
+    public String dashboard(Model model, Principal principal, HttpSession session) {
         if (principal == null) {
             return "dashboard";
         }
@@ -43,13 +43,15 @@ public class DashboardController {
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             model.addAttribute("user", user);
+            session.setAttribute("user", user); // Ajout de l'utilisateur à la session
         }
         for (User user : userService.findAllUsers()) {
-            logger.info("LES CREATEURS DE CHAQUE      USER  " + user.getPolls());
+            logger.info("LES CREATEURS DE CHAQUE USER  " + user.getPolls());
         }
         logger.info(userService.findAllUsers().toString());
         return "dashboard";
     }
+
     @ModelAttribute("polls")
     Collection<Poll> polls(Principal principal) {
         if(principal == null){
@@ -63,9 +65,5 @@ public class DashboardController {
             return Collections.emptyList();
         }
     }
-
-
-
-
-
 }
+

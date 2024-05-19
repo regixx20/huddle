@@ -7,156 +7,40 @@
 --%>
 <%@ include file="/WEB-INF/jsp/header.jsp"%>
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>MeatEasy - Planifiez vos rendez-vous facilement</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-        }
-        .main-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 20px; /* espace entre les divs */
-        }
-
-        .container {
-            width: 20%;
-            height: 300px;
-            margin: 20px auto 20px 150px;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
-            text-align: center;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-
-
-
-        }
-
-        .container h2 {
-            margin-bottom: 20px;
-        }
-
-        .container form {
-            display: flex;
-            justify-content: center;
-        }
-
-        .container button {
-            background-color: #007BFF;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .container button:hover {
-            background-color: #0056b3;
-        }
-
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 20px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-        input{
-            padding: 10px;
-            margin-top: 10px;
-        }
-
-        .btn-pill {
-            border-radius: 20px;
-            margin-bottom: 10px;
-            margin-top: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-        }
-
-        .btn-pill-primary {
-            background-color: #3CE6A5;
-            color: #fff;
-            border: none;
-        }
-
-        .btn-pill-secondary {
-            background-color: #E6B13C;
-            color: #fff;
-            border: none;
-        }
-
-        .btn-pill-danger {
-            background-color: #dc3545;
-            color: #fff;
-            border: none;
-        }
-
-
-
-    </style>
+    <title>Accueil</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" />
 </head>
 <body>
-<header>
-    <h1>MeetEasy</h1>
-    <div >
-        <c:if test="${empty sessionScope.isLoggedIn}">
-        <!-- Afficher ces boutons si l'utilisateur n'est pas connecté -->
-        <button type="button" class="btn btn-primary btn-pill btn-pill-primary" onclick="window.location.href='/login'">Login</button>
-        <button type="button" class="btn btn-secondary btn-pill btn-pill-secondary" onclick="window.location.href='/register'">Register</button>
-        </c:if>
-        <c:if test="${not empty sessionScope.isLoggedIn}">
-        <!-- Afficher ce bouton si l'utilisateur est connecté -->
 
-        <button type="button" class="btn btn-primary btn-pill btn-pill-danger" onclick="window.location.href='/logout'">Logout</button>
-        </c:if>
-
-</header>
 <div class="main-container">
-<div class="container">
-    <h2>Créer un nouveau sondage</h2>
-    <form action="/meeting/edit" method="get">
-        <button type="submit">Créer Sondage</button>
-    </form>
-</div>
-
-<c:if test="${not empty sessionScope.isLoggedIn}">
     <div class="container">
-
+        <h2>Créer un nouveau sondage</h2>
+        <form action="/meeting/edit" method="get">
+            <button type="submit">Créer Sondage</button>
+        </form>
+    </div>
+    <c:if test="${not empty sessionScope.isLoggedIn}">
+        <div class="container">
             <h2>Accéder à mon espace</h2>
             <form action="/dashboard" method="get">
                 <button type="submit">Mon espace</button>
             </form>
-    </div>
-</c:if>
+        </div>
+    </c:if>
 </div>
 <main>
     <section id="purpose">
         <h2>Pourquoi utiliser MeetEasy ?</h2>
-        <p>AmuBooking simplifie la planification de vos rendez-vous et réunions, que vous soyez étudiant à l'AMU ou non. Voici comment :</p>
+        <p>MeetEasy simplifie la planification de vos rendez-vous et réunions. Voici comment :</p>
         <ul>
-            <li>Organisez facilement des sondages pour trouver le meilleur créneau horaire pour vos réunions de groupe, vos projets de cours, ou vos rencontres informelles.</li>
+            <li>Organisez facilement des sondages pour trouver le meilleur créneau horaire pour vos réunions de groupe, vos projets professionnels ou vos rencontres informelles.</li>
             <li>Éliminez les échanges de courriels fastidieux en permettant à chaque participant de choisir ses disponibilités sur un même calendrier.</li>
-            <li>Accédez rapidement aux disponibilités de chacun, facilitant ainsi la coordination des horaires entre étudiants, professeurs et intervenants externes.</li>
+            <li>Accédez rapidement aux disponibilités de chacun, facilitant ainsi la coordination des horaires entre collègues, amis et partenaires.</li>
             <li>Gagnez du temps et évitez les conflits d'horaires grâce à une interface intuitive et conviviale.</li>
         </ul>
     </section>
@@ -165,7 +49,7 @@
         <h2>Comment utiliser MeetEasy ?</h2>
         <p>C'est simple ! Suivez ces étapes pour commencer :</p>
         <ol>
-            <li>Inscrivez-vous gratuitement sur AmuBooking en créant un compte étudiant ou en vous connectant avec vos identifiants AMU.</li>
+            <li>Inscrivez-vous gratuitement sur MeetEasy en créant un compte.</li>
             <li>Créez un nouveau sondage en définissant le titre, la description et les options de date et d'heure.</li>
             <li>Invitez les participants en partageant le lien du sondage ou en les ajoutant directement par leur adresse e-mail.</li>
             <li>Consultez les réponses en temps réel et confirmez le meilleur créneau horaire pour votre rendez-vous.</li>
@@ -188,4 +72,3 @@
 </footer>
 </body>
 </html>
-

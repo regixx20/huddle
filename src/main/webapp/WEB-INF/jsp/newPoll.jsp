@@ -5,10 +5,9 @@
   Time: 19:36
   To change this template use File | Settings | File Templates.
 --%>
-
+<%@ include file="/WEB-INF/jsp/header.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -85,59 +84,10 @@
         var slots = [];
 
     </script>
-    <style>
-        #calendar-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            box-shadow: 0 0 10px 0 rgba(0,0,0,0.3);
-        }
-        .card {
-            max-width: 600px;
-            margin: 0 auto; /* Centrer horizontalement */
-        }
-
-        .card-body {
-            padding: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-
-
-        .btn-info {
-            width: 100%; /* Rendre le bouton "Submit" aussi large que son conteneur */
-            padding: 10px 20px; /* Ajouter un remplissage pour le bouton */
-            font-size: 16px; /* Taille de police pour le bouton */
-            background-color: #007BFF; /* Couleur de fond du bouton */
-            border: 1px solid #007BFF; /* Bordure du bouton */
-            color: #fff; /* Couleur du texte du bouton */
-            border-radius: 4px; /* Bordure arrondie */
-            transition: all 0.3s ease; /* Ajouter une transition en douceur lors du survol */
-            margin-top: 20px;
-        }
-        .btn-info:hover {
-            background-color: #31b0d5; /* Couleur de fond du bouton au survol */
-            border-color: #269abc; /* Bordure du bouton au survol */
-        }
-    </style>
-
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" />
 </head>
-<h1>Création d'un nouveau sondage</h1>
+
+<h1 style="color: white; text-align: center">Création d'un nouveau sondage</h1>
 <div class="card bg-light" >
     <div class="card-body">
         <form:form method="POST" modelAttribute="poll" >

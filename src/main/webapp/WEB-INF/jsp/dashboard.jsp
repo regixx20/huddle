@@ -10,131 +10,38 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+<c:set var="pageTitle" value="Mon espace" />
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>DOODLE 2.0</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-        }
-        .container {
-            width: 76%;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
-        }
-        #my-container{
-            width: 20%;
-            height: 300px;
-            margin: 20px auto 20px 150px;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
-            text-align: center;
-
-        }
-        .poll-box {
-            padding: 10px;
-            background-color: #e0e0e0;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 20px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-        input{
-            padding: 10px;
-            margin-top: 10px;
-        }
-
-        .btn-pill {
-            border-radius: 20px;
-            margin-bottom: 10px;
-            margin-top: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-        }
-
-        .btn-pill-primary {
-            background-color: #3CE6A5;
-            color: #fff;
-            border: none;
-        }
-
-        .btn-pill-secondary {
-            background-color: #E6B13C;
-            color: #fff;
-            border: none;
-        }
-
-        .btn-pill-danger {
-            background-color: #dc3545;
-            color: #fff;
-            border: none;
-        }
-
-
-    </style>
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" />
 </head>
 <body>
-<header>
-    <h1>MeetEasy</h1>
-    <div >
-        <c:if test="${empty sessionScope.isLoggedIn}">
-        <!-- Afficher ces boutons si l'utilisateur n'est pas connecté -->
-        <button type="button" class="btn btn-primary btn-pill btn-pill-primary" onclick="window.location.href='/login'">Login</button>
-        <button type="button" class="btn btn-secondary btn-pill btn-pill-secondary" onclick="window.location.href='/register'">Register</button>
-        </c:if>
-        <c:if test="${not empty sessionScope.isLoggedIn}">
-            <button type="button" class="btn btn-primary btn-pill btn-pill-danger" onclick="window.location.href='/logout'">Logout</button>
-        </c:if>
+    <div class="container">
+        <h2>Créer un nouveau sondage</h2>
+        <form action="/meeting/edit" method="get">
+            <button type="submit">Créer Sondage</button>
+        </form>
+    </div>
+    <div  class="container">
+        <h2>Mes sondages</h2>
+        <%-- Ajout d'une boucle pour simuler l'affichage des sondages --%>
+        <c:forEach var="poll" items="${polls}">
+            <div class="poll-box">
 
-</header>
+                <button type="submit" class="btn btn-primary" onclick="window.location.href='/meeting/organize/${poll.id}'">${poll.title}</button>
+                <br>
+                <br>
+                <a href="/meeting/edit?id=${poll.id}" style="text-decoration: none;">Edit</a>
 
-
-<div id="my-container" class="container">
-    <a href="/homePage">Page d'accueil</a>
-    <h2>Créer un nouveau sondage</h2>
-    <form action="/meeting/edit" method="get">
-        <button type="submit">Créer Sondage</button>
-    </form>
-</div>
-
-<div  class="container">
-    <h2>Mes sondages</h2>
-    <%-- Ajout d'une boucle pour simuler l'affichage des sondages --%>
-    <c:forEach var="poll" items="${polls}">
-        <div class="poll-box">
-
-            <a href="/meeting/organize/${poll.id}" style="text-decoration: none;" >${poll.title}</a>
-
-            <a href="/meeting/edit?id=${poll.id}" style="text-decoration: none;">Edit</a>
-
-
-        </div>
-    </c:forEach>
-</div>
-
-
-
+            </div>
+        </c:forEach>
+    </div>
+    <footer>
+        <p>© 2024 MeetEasy - Tous droits réservés.</p>
+    </footer>
 </body>
 </html>

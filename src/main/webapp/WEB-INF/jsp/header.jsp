@@ -3,76 +3,49 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
+
 <c:url var="css" value="/style.css" />
+<c:url var="logoUrl" value="/images/logo_MeetEasy.png" />
 
 <html>
 <head>
-<meta charset="UTF-8">
-<title>MeetEasy</title>
-    <style>
-
-
-        body
-        {
-            margin:0;
-            background-color: beige;
-
-        }
-        .menu
-        {
-            margin:0;
-            padding:2px;
-            background-color:#6f5499;
-        }
-        .menu .horizontal-menu .heading
-        {
-            color:white;
-            font-size:40px;
-             font-family:'Roboto', sans-serif;
-        }
-        .menu .horizontal-menu
-        {
-            list-style:none;
-        }
-        .menu .horizontal-menu .download
-        {
-            float:right;
-            margin-right:15%;
-            margin-top:1.5%;
-        }
-        .menu .horizontal-menu li
-        {
-            display:inline;
-            margin:30px;
-        }
-        .menu .horizontal-menu li a
-        {
-            text-transform:uppercase;
-            color:white;
-            font-family:sans-serif;
-            font-size:11px;
-            text-decoration:none;
-            font-weight:bold;
-        }
-        .menu .horizontal-menu li .login
-        {
-            padding-top:17px;
-            clear:both;
-            float:right;
-            border:1px solid white;
-            width:150px;
-            height:25px;
-            font-size:12px;
-            color:white;
-            background-color:transparent;
-            border-radius:20px;
-            margin:-5%;
-            margin-right:10px;
-            text-align:center;
-        }
-    </style>
-
+    <meta charset="UTF-8">
+    <title>MeetEasy</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" />
 </head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-left">
+                <img src="${pageContext.request.contextPath}/images/logo_MeetEasy.png" alt="logo" width="100" height="auto" onclick="window.location.href='/'" style="cursor: pointer;">
+                <div class="nav-link">
+                    <c:if test="${not empty sessionScope.user}">
+                        <button type="button" class="btn btn-nav" onclick="window.location.href='/dashboard'">Mon espace</button>
+                    </c:if>
+                    <button type="button" class="btn btn-nav" onclick="window.location.href='/contact'">Contact</button>
+                </div>
+            </div>
+            <div class="navbar-right">
+                <c:choose>
+                    <c:when test="${not empty sessionScope.user}">
+                        <span>Compte: ${sessionScope.user.firstName} ${sessionScope.user.lastName}</span>
+                        <button type="button" class="btn btn-logout" onclick="window.location.href='/logout'">Se déconnecter </button>
+                    </c:when>
+                    <c:otherwise>
+                        <button type="button" class="btn btn-login" onclick="window.location.href='/login'">Se connecter</button>
+                        <button type="button" class="btn btn-register" onclick="window.location.href='/register'">S'inscrire</button>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </nav>
+    </header>
+</body>
+</html>
+
+
+
+
 
 
 
