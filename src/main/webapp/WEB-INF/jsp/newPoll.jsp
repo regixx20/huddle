@@ -46,10 +46,12 @@
                 height: 'auto',
                 contentHeight: 'auto',
                 editable: true,
+                validRange: {
+                    start: moment().startOf('day') // Empêche la sélection des jours précédents aujourd'hui
+                },
                 eventClick: function(info) {
                     info.event.remove();
                 },
-
                 select: function(info) {
                     calendar.addEvent({
                         title: "Sélectionné de " + moment(info.start).format('HH:mm') + " à " + moment(info.end).format('HH:mm'),
@@ -70,14 +72,16 @@
                     //console.log(JSON.stringify(slots));
                     updateSlotsInput();
                     console.log($('#slotsInput').val());
-
-
                 },
                 editable: true,
-                eventLimit: true
+                eventLimit: true,
+                selectAllow: function(selectInfo) {
+                    return moment().isSameOrBefore(selectInfo.start, 'day');
+                }
             });
             calendar.render();
         });
+
         function updateSlotsInput() {
             $('#slotsInput').val(JSON.stringify(slots)); // Mise à jour du champ caché avec les slots en JSON
         }
