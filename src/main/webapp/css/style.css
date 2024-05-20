@@ -175,17 +175,30 @@ section h2 {
 }
 
 section {
-    margin-bottom: 20px;
+    margin-bottom: 40px; /* Plus d'espace en bas pour respirer */
+    padding: 20px; /* Ajouter du padding pour plus de confort */
+    background-color: #f9f9f9; /* Couleur de fond douce */
+    border-radius: 8px; /* Coins arrondis pour un effet moderne */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre subtile pour la profondeur */
 }
 
 section ul, section ol {
     text-align: left;
     margin: 0 auto;
-
+    padding: 0; /* Retirer le padding par défaut */
+    list-style-position: inside; /* Positionner les puces à l'intérieur */
 }
+
 section ul li, section ol li {
     margin-bottom: 10px;
+    padding-left: 24px; /* Ajouter de l'espace à gauche pour les icônes */
+    position: relative; /* Nécessaire pour les icônes */
+    font-size: 16px; /* Taille de police confortable */
+    line-height: 1.6; /* Hauteur de ligne pour la lisibilité */
+    color: #333; /* Couleur de texte foncée */
+    transition: color 0.3s ease; /* Transition douce pour le survol */
 }
+
 
 /* --------------CONTACT-------------- */
 
