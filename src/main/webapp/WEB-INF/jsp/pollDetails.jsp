@@ -91,8 +91,8 @@
                     <c:forEach var="slot" items="${poll.slots}">
                         <div class="slot">
                             <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}  </span>
-                            <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute} ${slot.votes.size()}</span>
-                            <span class="hour">Vote crénaux :  ${slot.votes.size()}</span><br>
+                            <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
+
                         </div>
                     </c:forEach>
                 </div>
@@ -102,11 +102,15 @@
                     <c:forEach var="participant" items="${poll.participants}">
                         <div class="participant">
                             <span class="email">${participant.email}</span>
-                            <span class="vote">${participant.votes.get(1)}</span>
+
                         </div>
                     </c:forEach>
 
-                Participate to the poll <a href="/meeting/participate/${poll.id}/vote">Participate</a>
+               <!--- Participate to the poll <a href="/meeting/participate/${poll.id}/vote">Participate</a>--->
+                    <label>Lien à envoyer aux participants:</label>
+                    <input type="text" value="<c:url value='localhost:8081/meeting/participate/${poll.id}/vote'/>" readonly/>
+
+
 
             </div>
         </div>
