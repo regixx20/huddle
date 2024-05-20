@@ -82,13 +82,17 @@
                     <div class="detail">
                         <span class="label">Emplacement :</span> <span class="value">${poll.location}</span>
                     </div>
+                    <div class="detail">
+                        <span class="label">Nombre de participants  :</span> <span class="value">${poll.participants.size()}</span>
+                    </div>
                 </div>
                 <div class="slots">
                     <h3>Créneaux</h3>
                     <c:forEach var="slot" items="${poll.slots}">
                         <div class="slot">
-                            <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year} </span>
-                            <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
+                            <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}  </span>
+                            <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute} ${slot.votes.size()}</span>
+                            <span class="hour">Vote crénaux :  ${slot.votes.size()}</span><br>
                         </div>
                     </c:forEach>
                 </div>
@@ -98,7 +102,7 @@
                     <c:forEach var="participant" items="${poll.participants}">
                         <div class="participant">
                             <span class="email">${participant.email}</span>
-                            <span class="vote">${participant.vote}</span>
+                            <span class="vote">${participant.votes.get(1)}</span>
                         </div>
                     </c:forEach>
 

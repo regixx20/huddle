@@ -14,8 +14,6 @@ import java.util.List;
 @RestController
 public class EmailController {
 
-    @Autowired
-    private MailService emailService;
 
     @Autowired
     private MailService mailService;
