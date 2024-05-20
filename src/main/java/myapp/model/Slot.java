@@ -7,7 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.ToString;
 import myapp.service.CustomLocalDateTimeDeserializer;
 
 @Entity
@@ -29,7 +34,10 @@ public class Slot implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Poll poll;
 
-    private String participantVote;
+
+    @OneToMany(mappedBy = "slot", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<Vote> votes = new ArrayList<>();
 
 
 

@@ -93,6 +93,15 @@
                     </c:forEach>
                 </div>
 
+                <div class="participants">
+                    <h3>Participants</h3>
+                    <c:forEach var="participant" items="${poll.participants}">
+                        <div class="participant">
+                            <span class="email">${participant.email}</span>
+                            <span class="vote">${participant.vote}</span>
+                        </div>
+                    </c:forEach>
+
                 Participate to the poll <a href="/meeting/participate/${poll.id}/vote">Participate</a>
 
             </div>

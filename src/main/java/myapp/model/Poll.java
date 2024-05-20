@@ -51,6 +51,7 @@ public class Poll implements Serializable {
     private int numberOfParticipants = 0;
 
     @OneToMany(fetch = FetchType.EAGER)
+    @ToString.Exclude
     private List<Participant> participants;
 
 }
