@@ -20,7 +20,7 @@
 <div class="main-container">
     <div class="container">
         <h2>Créer un nouveau sondage</h2>
-        <form action="/meeting/edit" method="get">
+        <form action="/register" method="get">
             <button type="submit">Créer Sondage</button>
         </form>
     </div>

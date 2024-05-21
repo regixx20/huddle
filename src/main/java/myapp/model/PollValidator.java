@@ -17,7 +17,7 @@ public class PollValidator implements Validator {
         Poll poll = (Poll) target;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title",
-                "poll.title", "Field title is required.");
+                "poll.title", "Le champs Titre est requis.");
 
 
        /*  if (!(poll.getSlots().size()<0)) {

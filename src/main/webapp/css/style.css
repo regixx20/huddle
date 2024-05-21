@@ -283,3 +283,18 @@ input{
     background-color: #0056b3; /* Couleur de fond du bouton au survol */
     border-color: #269abc; /* Bordure du bouton au survol */
 }
+
+.notification {
+    display: none; /* Hide by default */
+    background-color: #4CAF50; /* Green */
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Make sure it appears above other elements */
+}
