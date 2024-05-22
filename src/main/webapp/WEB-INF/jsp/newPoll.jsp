@@ -68,15 +68,14 @@
                     };
                     slots.push(slot);
                     // Délogage pour vérifier
-                    //console.log('SlotQDSFFSF:', slots);
-                    //console.log(JSON.stringify(slots));
                     updateSlotsInput();
                     console.log($('#slotsInput').val());
                 },
                 editable: true,
                 eventLimit: true,
                 selectAllow: function(selectInfo) {
-                    return moment().isSameOrBefore(selectInfo.start, 'day');
+                    // Empêche la sélection de créneaux dans le passé par rapport à l'heure actuelle
+                    return moment().isSameOrBefore(selectInfo.start) && moment().isSameOrBefore(selectInfo.start, 'hour');
                 }
             });
             calendar.render();
@@ -86,7 +85,6 @@
             $('#slotsInput').val(JSON.stringify(slots)); // Mise à jour du champ caché avec les slots en JSON
         }
         var slots = [];
-
     </script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" />
 </head>
