@@ -106,6 +106,9 @@ public class PollController {
         if (bindingResult.hasFieldErrors("description")) {
             return "newPoll";
         }
+        if (bindingResult.hasFieldErrors("limitDate")) {
+            return "newPoll";
+        }
 
 
         if (slotsJson == null || slotsJson.isEmpty()) {

@@ -23,6 +23,10 @@ public class PollValidator implements Validator {
                 "poll.title", "Le champ Titre est requis.");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description",
                 "poll.description", "Le champ description est requis.");
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "limitDate",
+                "poll.limitDate", "Le champ date limite est requis.");
+
         if (poll.getLimitDate() != null && poll.getLimitDate().before(new Date())) {
             errors.rejectValue("limitDate", "poll.limitDate.past",
                     "La date limite ne peut pas être dans le passé.");
