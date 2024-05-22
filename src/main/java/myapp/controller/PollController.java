@@ -6,23 +6,17 @@ import myapp.service.*;
 import java.util.*;
 
 import org.springframework.ui.Model;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/meeting")
@@ -102,14 +96,14 @@ public class PollController {
     }
 
     @PostMapping("/edit")
-    public String savePoll(Model model, @RequestParam("slots") String slotsJson, @RequestParam("creator") String creator, @ModelAttribute Poll p, BindingResult bindingResult, Principal principal) {
-
+    public String savePoll(Model model, @RequestParam("slotsJson") String slotsJson, @RequestParam("creator") String creator, @ModelAttribute Poll p, BindingResult bindingResult, Principal principal) {
 
 
         pollValidator.validate(p, bindingResult);
         if (bindingResult.hasFieldErrors("title")) {
             return "newPoll";
         }
+
 
         if (slotsJson == null || slotsJson.isEmpty()) {
             bindingResult.rejectValue("slots", "error.slots", "Veuillez sélectionner au moins un créneau horaire.");
@@ -151,11 +145,13 @@ public class PollController {
             logger.info(slotService.findAllSlots());
             logger.info("les slots sont : " + slotService.findAllSlots());
 
-            for (Poll s : pollService.findPollByTitle("Sondage pour Setondji")){
+
+
+            /*for (Poll s : pollService.findPollByTitle("Sondage pour Setondji")){
                 logger.info("le createur de setondji est : " + s.getCreator().getEmail());
 
             }
-            logger.info("le createur de setondji est : " + pollService.findPollByTitle("Sondage pour Setondji"));
+            logger.info("le createur de setondji est : " + pollService.findPollByTitle("Sondage pour Setondji"));*/
             return "redirect:/meeting"; // Redirection en cas de succès
         } catch (IOException e) {
             e.printStackTrace();

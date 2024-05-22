@@ -48,6 +48,45 @@
          padding: 10px;
          margin-top: 10px;
       }
+
+      .slot-entry {
+         padding: 10px;
+         margin-bottom: 5px;
+         border: 1px solid #ccc;
+         background-color: white;
+      }
+
+      .slot-time {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+      }
+
+      .star {
+         cursor: pointer;
+         color: gold; /* Change color if favorited */
+      }
+
+      .slot-details {
+         display: flex;
+         justify-content: space-between;
+         margin-top: 5px;
+      }
+
+      .edit-link {
+         cursor: pointer;
+         color: blue;
+         text-decoration: underline;
+      }
+
+      .participants .count {
+         font-weight: bold;
+      }
+
+      .form-group {
+         margin-top: 20px;
+      }
+
    </style>
    <style>
       .yes { color: green; }
@@ -109,30 +148,40 @@
          <h3>Créneaux</h3>
          <form:form method="POST" modelAttribute="slot">
             <form:errors path="*" cssClass="alert alert-danger" element="div"/>
-            <c:forEach var="slot" items="${poll.slots}">
-               <div>
-                  <c:url value="/polls/details" var="pollDetailsUrl">
-                     <c:param name="idSlot" value="${slot.id}"/>
-                  </c:url>
-                  <label>${slot.start} - ${slot.end}
-                     <input type="checkbox"  onclick="toggleCheckbox(this)" data-id="${slot.id}" data-state="unchecked">
-                  </label>
-                  <input type="hidden" id="participantValue_${slot.id}" name="participantValue_${slot.id}" value="unchecked"/>
+               <c:forEach var="slot" items="${poll.slots}">
+                  <div class="slot-entry">
+                     <div class="slot-date">
+                        <c:url value="/polls/details" var="pollDetailsUrl">
+                           <c:param name="idSlot" value="${slot.id}"/>
+                        </c:url>
 
+                        <div class="day">${slot.dayOfWeek}</div>
+                     </div>
+                     <div class="time-duration">
+                        <div class="time">
+                           <label>
+                              <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}
+                              ${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
 
+                              <input type="checkbox"  onclick="toggleCheckbox(this)" data-id="${slot.id}" data-state="unchecked">
+                           </label>
 
+                           <input type="hidden" id="participantValue_${slot.id}" name="participantValue_${slot.id}" value="unchecked"/>
+                        </div>
+                     </div>
                   </div>
-            </c:forEach>
+               </c:forEach>
             <c:if test="${!empty sessionScope.isLoggedIn}">
-            <input type="hidden" id="participant" name="participant" value="${sessionScope.user}" />
+               <input type="hidden" id="participant" name="participant" value="${sessionScope.user}" />
             </c:if>
-
-            <div class="form-group my-1">
+            <div class="form-group">
                <button type="submit" class="btn btn-info">Soumettre</button>
             </div>
          </form:form>
       </div>
    </div>
 </div>
+
+
 </body>
 </html>

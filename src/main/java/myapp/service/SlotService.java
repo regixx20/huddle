@@ -25,6 +25,7 @@ public class SlotService {
         return slotRepository.findById(id).orElse(null);
     }
 
+
     public void deleteSlot(Slot s) {
         slotRepository.delete(s);
     }

@@ -18,12 +18,22 @@
 <body>
 
 <div class="main-container">
-    <div class="container">
-        <h2>Créer un nouveau sondage</h2>
-        <form action="/register" method="get">
-            <button type="submit">Créer Sondage</button>
-        </form>
-    </div>
+    <c:if test="${empty sessionScope.isLoggedIn}">
+        <div class="container">
+            <h2>Créer un nouveau sondage</h2>
+            <form action="/register" method="get">
+                <button type="submit">Créer Sondage</button>
+            </form>
+        </div>
+    </c:if>
+    <c:if test="${!empty sessionScope.isLoggedIn}">
+        <div class="container">
+            <h2>Créer un nouveau sondage</h2>
+            <form action="/meeting/edit" method="get">
+                <button type="submit">Créer Sondage</button>
+            </form>
+        </div>
+    </c:if>
     <c:if test="${not empty sessionScope.isLoggedIn}">
         <div class="container">
             <h2>Accéder à mon espace</h2>

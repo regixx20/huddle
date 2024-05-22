@@ -6,10 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.ToString;
@@ -31,6 +34,7 @@ public class Slot implements Serializable {
     @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
     private LocalDateTime end;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Poll poll;
 
@@ -38,6 +42,16 @@ public class Slot implements Serializable {
     @OneToMany(mappedBy = "slot", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Vote> votes = new ArrayList<>();
+
+    @Transient
+    public String getDayOfWeek() {
+        if (start != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE", Locale.FRENCH);
+            String day = start.format(formatter);
+            return day.substring(0, 1).toUpperCase(Locale.FRENCH) + day.substring(1).toLowerCase(Locale.FRENCH);
+        }
+        return null;
+    }
 
 
 

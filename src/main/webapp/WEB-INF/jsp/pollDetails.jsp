@@ -15,6 +15,56 @@
     <meta charset="UTF-8">
     <title>MeatEasy</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .containerr {
+            width: 80%;
+            margin: 20px auto;
+            overflow-y: auto; /* Active le défilement vertical si nécessaire */
+            height: 600px; /* Hauteur fixe pour le conteneur */
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .slot-entry {
+            border-bottom: 1px solid #ccc;
+            padding: 10px;
+            cursor: pointer; /* Indique que l'élément est cliquable */
+        }
+        .slot-entry:hover {
+            background-color: #f0f0f0; /* Changement de couleur au survol */
+        }
+        .slot-date {
+            font-weight: bold;
+        }
+        .time {
+            margin-top: 5px;
+        }
+        .date {
+            color: #333;
+        }
+    </style>
+
+    <script>
+        function selectSlot(slotId) {
+            // Désactiver la classe active pour tous les slots
+            document.querySelectorAll('.slot-entry').forEach(slot => {
+                slot.classList.remove('active');
+            });
+
+            // Activer la classe active pour le slot sélectionné
+            const selectedSlot = document.getElementById('slot_' + slotId);
+            selectedSlot.classList.add('active');
+
+            // Mettre à jour la valeur de l'input caché
+            document.getElementById('selectedSlotId').value = slotId;
+        }
+    </script>
 </head>
 <body>
 
@@ -75,6 +125,25 @@
                         <div id="copyNotification" class="notification">Lien copié dans le presse-papier</div>
 
 
+                    </div>
+
+                    <div class="containerr">
+                        <c:forEach var="slot" items="${poll.slots}">
+                            <div class="slot-entry" onclick="selectSlot('${slot.id}')"> <!-- URL dynamique pour chaque créneau -->
+                                <div class="slot-date">
+                                    <div class="day">${slot.dayOfWeek}</div>
+                                </div>
+                                <div class="time-duration">
+                                    <div class="time">
+                       <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}
+                       ${slot.start.hour}:${slot.start.minute < 10 ? '0' : ''}${slot.start.minute} -
+                       ${slot.end.hour}:${slot.end.minute < 10 ? '0' : ''}${slot.end.minute}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+
+                        <input type="hidden" id="selectedSlotId" name="selectedSlotId" value=""/>
                     </div>
             </div>
 

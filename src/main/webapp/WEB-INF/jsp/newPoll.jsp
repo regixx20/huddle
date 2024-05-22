@@ -110,8 +110,6 @@
             <div class="form-group my-1">
                 <label for="title">Titre du sondage :</label>
                 <form:input class="form-control" path="title" />
-                <form:errors path="title" cssClass="alert alert-warning"
-                             element="div" />
             </div>
             <div class="form-group my-1">
                 <label for="description">Description :</label>
@@ -134,7 +132,7 @@
 
 
 
-            <input type="hidden" id="slotsInput" name="slots" value="" />
+            <input type="hidden" id="slotsInput" name="slotsJson" value="" />
 
             <div id='calendar-container'>
                 <div id='calendar'></div>

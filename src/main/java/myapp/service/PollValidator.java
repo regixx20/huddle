@@ -1,5 +1,6 @@
-package myapp.model;
+package myapp.service;
 
+import myapp.model.Poll;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -14,7 +15,7 @@ public class PollValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        Poll poll = (Poll) target;
+        //Poll poll = (Poll) target;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title",
                 "poll.title", "Le champs Titre est requis.");
