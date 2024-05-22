@@ -103,6 +103,9 @@ public class PollController {
         if (bindingResult.hasFieldErrors("title")) {
             return "newPoll";
         }
+        if (bindingResult.hasFieldErrors("description")) {
+            return "newPoll";
+        }
 
 
         if (slotsJson == null || slotsJson.isEmpty()) {
