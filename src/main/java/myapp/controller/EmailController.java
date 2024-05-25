@@ -21,11 +21,13 @@ public class EmailController {
     @GetMapping("/send-mail")
     public String sendMail(@RequestParam String senderEmail,
                            @RequestParam String recipientEmail,
-                           @RequestParam String subject,
                            @RequestParam String text) {
         User sender = new User();
         sender.setEmail(senderEmail);
-        mailService.sendEmail(sender, Arrays.asList(recipientEmail), subject, text);
+        String subject = "Crénaux choisis ";
+        // Split the recipient email addresses by comma and convert to a list
+        List<String> recipients = Arrays.asList(recipientEmail.split(","));
+        mailService.sendEmail(sender, recipients, subject, text);
         return "Email sent!";
     }
 }

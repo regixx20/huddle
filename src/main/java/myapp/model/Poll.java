@@ -51,4 +51,12 @@ public class Poll implements Serializable {
     @ToString.Exclude
     private List<Participant> participants = new ArrayList<>();
 
+    public List<String> paticipantMail(){
+        List<String> mail = new ArrayList<>();
+        for(Participant p : participants){
+            mail.add(p.getEmail());
+        }
+        return mail;
+    }
+
 }

@@ -117,6 +117,14 @@
                             <div class="slot">
                                 <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}  </span>
                                 <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
+                                <form id="emailForm" action="${pageContext.request.contextPath}/send-mail" method="get">
+                                    <input type="hidden" name="senderEmail" value="${poll.creator.email}" />
+                                    <c:forEach var="email" items="${poll.paticipantMail()}">
+                                        <input type="hidden" name="recipientEmail" value="${email}" />
+                                    </c:forEach>
+                                    <input type="hidden" name="text" value="Le crénaux  du ${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year} à ${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute} a été choisis pour le songade ${poll.title}" />
+                                    <button type="submit">Sélectionner</button>
+                                </form>
 
                             </div>
                         </c:forEach>
