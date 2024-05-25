@@ -54,7 +54,12 @@ public class Slot implements Serializable {
     }
 
 
-
-
-
+    public String getVote(Participant participant) {
+        for (Vote v : votes) {
+            if (v.getParticipant().equals(participant)) {
+                return v.getVote();
+            }
+        }
+        return null;
+    }
 }

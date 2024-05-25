@@ -39,14 +39,13 @@ public class DashboardController {
             return "dashboard";
         }
         String email = principal.getName();
-        Optional<User> optionalUser = userService.findUserByEmail(email);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            model.addAttribute("user", user);
-            session.setAttribute("user", user); // Ajout de l'utilisateur à la session
-        }
-        for (User user : userService.findAllUsers()) {
-            logger.info("LES CREATEURS DE CHAQUE USER  " + user.getPolls());
+        User user = userService.findUserByEmail(email);
+
+        model.addAttribute("user", user);
+        session.setAttribute("user", user); // Ajout de l'utilisateur à la session
+
+        for (User u : userService.findAllUsers()) {
+            logger.info("LES CREATEURS DE CHAQUE USER  " + u.getPolls());
         }
         logger.info(userService.findAllUsers().toString());
         return "dashboard";
@@ -54,16 +53,12 @@ public class DashboardController {
 
     @ModelAttribute("polls")
     Collection<Poll> polls(Principal principal) {
-        if(principal == null){
-            return pollService.findAllPolls();
-        }
         String email = principal.getName();
-        Optional<User> optionalUser = userService.findUserByEmail(email);
-        if (optionalUser.isPresent()) {
-            return optionalUser.get().getPolls();
-        } else {
-            return Collections.emptyList();
-        }
+        User user = userService.findUserByEmail(email);
+
+        return user.getPolls();
+
+
     }
 }
 

@@ -21,9 +21,21 @@ public class Participant {
 
     private String email;
 
+    private String firstName;
+
+    private String lastName;
+
+
+
     @OneToMany(mappedBy = "participant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Vote> votes =new ArrayList<>();
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+
 
 
 }

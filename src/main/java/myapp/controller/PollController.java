@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/meeting")
@@ -44,6 +45,7 @@ public class PollController {
     @Autowired
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+
     @GetMapping("")
     public String listPolls() {
         return "dashboard";
@@ -51,16 +53,10 @@ public class PollController {
 
     @ModelAttribute("polls")
     Collection<Poll> polls(Principal principal) {
-        if(principal == null){
-            return pollService.findAllPolls();
-        }
         String email = principal.getName();
-        Optional<User> optionalUser = userService.findUserByEmail(email);
-        if (optionalUser.isPresent()) {
-            return optionalUser.get().getPolls();
-        } else {
-            return Collections.emptyList();
-        }
+        User user = userService.findUserByEmail(email);
+
+        return user.getPolls();
     }
 
 
@@ -91,7 +87,8 @@ public class PollController {
     }
 
     @GetMapping("/edit")
-    public String editPoll(@ModelAttribute Poll p, Model model) {
+    public String editPoll(@ModelAttribute Poll p, Model model, Principal principal) {
+        model.addAttribute("email", principal.getName());
         return "newPoll";
     }
 
@@ -99,6 +96,7 @@ public class PollController {
     public String savePoll(Model model, @RequestParam("slotsJson") String slotsJson, @RequestParam("creator") String creator, @ModelAttribute Poll p, BindingResult bindingResult, Principal principal) {
 
 
+        logger.info("le createur est : " + creator);
         pollValidator.validate(p, bindingResult);
         if (bindingResult.hasFieldErrors("title")) {
             return "newPoll";
@@ -116,6 +114,10 @@ public class PollController {
             return "newPoll";
         }
 
+        //Ajouter le créateur du sondage comme premier participant
+
+
+
         try {
            List<Slot> slots = objectMapper.readValue(slotsJson, new TypeReference<List<Slot>>() {});
 
@@ -124,11 +126,15 @@ public class PollController {
            logger.info(p.getLocation());
             p.setSlots(slots);
             if (principal != null) {
-                model.addAttribute("email", principal.getName());
+
+                //logger.info("email : " + principal.getName());
                 String email = principal.getName();
 
-                userService.findUserByEmail(email).ifPresent(p::setCreator);
-                p.getCreator().getPolls().add(p);
+                User c = userService.findUserByEmail(email);
+                if (creator != null) {
+                    p.setCreator(c);
+                    c.getPolls().add(p);
+                }
 
             }
             else {
@@ -142,6 +148,36 @@ public class PollController {
             pollService.savePoll(p);
             logger.info("createur : " + p.getCreator().getEmail());
 
+            Participant creatorParticipant = new Participant();
+            creatorParticipant.setEmail(creator);
+            logger.info("le createur est : " + userService.findUserByEmail(creator));
+            creatorParticipant.setFirstName(userService.findUserByEmail(creator).getFirstName());
+            creatorParticipant.setLastName(userService.findUserByEmail(creator).getLastName());
+
+            p.getParticipants().add(creatorParticipant);
+            //Vote vote = new Vote();
+            //vote.setParticipant(creatorParticipant);
+            //vote.setVote("yes");
+            participantService.saveParticipant(creatorParticipant);
+            //creer differents votes pour chaque slot
+            for(Slot slot: p.getSlots()){
+                Vote vote = new Vote();
+                vote.setVote("yes");
+                vote.setParticipant(creatorParticipant);
+                vote.setSlot(slot);
+
+                slot.getVotes().add(vote);
+                creatorParticipant.getVotes().add(vote);
+
+
+                voteService.saveVote(vote);
+
+
+            }
+
+
+
+
            for (Slot slot : slots) {
                slot.setPoll(p);
                slotService.saveSlot(slot);
@@ -150,7 +186,12 @@ public class PollController {
             logger.info(p.getSlots());
             logger.info(slotService.findAllSlots());
             logger.info("les slots sont : " + slotService.findAllSlots());
-
+            logger.info("participants : " + voteService.findAllVotes());
+            logger.info("slots");
+            for (Slot s : slots) {
+                logger.info("slot : " + s.getVotes());
+            }
+            logger.info("participantsssssss"+p.getParticipants());
 
 
             /*for (Poll s : pollService.findPollByTitle("Sondage pour Setondji")){
@@ -203,24 +244,26 @@ public class PollController {
 
     }
     @PostMapping("/participate/{id}/vote")
-    public String vote(@PathVariable("id") String id, @RequestParam Map<String, String> allParams, @RequestParam("participant") String participant) {
+    public String vote(@PathVariable("id") String id, @RequestParam Map<String, String> allParams, @RequestParam("participantEmail") String participantEmail,@RequestParam("participantlastName") String participantlastName, @RequestParam("participantfirstName") String participantfirstName){
         Poll poll = pollService.findPollById(id);
 
         //supprimer les deux derniers éléments de allParams
         allParams.remove("participant");
         allParams.remove("_csrf");
+        Participant p = new Participant();
+        p.setEmail(participantEmail);
+        p.setFirstName(participantfirstName);
+        p.setLastName(participantlastName);
 
-        for (Participant p : poll.getParticipants()) {
-
+        for (Participant par : poll.getParticipants()) {
             System.out.println(p.getEmail());
-            if (p.getEmail().equals(participant)) {
+            if (par.getEmail().equals(p.getEmail())) {
 
                 logger.info("Vous avez déjà voté");
                 return "voted";
             }
         }
-        Participant p = new Participant();
-        p.setEmail(participant);
+
 
         participantService.saveParticipant(p);
 
@@ -246,10 +289,12 @@ public class PollController {
         logger.info("liste de slots : " + poll.getSlots());
         logger.info("liste de votes : " + voteService.findAllVotes());
         logger.info("liste de participants : " + participantService.findAllParticipants());
+        logger.info("liste de participants : " + poll.getParticipants());
 
         for (Participant pt : poll.getParticipants()) {
             logger.info("listes des votes "+ pt.getVotes());
         }
+        logger.info("All params : " + allParams);
 
         return "redirect:/";
 

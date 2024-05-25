@@ -13,7 +13,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>MeatEasy</title>
+    <title>MeetEasy</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" />
     <style>
         body {
@@ -23,30 +23,46 @@
             padding: 0;
         }
         .containerr {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
             width: 80%;
             margin: 20px auto;
-            overflow-y: auto; /* Active le défilement vertical si nécessaire */
-            height: 600px; /* Hauteur fixe pour le conteneur */
+            overflow-y: auto;
+            max-height: 600px;
             background-color: white;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             padding: 20px;
         }
         .slot-entry {
-            border-bottom: 1px solid #ccc;
+            border: 1px solid #ccc;
             padding: 10px;
-            cursor: pointer; /* Indique que l'élément est cliquable */
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .slot-entry:hover {
             background-color: #f0f0f0; /* Changement de couleur au survol */
         }
-        .slot-date {
-            font-weight: bold;
+        .slot-date, .time-duration {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
         }
         .time {
-            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .day {
+            font-size: 0.9em;
+            color: #666;
         }
         .date {
             color: #333;
+        }
+        .slot-entry.selected {
+            border: 2px solid #2fff00; /* Bordure bleue pour l'élément sélectionné */
+            background-color: #f0f8ff; /* Légère couleur de fond pour l'élément sélectionné */
         }
     </style>
 
@@ -74,7 +90,6 @@
         <c:url value="/polls/details" var="pollDetailsUrl">
             <c:param name="id" value="${poll.id}" />
         </c:url>
-            <div class="container">
                 <div class="poll-box" id="crenaux">
                     <div class="header">
                         <h2>Détails du sondage</h2>
@@ -109,9 +124,9 @@
 
                     <div class="participants">
                         <h3>Participants</h3>
-                        <c:forEach var="participant" items="${poll.participants}">
+                        <c:forEach var="p" items="${poll.participants}">
                             <div class="participant">
-                                <span class="email">${participant.email}</span>
+                                <span class="email">${p.fullName}</span>
 
                             </div>
                         </c:forEach>
@@ -128,24 +143,49 @@
                     </div>
 
                     <div class="containerr">
-                        <c:forEach var="slot" items="${poll.slots}">
-                            <div class="slot-entry" onclick="selectSlot('${slot.id}')"> <!-- URL dynamique pour chaque créneau -->
-                                <div class="slot-date">
-                                    <div class="day">${slot.dayOfWeek}</div>
-                                </div>
-                                <div class="time-duration">
-                                    <div class="time">
-                       <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}
-                       ${slot.start.hour}:${slot.start.minute < 10 ? '0' : ''}${slot.start.minute} -
-                       ${slot.end.hour}:${slot.end.minute < 10 ? '0' : ''}${slot.end.minute}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </c:forEach>
-
-                        <input type="hidden" id="selectedSlotId" name="selectedSlotId" value=""/>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Participants</th>
+                                <c:forEach var="slot" items="${poll.slots}">
+                                    <th>
+                                        <div class="slot-header">
+                                            <div class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}</div>
+                                            <div class="time">${slot.start.hour}:${slot.start.minute < 10 ? '0' : ''}${slot.start.minute} - ${slot.end.hour}:${slot.end.minute < 10 ? '0' : ''}${slot.end.minute}</div>
+                                        </div>
+                                    </th>
+                                </c:forEach>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="participant" items="${poll.participants}">
+                                <tr>
+                                    <td>${participant.fullName}</td>
+                                    <c:forEach var="slot" items="${poll.slots}">
+                                        <td class="slot-cell" onclick="selectSlot('${slot.id}', '${participant.id}')">
+                                            <c:choose>
+                                                <c:when test="${slot.getVote(participant) == 'yes'}">
+                                                    <span>Oui</span>
+                                                </c:when>
+                                                <c:when test="${slot.getVote(participant) == 'no'}">
+                                                    <span>Non</span>
+                                                </c:when>
+                                                <c:when test="${slot.getVote(participant) == 'maybe'}">
+                                                    <span>Peut-être</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span>Not Voted</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                    </c:forEach>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
                     </div>
-            </div>
+
+                </div>
 
 
 

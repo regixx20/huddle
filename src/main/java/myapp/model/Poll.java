@@ -12,10 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Data
@@ -52,6 +49,6 @@ public class Poll implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
-    private List<Participant> participants;
+    private List<Participant> participants = new ArrayList<>();
 
 }

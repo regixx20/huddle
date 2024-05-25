@@ -20,7 +20,7 @@ public class Vote implements Serializable {
     @ManyToOne
     private Participant participant;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Slot slot;
 
     private String vote;

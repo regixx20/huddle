@@ -71,8 +71,7 @@ public class UserRepositoryTest {
         user.setEmail("setondji@gmail.com");
         userRepository.save(user);
 
-        User foundUser = userRepository.findByEmail("setondji@gmail.com")
-                .orElseThrow(() -> new AssertionError("User not found"));
+        User foundUser = userRepository.findByEmail("setondji@gmail.com");
 
         assertEquals("setondji@gmail.com", foundUser.getEmail());
     }

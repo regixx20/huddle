@@ -86,6 +86,11 @@
       .form-group {
          margin-top: 20px;
       }
+      .options label {
+         display: block;
+         margin-top: 5px;
+      }
+
 
    </style>
    <style>
@@ -95,48 +100,10 @@
    </style>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    <script>
-      function toggleCheckbox(checkbox) {
-         console.log('Checkbox clicked, current state:', checkbox.dataset.state);
-         const currentState = checkbox.dataset.state || 'unchecked';
-         switch (currentState) {
-            case 'unchecked':
-               checkbox.dataset.state = 'yes';
-               checkbox.checked = true;
-               break;
-            case 'yes':
-               checkbox.dataset.state = 'no';
-               checkbox.checked = true;
-               break;
-            case 'no':
-               checkbox.dataset.state = 'ifNecessary';
-               checkbox.checked = true;
-               break;
-            case 'ifNecessary':
-               checkbox.dataset.state = 'unchecked';
-               checkbox.checked = false;
-               break;
-         }
-         const hiddenInput = document.getElementById('participantValue_' + checkbox.dataset.id);
-         hiddenInput.value = checkbox.dataset.state;
-         console.log('New state:', checkbox.dataset.state);
-         applyStyles(checkbox);
-      }
-
-      function applyStyles(checkbox) {
-         switch (checkbox.dataset.state) {
-            case 'yes':
-               checkbox.style.color = 'green';
-               break;
-            case 'no':
-               checkbox.style.color = 'red';
-               break;
-            case 'ifNecessary':
-               checkbox.style.color = 'orange';
-               break;
-            default:
-               checkbox.style.color = '';
-               break;
-         }
+      function updateRadioValue(slotId) {
+         var selectedValue = document.querySelector(`input[name='slot_${slotId}_response']:checked`).value;
+         document.getElementById(`participantValue_${slotId}`).value = selectedValue;
+         console.log('New state for slot', slotId, ':', selectedValue);
       }
 
    </script>
@@ -163,16 +130,23 @@
                               <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}
                               ${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
 
-                              <input type="checkbox"  onclick="toggleCheckbox(this)" data-id="${slot.id}" data-state="unchecked">
+                              <!--<input type="checkbox"  onclick="toggleCheckbox(this)" data-id="${slot.id}" data-state="unchecked">-->
+                              <div class="options">
+                                 <label><input type="radio" name="slot_${slot.id}_response" value="yes" onchange="updateRadioValue('${slot.id}')"> Oui</label>
+                                 <label><input type="radio" name="slot_${slot.id}_response" value="no" onchange="updateRadioValue('${slot.id}')"> Non</label>
+                                 <label><input type="radio" name="slot_${slot.id}_response" value="maybe" onchange="updateRadioValue('${slot.id}')"> Peut-être</label>
+                              </div>
                            </label>
 
-                           <input type="hidden" id="participantValue_${slot.id}" name="participantValue_${slot.id}" value="unchecked"/>
                         </div>
                      </div>
                   </div>
                </c:forEach>
+
             <c:if test="${!empty sessionScope.isLoggedIn}">
-               <input type="hidden" id="participant" name="participant" value="${sessionScope.user}" />
+               <input type="hidden" class="participant" name="participantEmail" value="${sessionScope.user.email}" />
+               <input type="hidden" class="participant" name="participantlastName" value="${sessionScope.user.lastName}"/>
+               <input type="hidden" class="participant" name="participantfirstName" value="${sessionScope.user.firstName}"/>
             </c:if>
             <div class="form-group">
                <button type="submit" class="btn btn-info">Soumettre</button>
