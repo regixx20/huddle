@@ -23,11 +23,18 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/locales/fr.js'></script>
+    <style>
+        .fc-past {
+            background-color: #d3d3d3 !important; /* Gris sombre pour les créneaux passés */
+        }
+    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: ['interaction', 'dayGrid', 'timeGrid'],
+                locale:"fr",
                 header: {
                     left: 'prev,next today',
                     center: 'title',
@@ -49,10 +56,10 @@
                 validRange: {
                     start: moment().startOf('day') // Empêche la sélection des jours précédents aujourd'hui
                 },
-                eventClick: function(info) {
+                eventClick: function (info) {
                     info.event.remove();
                 },
-                select: function(info) {
+                select: function (info) {
                     calendar.addEvent({
                         title: "Sélectionné de " + moment(info.start).format('HH:mm') + " à " + moment(info.end).format('HH:mm'),
                         start: info.start,
@@ -71,9 +78,7 @@
                     updateSlotsInput();
                     console.log($('#slotsInput').val());
                 },
-                editable: true,
-                eventLimit: true,
-                selectAllow: function(selectInfo) {
+                selectAllow: function (selectInfo) {
                     // Empêche la sélection de créneaux dans le passé par rapport à l'heure actuelle
                     return moment().isSameOrBefore(selectInfo.start) && moment().isSameOrBefore(selectInfo.start, 'hour');
                 }
@@ -84,53 +89,53 @@
         function updateSlotsInput() {
             $('#slotsInput').val(JSON.stringify(slots)); // Mise à jour du champ caché avec les slots en JSON
         }
+
         var slots = [];
     </script>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css"/>
 </head>
 
 <h1 style="color: white; text-align: center">Création d'un nouveau sondage</h1>
-<div class="card bg-light" >
+<div class="card bg-light">
     <div class="card-body">
-        <form:form method="POST" modelAttribute="poll" >
-            <form:errors path="*" cssClass="alert alert-danger" element="div" />
+        <form:form method="POST" modelAttribute="poll">
+            <form:errors path="*" cssClass="alert alert-danger" element="div"/>
             <c:if test="${empty sessionScope.isLoggedIn}">
-            <div class="form-group my-1">
-                <label  for="creator" >Email :</label>
-                <input class="form-control" id="creator" name="creator" />
+                <div class="form-group my-1">
+                <label for="creator">Email :</label>
+                <input class="form-control" id="creator" name="creator"/>
                 <form:errors path="creator" cssClass="alert alert-warning"
-                             element="div" />
+                             element="div"/>
             </c:if>
             <c:if test="${!empty sessionScope.isLoggedIn}">
-                <input type="hidden" id="creator" name="creator" value="${email}" />
+                <input type="hidden" id="creator" name="creator" value="${email}"/>
             </c:if>
             </div>
             <div class="form-group my-1">
                 <label for="title">Titre du sondage :</label>
-                <form:input class="form-control" path="title" />
+                <form:input class="form-control" path="title"/>
             </div>
             <div class="form-group my-1">
                 <label for="description">Description :</label>
-                <form:textarea class="form-control" path="description" rows="4" />
+                <form:textarea class="form-control" path="description" rows="4"/>
                 <form:errors path="description" cssClass="alert alert-warning"
-                             element="div" />
+                             element="div"/>
             </div>
             <div class="form-group my-1">
                 <label for="location">Lieu :</label>
-                <form:input class="form-control" path="location" />
+                <form:input class="form-control" path="location"/>
                 <form:errors path="location" cssClass="alert alert-warning"
-                             element="div" />
+                             element="div"/>
             </div>
             <div class="form-group my-1">
                 <label for="limitDate">Date limite :</label>
-                <form:input class="form-control" path="limitDate" type="date" />
+                <form:input class="form-control" path="limitDate" type="date"/>
                 <form:errors path="limitDate" cssClass="alert alert-warning"
-                             element="div" />
+                             element="div"/>
             </div>
 
 
-
-            <input type="hidden" id="slotsInput" name="slotsJson" value="" />
+            <input type="hidden" id="slotsInput" name="slotsJson" value=""/>
 
             <div id='calendar-container'>
                 <div id='calendar'></div>
