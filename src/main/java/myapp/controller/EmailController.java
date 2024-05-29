@@ -24,7 +24,7 @@ public class EmailController {
                            @RequestParam String text) {
         User sender = new User();
         sender.setEmail(senderEmail);
-        String subject = "Crénaux choisis ";
+        String subject = "Créneaux choisis ";
         // Split the recipient email addresses by comma and convert to a list
         List<String> recipients = Arrays.asList(recipientEmail.split(","));
         mailService.sendEmail(sender, recipients, subject, text);

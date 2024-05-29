@@ -148,40 +148,47 @@ public class PollController {
             pollService.savePoll(p);
             logger.info("createur : " + p.getCreator().getEmail());
 
-            Participant creatorParticipant = new Participant();
-            creatorParticipant.setEmail(creator);
-            logger.info("le createur est : " + userService.findUserByEmail(creator));
-            creatorParticipant.setFirstName(userService.findUserByEmail(creator).getFirstName());
-            creatorParticipant.setLastName(userService.findUserByEmail(creator).getLastName());
+            if(participantService.findParticipantByEmail(creator) == null) {
+                Participant creatorParticipant = new Participant();
+                creatorParticipant.setEmail(creator);
+                creatorParticipant.setFirstName(userService.findUserByEmail(creator).getFirstName());
+                creatorParticipant.setLastName(userService.findUserByEmail(creator).getLastName());
+                p.getParticipants().add(creatorParticipant);
+                participantService.saveParticipant(creatorParticipant);
 
-            p.getParticipants().add(creatorParticipant);
-            //Vote vote = new Vote();
-            //vote.setParticipant(creatorParticipant);
-            //vote.setVote("yes");
-            participantService.saveParticipant(creatorParticipant);
-            //creer differents votes pour chaque slot
-            for(Slot slot: p.getSlots()){
-                Vote vote = new Vote();
-                vote.setVote("yes");
-                vote.setParticipant(creatorParticipant);
-                vote.setSlot(slot);
+                for (Slot slot : p.getSlots()) {
+                    Vote vote = new Vote();
+                    vote.setVote("yes");
+                    vote.setParticipant(creatorParticipant);
+                    vote.setSlot(slot);
 
-                slot.getVotes().add(vote);
-                creatorParticipant.getVotes().add(vote);
+                    slot.getVotes().add(vote);
+                    creatorParticipant.getVotes().add(vote);
 
 
-                voteService.saveVote(vote);
+                    voteService.saveVote(vote);
+
+                    slotService.saveSlot(slot);
 
 
+                }
             }
+            if(participantService.findParticipantByEmail(creator) != null) {
+                Participant creatorParticipant = participantService.findParticipantByEmail(creator);
 
+                for (Slot slot : p.getSlots()) {
+                    Vote vote = new Vote();
+                    vote.setVote("yes");
+                    vote.setParticipant(creatorParticipant);
+                    vote.setSlot(slot);
 
+                    slot.getVotes().add(vote);
+                    creatorParticipant.getVotes().add(vote);
 
-
-           for (Slot slot : slots) {
-               slot.setPoll(p);
-               slotService.saveSlot(slot);
-           }
+                    voteService.saveVote(vote);
+                    slotService.saveSlot(slot);
+                }
+            }
 
             logger.info(p.getSlots());
             logger.info(slotService.findAllSlots());

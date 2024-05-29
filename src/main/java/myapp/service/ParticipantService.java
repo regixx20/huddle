@@ -22,4 +22,7 @@ public class ParticipantService {
     }
 
 
+    public Participant findParticipantByEmail(String creator) {
+        return participantRepository.findByEmail(creator);
+    }
 }

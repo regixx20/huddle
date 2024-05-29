@@ -79,7 +79,7 @@
                     console.log($('#slotsInput').val());
                 },
                 selectAllow: function (selectInfo) {
-                    // Empêche la sélection de créneaux dans le passé par rapport à l'heure actuelle
+
                     return moment().isSameOrBefore(selectInfo.start) && moment().isSameOrBefore(selectInfo.start, 'hour');
                 }
             });

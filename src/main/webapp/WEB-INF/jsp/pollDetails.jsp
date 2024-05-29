@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: meded
-  Date: 23/04/2024
-  Time: 13:37
-  To change this template use File | Settings | File Templates.
---%>
+<%-- Created by IntelliJ IDEA. User: meded Date: 23/04/2024 Time: 13:37 To change this template use File | Settings | File Templates. --%>
 <%@ include file="/WEB-INF/jsp/header.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -64,41 +58,147 @@
             border: 2px solid #2fff00; /* Bordure bleue pour l'élément sélectionné */
             background-color: #f0f8ff; /* Légère couleur de fond pour l'élément sélectionné */
         }
-    </style>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/locales/fr.js'></script>
 
+        .highlighted-slot {
+            background-color: #ff0000;  // Rouge pour la visibilité
+        transform: translateY(-10px);  // Décalage pour l'effet visuel
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  // Ombre pour le relief
+        transition: all 0.3s;  // Transition douce
+        color: #ffffff;  // Texte en blanc pour le contraste
+        }
+
+
+        .poll-box {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+
+
+
+        .slot-header {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .slot-header.active {
+            background-color: #fffacd; /* light yellow background for active header */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .slot-cell {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        th {
+            padding: 8px 12px;
+            background-color: #f8f9fa; /* Couleur de fond pour les entêtes */
+            border-bottom: 2px solid #dee2e6; /* Bordure sous les entêtes pour une séparation claire */
+            font-weight: bold; /* Texte en gras pour les entêtes */
+            text-align: center; /* Centrer le texte */
+        }
+
+        .date-header {
+            display: block; /* Afficher la date sur sa propre ligne */
+            margin-bottom: 5px; /* Espace entre la date et l'heure */
+            font-size: 0.9em; /* Taille de la police réduite pour la date */
+            color: #495057; /* Couleur du texte pour la date */
+        }
+
+        .time-header {
+            font-size: 1.1em; /* Taille de la police pour l'heure */
+            color: #343a40; /* Couleur du texte pour l'heure */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% du haut et centré horizontalement */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Vous pouvez ajuster la largeur à votre convenance */
+        }
+
+        /* Le bouton de fermeture */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+    </style>
 
     <script>
-        function selectSlot(slotId) {
-            // Désactiver la classe active pour tous les slots
-            document.querySelectorAll('.slot-entry').forEach(slot => {
-                slot.classList.remove('active');
-            });
+        var currentlySelected = null; // Garde une référence à l'index de la colonne actuellement sélectionnée
 
-            // Activer la classe active pour le slot sélectionné
-            const selectedSlot = document.getElementById('slot_' + slotId);
-            selectedSlot.classList.add('active');
 
-            // Mettre à jour la valeur de l'input caché
-            document.getElementById('selectedSlotId').value = slotId;
+        function highlightColumn(columnIndex) {
+            // Si une colonne est déjà sélectionnée et que c'est la même, désélectionner
+            if (currentlySelected === columnIndex) {
+                document.querySelectorAll('.column-' + currentlySelected).forEach(cell => {
+                    cell.classList.remove('highlighted-slot');
+                });
+                currentlySelected = null;  // Réinitialiser la sélection actuelle
+            } else {
+                // Nettoyer les sélections précédentes
+                if (currentlySelected !== null) {
+                    document.querySelectorAll('.column-' + currentlySelected).forEach(cell => {
+                        cell.classList.remove('highlighted-slot');
+                    });
+                }
+
+                // Sélectionner la nouvelle colonne
+                document.querySelectorAll('.column-' + columnIndex).forEach(cell => {
+                    cell.classList.add('highlighted-slot');
+                });
+                currentlySelected = columnIndex;  // Mettre à jour l'index de la colonne actuellement sélectionnée
+            }
         }
+
+
+
+
+
+        // Cette fonction enlève le style de toutes les colonnes
+        function clearAllHighlights() {
+            document.querySelectorAll('.slot-header').forEach(header => {
+                header.classList.remove('active', 'highlighted-slot');
+            });
+            document.querySelectorAll('.slot-cell').forEach(cell => {
+                cell.classList.remove('highlighted-slot');
+            });
+        }
+
+
+
     </script>
 </head>
 <body>
 
 <div class="container">
     <h2 style="text-align:center">${poll.title}</h2>
-    <%-- Ajout d'une boucle pour simuler l'affichage des sondages --%>
     <c:url value="/polls/details" var="pollDetailsUrl">
         <c:param name="id" value="${poll.id}" />
     </c:url>
-    <div class="poll-box" id="crenaux">
+
         <div class="header">
             <h2>Détails du sondage</h2>
         </div>
         <div class="details">
             <div class="detail">
-                <span class="label">Créé par :</span> <span class="value">${poll.creator.email}  </span>
+                <span class="label">Créé par :</span> <span class="value">${poll.creator.email}</span>
             </div>
             <div class="detail">
                 <span class="label">Description :</span> <span class="value">${poll.description}</span>
@@ -110,46 +210,23 @@
                 <span class="label">Emplacement :</span> <span class="value">${poll.location}</span>
             </div>
             <div class="detail">
-                <span class="label">Nombre de participants  :</span> <span class="value">${poll.participants.size()}</span>
+                <span class="label">Nombre de participants :</span> <span class="value">${poll.participants.size()}</span>
             </div>
-        </div>
-        <div class="slots">
-            <h3>Créneaux</h3>
-            <c:forEach var="slot" items="${poll.slots}">
-                <div class="slot">
-                    <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}  </span>
-                    <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
-                    <form id="emailForm" action="${pageContext.request.contextPath}/send-mail" method="get">
-                        <input type="hidden" name="senderEmail" value="${poll.creator.email}" />
-                        <c:forEach var="email" items="${poll.paticipantMail()}">
-                            <input type="hidden" name="recipientEmail" value="${email}" />
-                        </c:forEach>
-                        <input type="hidden" name="text" value="Le crénaux  du ${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year} à ${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute} a été choisis pour le songade ${poll.title}" />
-                        <button type="submit">Sélectionner</button>
-                    </form>
-
-                </div>
-            </c:forEach>
         </div>
 
         <div class="participants">
             <h3>Participants</h3>
-            <c:forEach var="p" items="${poll.participants}">
+            <c:forEach var="participant" items="${poll.participants}">
                 <div class="participant">
-                    <span class="email">${p.fullName}</span><br>
-
+                    <span class="email">${participant.fullName}</span>
                 </div>
-            </c:forEach><br><br>
-
-            <!--- Participate to the poll <a href="/meeting/participate/${poll.id}/vote">Participate</a>--->
+            </c:forEach>
             <label>Lien à envoyer aux participants:</label>
             <div style="display: flex; align-items: center;">
                 <input type="text" id="participationLink" value="http://localhost:8081/meeting/participate/${poll.id}/vote" readonly style="flex: 1; margin-right: 10px; height: 40px; box-sizing: border-box;" />
-                <button class="copy-button" onclick="copyToClipboard()" style="height: 40px; display: flex; align-items: center; justify-content: center;">Copier</button>
+                <button class="copy-button" onclick="copyToClipboard()" style="height: 40px; display: flex; align-items: center; justify-content:center;">Copier</button>
             </div>
             <div id="copyNotification" class="notification">Lien copié dans le presse-papier</div>
-
-
         </div>
 
         <div class="containerr">
@@ -157,11 +234,11 @@
                 <thead>
                 <tr>
                     <th>Participants</th>
-                    <c:forEach var="slot" items="${poll.slots}">
-                        <th>
+                    <c:forEach var="slot" items="${poll.slots}" varStatus="status">
+                        <th onclick="highlightColumn(${status.index})" class="column-${status.index}slot-header">
                             <div class="slot-header">
-                                <div class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}</div>
-                                <div class="time">${slot.start.hour}:${slot.start.minute < 10 ? '0' : ''}${slot.start.minute} - ${slot.end.hour}:${slot.end.minute < 10 ? '0' : ''}${slot.end.minute}</div>
+                                <div class="date-header">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}</div>
+                                <div class="time-header">${slot.start.hour}:${slot.start.minute < 10 ? '0' : ''}${slot.start.minute} - ${slot.end.hour}:${slot.end.minute < 10 ? '0' : ''}${slot.end.minute}</div>
                             </div>
                         </th>
                     </c:forEach>
@@ -171,8 +248,8 @@
                 <c:forEach var="participant" items="${poll.participants}">
                     <tr>
                         <td>${participant.fullName}</td>
-                        <c:forEach var="slot" items="${poll.slots}">
-                            <td class="slot-cell" onclick="selectSlot('${slot.id}', '${participant.id}')">
+                        <c:forEach var="slot" items="${poll.slots}" varStatus="status">
+                            <td>
                                 <c:choose>
                                     <c:when test="${slot.getVote(participant) == 'yes'}">
                                         <span>Oui</span>
@@ -195,9 +272,23 @@
             </table>
         </div>
 
+    <div class="slots">
+        <h3>Créneaux</h3>
+        <c:forEach var="slot" items="${poll.slots}">
+            <div class="slot">
+                <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}</span>
+                <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
+                <form id="emailForm" action="/send-mail" method="get">
+                    <input type="hidden" name="senderEmail" value="${poll.creator.email}" />
+                    <c:forEach var="email" items="${poll.participantMail()}">
+                        <input type="hidden" name="recipientEmail" value="${email}" />
+                    </c:forEach>
+                    <input type="hidden" name="text" value="Le créneau du ${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year} à ${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute} a été choisis pour le sondage ${poll.title}" />
+                    <button onclick="openModal()" type="submit">Sélectionner</button>
+                </form>
+            </div>
+        </c:forEach>
     </div>
-
-
 
 </div>
 
