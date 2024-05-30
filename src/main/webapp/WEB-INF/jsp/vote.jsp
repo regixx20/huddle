@@ -111,7 +111,19 @@
 <body>
 <div class="container">
    <div class="poll-box" id="creneaux">
+      <c:if test="${empty sessionScope.isLoggedIn}">
+      <div class="info-container">
+         <h2>Veuillez vous connecter pour participer au sondage</h2>
+         <p>Si vous n'avez pas de compte, vous pouvez vous inscrire en cliquant sur le bouton ci-dessous.</p>
+         <a href="/register"><button>S'inscrire</button></a>
+         <a href="/login"><button>Se connecter</button></a>
+      </div>
+
+        </c:if>
       <div class="slots">
+      <c:if test="${!empty sessionScope.isLoggedIn}">
+
+
          <h3>Créneaux</h3>
          <form:form method="POST" modelAttribute="slot">
             <form:errors path="*" cssClass="alert alert-danger" element="div"/>
@@ -147,11 +159,19 @@
                <input type="hidden" class="participant" name="participantEmail" value="${sessionScope.user.email}" />
                <input type="hidden" class="participant" name="participantlastName" value="${sessionScope.user.lastName}"/>
                <input type="hidden" class="participant" name="participantfirstName" value="${sessionScope.user.firstName}"/>
+
+
             </c:if>
+
+
+
+
             <div class="form-group">
                <button type="submit" class="btn btn-info">Soumettre</button>
             </div>
          </form:form>
+
+         </c:if>
       </div>
    </div>
 </div>

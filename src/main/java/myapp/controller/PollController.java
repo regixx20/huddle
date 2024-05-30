@@ -1,5 +1,6 @@
 package myapp.controller;
 
+import jakarta.mail.Part;
 import myapp.model.*;
 import myapp.service.*;
 
@@ -53,10 +54,13 @@ public class PollController {
 
     @ModelAttribute("polls")
     Collection<Poll> polls(Principal principal) {
-        String email = principal.getName();
-        User user = userService.findUserByEmail(email);
+        if(principal != null) {
+            String email = principal.getName();
+            User user = userService.findUserByEmail(email);
 
-        return user.getPolls();
+            return user.getPolls();
+        }
+        return Collections.emptyList();
     }
 
 
@@ -76,6 +80,7 @@ public class PollController {
 
     }
 
+
     @ModelAttribute
     public Slot slotForVote(
             @RequestParam(value = "idSlot", required = false) Long id) {
@@ -88,7 +93,8 @@ public class PollController {
 
     @GetMapping("/edit")
     public String editPoll(@ModelAttribute Poll p, Model model, Principal principal) {
-        model.addAttribute("email", principal.getName());
+        model.addAttribute(                                                                                                                         "email", principal.getName());
+        logger.info("decide : " + p.isDecided());
         return "newPoll";
     }
 
@@ -115,8 +121,7 @@ public class PollController {
         }
 
         //Ajouter le créateur du sondage comme premier participant
-
-
+        model.addAttribute("slotsJson", slotsJson);
 
         try {
            List<Slot> slots = objectMapper.readValue(slotsJson, new TypeReference<List<Slot>>() {});
@@ -148,7 +153,8 @@ public class PollController {
             pollService.savePoll(p);
             logger.info("createur : " + p.getCreator().getEmail());
 
-            if(participantService.findParticipantByEmail(creator) == null) {
+
+            if(!p.getEmails().contains(creator)){
                 Participant creatorParticipant = new Participant();
                 creatorParticipant.setEmail(creator);
                 creatorParticipant.setFirstName(userService.findUserByEmail(creator).getFirstName());
@@ -169,26 +175,11 @@ public class PollController {
                     voteService.saveVote(vote);
 
                     slotService.saveSlot(slot);
-
+logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
                 }
             }
-            if(participantService.findParticipantByEmail(creator) != null) {
-                Participant creatorParticipant = participantService.findParticipantByEmail(creator);
 
-                for (Slot slot : p.getSlots()) {
-                    Vote vote = new Vote();
-                    vote.setVote("yes");
-                    vote.setParticipant(creatorParticipant);
-                    vote.setSlot(slot);
-
-                    slot.getVotes().add(vote);
-                    creatorParticipant.getVotes().add(vote);
-
-                    voteService.saveVote(vote);
-                    slotService.saveSlot(slot);
-                }
-            }
 
             logger.info(p.getSlots());
             logger.info(slotService.findAllSlots());
@@ -206,6 +197,8 @@ public class PollController {
 
             }
             logger.info("le createur de setondji est : " + pollService.findPollByTitle("Sondage pour Setondji"));*/
+
+            logger.info("decide : " + p.isDecided());
             return "redirect:/meeting"; // Redirection en cas de succès
         } catch (IOException e) {
             e.printStackTrace();
@@ -216,12 +209,32 @@ public class PollController {
     @GetMapping("/organize/{id}")
     public String showDetails(@PathVariable("id") String id, Model model) {
         Poll poll = pollService.findPollById(id);
+        logger.info("decide : " + poll.isDecided());
+
+
+
         if (poll != null) {
             model.addAttribute("poll", poll);
             return "pollDetails";
         } else {
             return "redirect:/meeting"; // Redirection si le poll n'est pas trouvé
         }
+    }
+
+    @PostMapping("/organize/{id}")
+    public String decide(@PathVariable("id") String id, @RequestParam("isDecided") String isDecided) {
+        Poll poll = pollService.findPollById(id);
+        poll.decide();
+        pollService.savePoll(poll);
+
+        for(Slot s : poll.getSlots()) {
+            s.setChosen(true);
+            slotService.saveSlot(s);
+        }
+
+
+        logger.info("decideee : " + poll.isDecided());
+        return "pollDecided";
     }
 
     @GetMapping("/participate/{id}")

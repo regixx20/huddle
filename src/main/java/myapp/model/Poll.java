@@ -51,12 +51,29 @@ public class Poll implements Serializable {
     @ToString.Exclude
     private List<Participant> participants = new ArrayList<>();
 
+    private boolean isDecided = false;
+
+    public void decide() {
+        isDecided = true;
+    }
+    public boolean isDecided() {
+        return isDecided;
+    }
+
     public List<String> participantMail(){
         List<String> mail = new ArrayList<>();
         for(Participant p : participants){
             mail.add(p.getEmail());
         }
         return mail;
+    }
+
+    public List<String> getEmails() {
+        List<String> emails = new ArrayList<>();
+        for (Participant participant : participants) {
+            emails.add(participant.getEmail());
+        }
+        return emails;
     }
 
 }

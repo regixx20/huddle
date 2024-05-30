@@ -137,6 +137,29 @@
             cursor: pointer;
         }
 
+        .disabled-overlay {
+            position: relative;
+            pointer-events: none;
+        }
+
+        .disabled-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .disabled-overlay .slot {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+
 
     </style>
 
@@ -179,6 +202,32 @@
             document.querySelectorAll('.slot-cell').forEach(cell => {
                 cell.classList.remove('highlighted-slot');
             });
+        }
+
+        function submitFormWithDelay(event) {
+            event.preventDefault(); // Empêche la soumission immédiate du formulaire
+            setTimeout(function() {
+                document.getElementById('emailForm').submit(); // Soumet le formulaire après 3 secondes
+            }, 4000);
+            return false; // Retourne false pour éviter la soumission immédiate par le navigateur
+        }
+
+        function openModal() {
+            document.getElementById('myModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+        }
+
+        function submitDecideForm(slotIndex) {
+            document.getElementById('decideSlotId').value = slotIndex;
+            document.getElementById('decideForm').submit();
+        }
+
+        function setReservationClicked() {
+            document.getElementById('reservationClicked').value = "true";
+            document.getElementById('confirmationContainer').style.display = 'block';
         }
 
 
@@ -271,24 +320,77 @@
                 </tbody>
             </table>
         </div>
-
+<c:if test="${!poll.decided}">
     <div class="slots">
         <h3>Créneaux</h3>
         <c:forEach var="slot" items="${poll.slots}">
+            <form:form id="decideForm" modelAttribute="poll"  method="POST">
+               <input type="hidden" id="decideSlotId" name="isDecided" value="" />
+            </form:form>
             <div class="slot">
                 <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}</span>
                 <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
-                <form id="emailForm" action="/send-mail" method="get">
+                <form:form id="emailForm" action="${pageContext.request.contextPath}/send-mail" method="get" onsubmit="return submitFormWithDelay(event);">
                     <input type="hidden" name="senderEmail" value="${poll.creator.email}" />
                     <c:forEach var="email" items="${poll.participantMail()}">
                         <input type="hidden" name="recipientEmail" value="${email}" />
                     </c:forEach>
                     <input type="hidden" name="text" value="Le créneau du ${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year} à ${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute} a été choisis pour le sondage ${poll.title}" />
-                    <button onclick="openModal()" type="submit">Sélectionner</button>
-                </form>
+                    <button type="submit" onclick="submitDecideForm(${status.index}); setReservationClicked();  openModal(); ${slot.chooseFinalSlot()};">Réserver </button>
+                </form:form>
             </div>
         </c:forEach>
     </div>
+</c:if>
+
+<c:if test="${poll.decided}">
+    <div class="slots disabled-overlay">
+    <h3>Créneaux</h3>
+    <c:forEach var="slot" items="${poll.slots}">
+        <div class="slot">
+            <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}</span>
+            <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
+            <form id="emailForms" action="/send-mail" method="get" onsubmit="return submitFormWithDelay(event);">
+                <input type="hidden" name="senderEmail" value="${poll.creator.email}" />
+                <c:forEach var="email" items="${poll.participantMail()}">
+                    <input type="hidden" name="recipientEmail" value="${email}" />
+                </c:forEach>
+                <input type="hidden" name="text" value="Le créneau du ${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year} à ${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute} a été choisis pour le sondage ${poll.title}" />
+                <input type="hidden" id="reservationClicked" name="reservationClicked" value="false" />
+                <button type="submit" onclick=" openModal(); ${slot.chooseFinalSlot()}">Réserver</button>
+            </form>
+        </div>
+    </c:forEach>
+    </div>
+
+
+</c:if>
+
+<div class="confirmation-container" id="confirmationContainer" style="display:none;>
+        <h2>Réservation Confirmée</h2>
+        <c:forEach var="slot" items="${poll.slots}">
+           <c:choose>
+               <c:when test="${slot.chosen}">
+               <p>Vous avez réservé le créneau du sondage intitulé ${poll.title} de ${slot.start} à ${slot.end}.</p>
+                  </c:when>
+            </c:choose>
+        </c:forEach>
+
+        <a href="${pageContext.request.contextPath}/" class="btn-home">Retour à l'accueil</a>
+</div>
+
+
+
+    <div id="myModal" style="display:none; position:fixed; z-index:1; left:0; top:0; width:100%; height:100%; overflow:auto; background-color: rgba(0,0,0,0.4);">
+    <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 40%;">
+        <span onclick="closeModal()" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+        <h2>VOUS AVEZ CHOISI LE CRENEAU DE RENDEZ VOUS</h2>
+        <p>Ceci est un exemple de fenêtre pop-up. Vous pouvez placer du texte ou des images ici.</p>
+    </div>
+</div>
+
+
+
 
 </div>
 

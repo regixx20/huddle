@@ -11,13 +11,14 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.css' rel='stylesheet' />
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.css' rel='stylesheet' />
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.css' rel='stylesheet' />
+
+
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/interaction/main.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.js'></script>
@@ -28,6 +29,19 @@
         .fc-past {
             background-color: #d3d3d3 !important; /* Gris sombre pour les créneaux passés */
         }
+        .fc .fc-today {
+            background-color: transparent !important; /* Remplacez 'transparent' par la couleur de votre choix, si nécessaire */
+        }
+
+        body {
+            font-family: "Montserrat", sans-serif;
+            font-optical-sizing: auto;
+
+            font-style: normal;
+
+        }
+
+
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -38,7 +52,7 @@
                 header: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    right: 'timeGridWeek,timeGridDay'
                 },
                 defaultView: 'timeGridWeek',
                 slotDuration: '00:30:00',
@@ -53,6 +67,7 @@
                 height: 'auto',
                 contentHeight: 'auto',
                 editable: true,
+                nowIndicator: true,
                 validRange: {
                     start: moment().startOf('day') // Empêche la sélection des jours précédents aujourd'hui
                 },
@@ -61,11 +76,11 @@
                 },
                 select: function (info) {
                     calendar.addEvent({
-                        title: "Sélectionné de " + moment(info.start).format('HH:mm') + " à " + moment(info.end).format('HH:mm'),
+                        title: moment(info.start).format('HH:mm') + " à " + moment(info.end).format('HH:mm'),
                         start: info.start,
                         end: info.end,
                         allDay: info.allDay,
-                        color: '#ff9f89'
+                        color: '#b95e5e'
                     });
 
                     var slot = {
@@ -78,10 +93,26 @@
                     updateSlotsInput();
                     console.log($('#slotsInput').val());
                 },
+                eventDrop: function(info) {
+                    // Empêcher le déplacement d'événements dans le passé
+                    if (moment(info.event.start).isBefore(moment(), 'day')) {
+                        info.revert();  // Revenir à la position originale si la nouvelle date est dans le passé
+                    }
+                    var eventDate = moment(info.event.start);
+                    var now = moment();
+                    if (eventDate.isBefore(now, 'minute') && eventDate.isSame(now, 'day')) {
+                        info.revert();  // Revenir à la position originale si la nouvelle date est dans le passé
+                    }
+                },
                 selectAllow: function (selectInfo) {
+                    var start = moment(selectInfo.start);
+                    var end = moment(selectInfo.end);
 
-                    return moment().isSameOrBefore(selectInfo.start) && moment().isSameOrBefore(selectInfo.start, 'hour');
-                }
+                    start.isSame(end, 'day');
+                    start.isSame(end, 'day');
+                    return moment().isSameOrBefore(selectInfo.start) && moment().isSameOrBefore(selectInfo.start, 'hour') && moment().isSameOrBefore(start, 'day') &&
+                        start.isSame(end, 'day');
+                },
             });
             calendar.render();
         });
@@ -96,6 +127,7 @@
 </head>
 
 <h1 style="color: white; text-align: center">Création d'un nouveau sondage</h1>
+
 <div class="card bg-light">
     <div class="card-body">
         <form:form method="POST" modelAttribute="poll">

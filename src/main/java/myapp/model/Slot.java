@@ -43,6 +43,15 @@ public class Slot implements Serializable {
     @ToString.Exclude
     private List<Vote> votes = new ArrayList<>();
 
+    private boolean isChosen = false;
+
+    public void chooseFinalSlot() {
+        if (poll != null) {
+            poll.getSlots().forEach(s -> s.setChosen(false));
+            isChosen = true;
+        }
+    }
+
     @Transient
     public String getDayOfWeek() {
         if (start != null) {
