@@ -15,7 +15,55 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" />
+<style>
+.navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+        .navbar-left img {
+            height: 50px; /* Réduction de la taille du logo */
+            margin-right: 20px;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+        }
+        .nav-link button {
+            margin-left: 10px;
+        }
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+        .navbar-right span {
+            margin-right: 10px;
+        }
 
+        .navbar-right .user-info {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        .navbar-right .user-info img {
+            height: 30px; /* Réduction de la taille de l'icône de profil */
+            width: 30px; /* Largeur de l'icône de profil */
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .navbar-right .user-info span {
+            font-size: 16px;
+            color: #333;
+        }
+
+</style>
 </head>
 
 <body>
@@ -33,8 +81,12 @@
             <div class="navbar-right">
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
-                        <span>Compte: ${sessionScope.user.firstName} ${sessionScope.user.lastName}</span>
+                    <div class="user-info">
+                    <img src="${pageContext.request.contextPath}/images/user-interface.png" alt="Profile Picture">
+                        <span>${sessionScope.user.firstName} ${sessionScope.user.lastName}</span>
+                    </div>
                         <button type="button" class="btn btn-logout" onclick="window.location.href='/logout'">Se déconnecter </button>
+
                     </c:when>
                     <c:otherwise>
                         <button type="button" class="btn btn-login" onclick="window.location.href='/login'">Se connecter</button>

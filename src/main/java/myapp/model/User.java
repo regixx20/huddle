@@ -1,6 +1,7 @@
 package myapp.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,6 +33,20 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "creator", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Poll> polls;
+/*
+    @OneToMany(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    private List<Participant> participants = new ArrayList<>();
 
+    public Collection<String> emailParticipants() {
+        List<String> emails = new ArrayList<>();
+        for (Poll poll : polls) {
+            for (Participant participant : poll.getParticipants()) {
+                emails.add(participant.getEmail());
+            }
+        }
+        return emails;
+    }
+*/
 
 }

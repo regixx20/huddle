@@ -1,6 +1,5 @@
 package myapp.controller;
 
-import jakarta.mail.Part;
 import myapp.model.*;
 import myapp.service.*;
 
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/meeting")
@@ -62,8 +60,18 @@ public class PollController {
         }
         return Collections.emptyList();
     }
+/*
+    @ModelAttribute("participants")
+    Collection<Participant> participants(Principal principal) {
+        if(principal != null) {
+            String email = principal.getName();
+            User user = userService.findUserByEmail(email);
+            return user.getParticipants();
 
-
+        }
+        return Collections.emptyList();
+    }
+*/
     @ModelAttribute
     public Poll newPoll(
              @RequestParam(value = "id", required = false) String id){
