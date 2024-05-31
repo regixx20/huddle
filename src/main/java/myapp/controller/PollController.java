@@ -64,6 +64,8 @@ public class PollController {
 
 
 
+
+
     @ModelAttribute("participatedPolls")
     Collection<Poll> participatedPolls(Principal principal) {
         if(principal != null) {
