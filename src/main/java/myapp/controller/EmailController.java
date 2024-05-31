@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,15 +22,18 @@ public class EmailController {
     private MailService mailService;
 
     @GetMapping("/send-mail")
-    public ModelAndView sendMail(@RequestParam String senderEmail,
+    public RedirectView sendMail(@RequestParam String senderEmail,
                                  @RequestParam String recipientEmail,
-                                 @RequestParam String text) {
+                                 @RequestParam String text,
+                                 RedirectAttributes redirectAttributes) {
         User sender = new User();
         sender.setEmail(senderEmail);
         String subject = "Créneaux choisis ";
-        // Split the recipient email addresses by comma and convert to a list
+
         List<String> recipients = Arrays.asList(recipientEmail.split(","));
         mailService.sendEmail(sender, recipients, subject, text);
-        return new ModelAndView("redirect:/dashboard");
+
+        redirectAttributes.addFlashAttribute("message", "Email envoyé");
+        return new RedirectView("/dashboard");
     }
 }

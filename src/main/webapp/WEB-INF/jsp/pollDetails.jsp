@@ -158,6 +158,11 @@
             opacity: 0.5;
             pointer-events: none;
         }
+        .icon {
+            margin-right: 5px;
+            width: 20px;
+            height: 20px;
+        }
 
 
 
@@ -250,13 +255,13 @@
                 <span class="label">Créé par :</span> <span class="value">${poll.creator.email}</span>
             </div>
             <div class="detail">
-                <span class="label">Description :</span> <span class="value">${poll.description}</span>
+                <span class="label"><img src="${pageContext.request.contextPath}/images/descriptionIcon.png" class="icon" alt="Description"> Description :</span> <span class="value">${poll.description}</span>
             </div>
             <div class="detail">
-                <span class="label">Date limite :</span> <span class="value">${poll.limitDate}</span>
+                <span class="label"><img src="${pageContext.request.contextPath}/images/calendarIcon.png" class="icon" alt="Date limite">Date limite :</span> <span class="value">${poll.limitDate} </span>
             </div>
             <div class="detail">
-                <span class="label">Emplacement :</span> <span class="value">${poll.location}</span>
+                <span class="label"><img src="${pageContext.request.contextPath}/images/localisationIcon.png" class="icon" alt="Emplacement">Emplacement :</span> <span class="value">${poll.location}</span>
             </div>
             <div class="detail">
                 <span class="label">Nombre de participants :</span> <span class="value">${poll.participants.size()}</span>
