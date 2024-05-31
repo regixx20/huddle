@@ -132,11 +132,10 @@
 
         <div id="MesParticipations" class="tabcontent">
             <h2>Mes participations</h2>
-            <c:forEach var="participation" items="${}">
+            <c:forEach var="ptPolls" items="${participatedPolls}">
                 <div class="poll-box">
-                    <button type="submit" onclick="window.location.href='/meeting/vote/${participation.poll.id}'">${participation.poll.title}</button>
+                    <button type="submit" onclick="window.location.href='/meeting/organize/${ptPolls.id}'">${ptPolls.title}</button>
                     <br><br>
-                    <span>Status: ${participation.status}</span>
                 </div>
             </c:forEach>
         </div>

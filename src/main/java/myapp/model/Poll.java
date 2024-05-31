@@ -51,6 +51,14 @@ public class Poll implements Serializable {
     @ToString.Exclude
     private List<Participant> participants = new ArrayList<>();
 
+    @OneToMany(mappedBy = "poll", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<Vote> votes;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<User> participatedUsers = new ArrayList<>();
+
     private boolean isDecided = false;
 
     public void decide() {

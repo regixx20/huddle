@@ -76,24 +76,39 @@
         <div class="form-group">
             <label for="email">Email:</label>
             <form:input path="email" type="email" id="email" class="form-control" required="true"/>
+            <form:errors path="email" cssClass="alert alert-warning"
+                         element="div"/>
         </div>
         <div class="form-group">
             <label for="firstName">Prénom:</label>
             <form:input path="firstName" type="text" id="firstName" class="form-control" required="true"/>
+            <form:errors path="firstName" cssClass="alert alert-warning"
+                         element="div"/>
         </div>
         <div class="form-group">
             <label for="lastName">Nom:</label>
             <form:input path="lastName" type="text" id="lastName" class="form-control" required="true"/>
+            <form:errors path="lastName" cssClass="alert alert-warning"
+                         element="div"/>
         </div>
         <div class="form-group">
             <label for="password">Mot de passe:</label>
             <form:password path="password" id="password" class="form-control" required="true"/>
+            <form:errors path="password" cssClass="alert alert-warning"
+                         element="div"/>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Confirmez votre mot de passe:</label>
+            <form:password path="confirmPassword" id="password" class="form-control" required="true"/>
+            <form:errors path="confirmPassword" cssClass="alert alert-warning"
+                         element="div"/>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary">S'inscrire</button>
         </div>
     </form:form>
-    <p>Déjà inscrit? <a href="login">Connectez-vous ici</a></p>
+    <p>Déjà inscrit? <a href="/signin">Connectez-vous ici</a></p>
 </div>
 </body>
 </html>

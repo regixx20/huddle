@@ -65,7 +65,7 @@ public class SpringSecurity {
         // Nous autorisons un formulaire de login
         http.formLogin(formLoginConfigurer -> {
             formLoginConfigurer
-                  //  .loginPage("/login")  // Définir la page de login personnalisée, si nécessaire
+                    //  .loginPage("/login")  // Définir la page de login personnalisée, si nécessaire
                     .successHandler(authenticationSucess())  // Ajouter le gestionnaire de succès
                     .permitAll();  // Permettre l'accès à tous pour les pages de login
         });

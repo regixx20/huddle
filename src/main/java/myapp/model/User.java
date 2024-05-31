@@ -30,9 +30,20 @@ public class User implements Serializable {
     private String lastName;
     private String password;
 
+    private String confirmPassword = password;
+
     @OneToMany(mappedBy = "creator", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Poll> polls;
+
+    @ManyToMany(mappedBy = "participatedUsers", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<Poll> participatedPolls = new ArrayList<>();
+
+
+    public String getPasswordConfirm() {
+        return password;
+    }
 /*
     @OneToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
@@ -48,5 +59,7 @@ public class User implements Serializable {
         return emails;
     }
 */
+
+
 
 }

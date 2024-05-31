@@ -40,6 +40,6 @@ public class UserService {
         if (user.getPassword() != null ){
             user.setPassword(encoder.encode(user.getPassword()));
         }
-        User savedUser = userRepository.save(user);
+        userRepository.save(user);
     }
 }

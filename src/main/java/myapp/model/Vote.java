@@ -25,6 +25,9 @@ public class Vote implements Serializable {
 
     private String vote;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Poll poll;
+
 
 
 

@@ -60,18 +60,43 @@ public class PollController {
         }
         return Collections.emptyList();
     }
-/*
-    @ModelAttribute("participants")
-    Collection<Participant> participants(Principal principal) {
+
+
+
+
+    @ModelAttribute("participatedPolls")
+    Collection<Poll> participatedPolls(Principal principal) {
         if(principal != null) {
             String email = principal.getName();
             User user = userService.findUserByEmail(email);
-            return user.getParticipants();
-
+            List<Poll> participatedPolls = new ArrayList<>();
+            for (Poll poll : pollService.findAllPolls()) {
+                for (Participant participant : poll.getParticipants()) {
+                    if (participant.getEmail().equals(email)) {
+                        participatedPolls.add(poll);
+                    }
+                }
+            }
+            return participatedPolls;
         }
         return Collections.emptyList();
     }
-*/
+
+    /*@ModelAttribute("participations")
+    Collection<Participant> participants(Principal principal) {
+        if(principal != null) {
+           return participantService.findAllParticipants();
+        }
+        return Collections.emptyList();
+    }*/
+
+    @ModelAttribute("votes")
+    Collection<Vote> votes() {
+
+        return voteService.findAllVotes();
+
+    }
+
     @ModelAttribute
     public Poll newPoll(
              @RequestParam(value = "id", required = false) String id){
@@ -137,6 +162,9 @@ public class PollController {
            logger.info(p.getTitle());
            logger.info(p.getTitle());
            logger.info(p.getLocation());
+           /*for (Slot s : slots) {
+               s.setPoll(p);
+           }*/
             p.setSlots(slots);
             if (principal != null) {
 
@@ -189,6 +217,7 @@ logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
             }
 
 
+
             logger.info(p.getSlots());
             logger.info(slotService.findAllSlots());
             logger.info("les slots sont : " + slotService.findAllSlots());
@@ -207,6 +236,13 @@ logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
             logger.info("le createur de setondji est : " + pollService.findPollByTitle("Sondage pour Setondji"));*/
 
             logger.info("decide : " + p.isDecided());
+
+            logger.info("VOTESSS"+ voteService.findAllVotes());
+            logger.info("MES SLOTS" + slotService.findAllSlots());
+
+            for(Poll poll : pollService.findAllPolls()){
+                logger.info("LES PARTICIPANTS SONT : " + poll.getParticipants());
+            }
             return "redirect:/meeting"; // Redirection en cas de succès
         } catch (IOException e) {
             e.printStackTrace();
@@ -298,21 +334,33 @@ logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Iterator<Slot> slotIterator = poll.getSlots().iterator();
         for (String key : allParams.keySet()) {
             if (slotIterator.hasNext()) {
-                Slot slot = slotIterator.next();
+                Slot slot = slotIterator.next();  // Obtenir le slot actuel une seule fois
                 Vote vote = new Vote();
                 vote.setParticipant(p);
                 vote.setSlot(slot);
                 vote.setVote(allParams.get(key));
-                slot.getVotes().add(vote);
+                vote.setPoll(poll);
+
+                // Ajouter le vote aux collections appropriées
+                slot.getVotes().add(vote);  // Utiliser le slot actuel
+                slot.setPoll(poll);
                 p.getVotes().add(vote);
+                poll.getVotes().add(vote);
 
                 voteService.saveVote(vote);
+            } else {
+                // Gérer le cas où il n'y a plus de slots disponibles
+                System.out.println("Pas assez de slots pour tous les votes. Clé: " + key);
             }
         }
         poll.getParticipants().add(p);
         poll.setNumberOfParticipants(poll.getNumberOfParticipants() + 1);
+        poll.getParticipatedUsers().add(userService.findUserByEmail(p.getEmail()));
 
         pollService.savePoll(poll);
+
+        userService.findUserByEmail(p.getEmail()).getParticipatedPolls().add(poll);
+        //userService.saveUser(userService.findUserByEmail(p.getEmail()));
         logger.info("le nombre de participants est : " + poll.getNumberOfParticipants());
         logger.info("liste de slots : " + poll.getSlots());
         logger.info("liste de votes : " + voteService.findAllVotes());
@@ -323,6 +371,9 @@ logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
             logger.info("listes des votes "+ pt.getVotes());
         }
         logger.info("All params : " + allParams);
+
+        logger.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX" + userService.findUserByEmail(p.getEmail()).getParticipatedPolls());
+
 
         return "redirect:/";
 
