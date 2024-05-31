@@ -120,12 +120,15 @@
             <form action="/meeting/edit" method="get">
                 <button type="submit">Créer Sondage</button>
             </form>
+            <c:if test="${not empty message}">
+                <p>${message}</p>
+            </c:if>
             <h2>Mes sondages</h2>
             <c:forEach var="poll" items="${polls}">
                 <div class="poll-box">
                     <button type="submit" onclick="window.location.href='/meeting/organize/${poll.id}'">${poll.title}</button>
                     <br><br>
-                    <a href="/meeting/edit?id=${poll.id}" style="text-decoration: none;">Edit</a>
+                    <a href="${pageContext.request.contextPath}/meeting/edit?id=${poll.id}" style="text-decoration: none;">Edit</a>
                 </div>
             </c:forEach>
         </div>

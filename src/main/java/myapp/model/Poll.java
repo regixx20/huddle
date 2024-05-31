@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Entity
@@ -83,5 +84,10 @@ public class Poll implements Serializable {
         }
         return emails;
     }
+
+   /* public String getFormattedLimitDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(this.limitDate);
+    }*/
 
 }
