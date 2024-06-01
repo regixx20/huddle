@@ -291,7 +291,7 @@
                     <c:forEach var="slot" items="${poll.slots}" varStatus="status">
                         <th onclick="highlightColumn(${status.index})" class="column-${status.index}slot-header">
                             <div class="slot-header">
-                                <div class="date-header">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}</div>
+                                <div class="date-header">${slot.start.dayOfMonth}/${slot.start.month.value}/${slot.start.year}</div>
                                 <div class="time-header">${slot.start.hour}:${slot.start.minute < 10 ? '0' : ''}${slot.start.minute} - ${slot.end.hour}:${slot.end.minute < 10 ? '0' : ''}${slot.end.minute}</div>
                             </div>
                         </th>
@@ -334,7 +334,7 @@
             </form:form>
 
             <div class="slot">
-                <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}</span>
+                <span class="date">${slot.start.dayOfMonth}/${slot.start.month.value}/${slot.start.year}</span>
                 <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
 
 
@@ -343,7 +343,7 @@
                     <c:forEach var="email" items="${poll.participantMail()}">
                         <input type="hidden" name="recipientEmail" value="${email}" />
                     </c:forEach>
-                    <input type="hidden" name="text" value="Le créneau du ${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year} à ${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute} a été choisi pour le sondage ${poll.title}" />
+                    <input type="hidden" name="text" value="Le créneau du ${slot.start.dayOfMonth}/${slot.start.month.value}/${slot.start.year} à ${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute} a été choisi pour le sondage ${poll.title}" />
                     <button type="submit">Réserver</button>
 
                 </form>
