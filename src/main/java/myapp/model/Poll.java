@@ -85,9 +85,9 @@ public class Poll implements Serializable {
         return emails;
     }
 
-   /* public String getFormattedLimitDate() {
+    public String getFormattedLimitDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(this.limitDate);
-    }*/
+    }
 
 }

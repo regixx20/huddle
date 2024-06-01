@@ -258,7 +258,7 @@
                 <span class="label"><img src="${pageContext.request.contextPath}/images/descriptionIcon.png" class="icon" alt="Description"> Description :</span> <span class="value">${poll.description}</span>
             </div>
             <div class="detail">
-                <span class="label"><img src="${pageContext.request.contextPath}/images/calendarIcon.png" class="icon" alt="Date limite">Date limite :</span> <span class="value">${poll.limitDate} </span>
+                <span class="label"><img src="${pageContext.request.contextPath}/images/calendarIcon.png" class="icon" alt="Date limite">Date limite :</span> <span class="value">${poll.formattedLimitDate} </span>
             </div>
             <div class="detail">
                 <span class="label"><img src="${pageContext.request.contextPath}/images/localisationIcon.png" class="icon" alt="Emplacement">Emplacement :</span> <span class="value">${poll.location}</span>
@@ -332,10 +332,26 @@
             <form:form id="decideForm" modelAttribute="poll"  method="POST">
                <input type="hidden" id="decideSlotId" name="isDecided" value="" />
             </form:form>
+
             <div class="slot">
                 <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}</span>
                 <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
-                <form:form id="emailForm" action="${pageContext.request.contextPath}/send-mail" method="get" onsubmit="return submitFormWithDelay(event);">
+
+
+                <form id="emailForm" action="${pageContext.request.contextPath}/send-mail" method="get" onsubmit="return submitFormWithDelay(event);">
+                    <input type="hidden" name="senderEmail" value="${poll.creator.email}" />
+                    <c:forEach var="email" items="${poll.participantMail()}">
+                        <input type="hidden" name="recipientEmail" value="${email}" />
+                    </c:forEach>
+                    <input type="hidden" name="text" value="Le créneau du ${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year} à ${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute} a été choisi pour le sondage ${poll.title}" />
+                    <button type="submit">Réserver</button>
+
+                </form>
+
+
+
+                <!--
+                    <form:form id="emailForm" action="${pageContext.request.contextPath}/send-mail" method="get" onsubmit="return submitFormWithDelay(event);">
                     <input type="hidden" name="senderEmail" value="${poll.creator.email}" />
                     <c:forEach var="email" items="${poll.participantMail()}">
                         <input type="hidden" name="recipientEmail" value="${email}" />
@@ -343,8 +359,11 @@
                     <input type="hidden" name="text" value="Le créneau du ${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year} à ${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute} a été choisis pour le sondage ${poll.title}" />
                     <button type="submit" onclick="submitDecideForm(${status.index}); setReservationClicked();  openModal(); ${slot.chooseFinalSlot()};">Réserver </button>
                 </form:form>
+
+                -->
             </div>
         </c:forEach>
+
     </div>
 </c:if>
 
@@ -355,15 +374,16 @@
         <div class="slot">
             <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}</span>
             <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
-            <form id="emailForms" action="/send-mail" method="get" onsubmit="return submitFormWithDelay(event);">
+
+            <form id="emailForms" action="${pageContext.request.contextPath}/send-mail" method="get" onsubmit="return submitFormWithDelay(event);">
                 <input type="hidden" name="senderEmail" value="${poll.creator.email}" />
                 <c:forEach var="email" items="${poll.participantMail()}">
                     <input type="hidden" name="recipientEmail" value="${email}" />
                 </c:forEach>
                 <input type="hidden" name="text" value="Le créneau du ${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year} à ${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute} a été choisis pour le sondage ${poll.title}" />
-                <input type="hidden" id="reservationClicked" name="reservationClicked" value="false" />
                 <button type="submit" onclick=" openModal(); ${slot.chooseFinalSlot()}">Réserver</button>
             </form>
+            <input type="hidden" id="reservationClicked" name="reservationClicked" value="false" />
         </div>
     </c:forEach>
     </div>

@@ -33,7 +33,7 @@ public class EmailController {
         List<String> recipients = Arrays.asList(recipientEmail.split(","));
         mailService.sendEmail(sender, recipients, subject, text);
 
-        redirectAttributes.addFlashAttribute("message", "Email envoyé");
+        redirectAttributes.addFlashAttribute("message", "Email de confirmation envoyé");
         return new RedirectView("/dashboard");
     }
 }
