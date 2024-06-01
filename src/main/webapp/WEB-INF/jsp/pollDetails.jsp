@@ -325,7 +325,7 @@
                 </tbody>
             </table>
         </div>
-<c:if test="${!poll.decided}">
+<c:if test="${!poll.decided && poll.creator.email == sessionScope.user.email}">
     <div class="slots">
         <h3>Créneaux</h3>
         <c:forEach var="slot" items="${poll.slots}">
@@ -348,7 +348,7 @@
     </div>
 </c:if>
 
-<c:if test="${poll.decided}">
+<c:if test="${poll.decided && poll.creator.email == sessionScope.user.email}">
     <div class="slots disabled-overlay">
     <h3>Créneaux</h3>
     <c:forEach var="slot" items="${poll.slots}">
@@ -370,6 +370,13 @@
 
 
 </c:if>
+<c:forEach var="ptPoll" items="${user.participatedPolls}">
+    <c:if test="${poll.id == ptPoll.id}">
+    Vous avez déjà participé à ce sondage.
+    </c:if>
+</c:forEach>
+
+
 
 <div class="confirmation-container" id="confirmationContainer" style="display:none;>
         <h2>Réservation Confirmée</h2>

@@ -124,23 +124,23 @@
                 <p>${message}</p>
             </c:if>
             <h2>Mes sondages</h2>
-            <c:forEach var="poll" items="${polls}">
-                <div class="poll-box">
-                    <button type="submit" onclick="window.location.href='/meeting/organize/${poll.id}'">${poll.title}</button>
-                    <br><br>
-                    <a href="${pageContext.request.contextPath}/meeting/edit?id=${poll.id}" style="text-decoration: none;">Edit</a>
-                </div>
-            </c:forEach>
+                    <c:forEach var="poll" items="${polls}">
+                        <div class="poll-box">
+                            <button type="submit" onclick="window.location.href='/meeting/organize/${poll.id}'">${poll.title}</button>
+                            <br><br>
+                            <a href="${pageContext.request.contextPath}/meeting/edit?id=${poll.id}" style="text-decoration: none;">Edit</a>
+                        </div>
+                    </c:forEach>
         </div>
 
         <div id="MesParticipations" class="tabcontent">
             <h2>Mes participations</h2>
-            <c:forEach var="ptPolls" items="${participatedPolls}">
-                <div class="poll-box">
-                    <button type="submit" onclick="window.location.href='/meeting/organize/${ptPolls.id}'">${ptPolls.title}</button>
-                    <br><br>
-                </div>
-            </c:forEach>
+
+                    <c:forEach var="ptPolls" items="${user.participatedPolls}">
+                        <div class="poll-box">
+                            <button type="submit" onclick="window.location.href='/meeting/organize/${ptPolls.id}'">${ptPolls.title}</button>
+                        </div>
+                    </c:forEach>
         </div>
     </div>
     <footer>

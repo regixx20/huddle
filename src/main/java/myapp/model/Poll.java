@@ -56,7 +56,7 @@ public class Poll implements Serializable {
     @ToString.Exclude
     private List<Vote> votes;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<User> participatedUsers = new ArrayList<>();
 

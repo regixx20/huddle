@@ -51,22 +51,37 @@ public class PollController {
     }
 
     @ModelAttribute("polls")
-    Collection<Poll> polls(Principal principal) {
+    Collection<Poll> polls(Principal principal, @RequestParam(value = "view", required = false) String view) {
         if(principal != null) {
             String email = principal.getName();
             User user = userService.findUserByEmail(email);
 
-            return user.getPolls();
+            if ("participated".equalsIgnoreCase(view)) {
+                return user.getParticipatedPolls();
+            } else {
+                return user.getPolls();
+            }
         }
         return Collections.emptyList();
     }
 
 
 
-
-
-
+/*
     @ModelAttribute("participatedPolls")
+    Collection<Poll> participatedPolls(Principal principal) {
+        if(principal != null) {
+            String email = principal.getName();
+            User user = userService.findUserByEmail(email);
+
+            return user.getParticipatedPolls();
+        }
+        return Collections.emptyList();
+    }*/
+
+
+
+    /*@ModelAttribute("participatedPolls")
     Collection<Poll> participatedPolls(Principal principal) {
         if(principal != null) {
             String email = principal.getName();
@@ -82,15 +97,15 @@ public class PollController {
             return participatedPolls;
         }
         return Collections.emptyList();
-    }
-
-    /*@ModelAttribute("participations")
+    }*/
+/*
+    @ModelAttribute("participations")
     Collection<Participant> participants(Principal principal) {
         if(principal != null) {
            return participantService.findAllParticipants();
         }
         return Collections.emptyList();
-    }*/
+    }
 
     @ModelAttribute("votes")
     Collection<Vote> votes() {
@@ -98,7 +113,7 @@ public class PollController {
         return voteService.findAllVotes();
 
     }
-
+*/
     @ModelAttribute
     public Poll newPoll(
              @RequestParam(value = "id", required = false) String id){
@@ -130,6 +145,8 @@ public class PollController {
     public String editPoll(@ModelAttribute Poll p, Model model, Principal principal) {
         model.addAttribute(                                                                                                                         "email", principal.getName());
         logger.info("decide : " + p.isDecided());
+        logger.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX" + userService.findUserByEmail(principal.getName()).getParticipatedPolls());
+
         return "newPoll";
     }
 
@@ -217,6 +234,9 @@ logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
                 }
             }
+
+            p.getParticipatedUsers().add(userService.findUserByEmail(creator));
+            userService.findUserByEmail(creator).getParticipatedPolls().add(p);
 
 
 

@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.Collection;
@@ -34,7 +35,7 @@ public class DashboardController {
     private UserService userService;
 
     @GetMapping("")
-    public String dashboard(Model model, Principal principal, HttpSession session) {
+    public String dashboard(Model model, Principal principal, HttpSession session, @RequestParam(value = "view", required = false) String view) {
         if (principal == null) {
             return "dashboard";
         }
@@ -43,6 +44,8 @@ public class DashboardController {
 
         model.addAttribute("user", user);
         session.setAttribute("user", user); // Ajout de l'utilisateur à la session
+
+        model.addAttribute("view", view);
 
         for (User u : userService.findAllUsers()) {
             logger.info("LES CREATEURS DE CHAQUE USER  " + u.getPolls());
