@@ -89,7 +89,6 @@
 
                     </c:when>
                     <c:otherwise>
-                    <a href ='/login'> sdfsd</a>
                         <button type="button" class="btn btn-login" onclick="window.location.href='/signin'">Se connecter</button>
                         <button type="button" class="btn btn-register" onclick="window.location.href='/register'">S'inscrire</button>
                     </c:otherwise>

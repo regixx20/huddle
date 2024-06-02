@@ -48,25 +48,22 @@ public class SpringSecurity {
         String[] anonymousRequests = {"/",
                 "/webjars/**",
                 "/homepage",
-                //"dashboard",
-                //"/meeting",
-                "/meeting/**",
                 "/login",
                 "/register",
                 "/contact"
         };
         http.authorizeHttpRequests(config -> {//
             config.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll();
-            // Pour tous
+
             config.requestMatchers(anonymousRequests).permitAll();
-            // Pour tous les utilisateurs authentifiés
+
             config.anyRequest().authenticated();
         });
         // Nous autorisons un formulaire de login
         http.formLogin(formLoginConfigurer -> {
             formLoginConfigurer
                     //  .loginPage("/login")  // Définir la page de login personnalisée, si nécessaire
-                    .successHandler(authenticationSucess())  // Ajouter le gestionnaire de succès
+                    .successHandler(authenticationSucess())
                     .permitAll();  // Permettre l'accès à tous pour les pages de login
         });
         // Nous autorisons un formulaire de logout

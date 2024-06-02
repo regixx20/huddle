@@ -252,7 +252,7 @@
         </div>
         <div class="details">
             <div class="detail">
-                <span class="label">Créé par :</span> <span class="value">${poll.creator.email}</span>
+                <span class="label">Créé par :</span> <span class="value">${poll.creator.fullName}</span>
             </div>
             <div class="detail">
                 <span class="label"><img src="${pageContext.request.contextPath}/images/descriptionIcon.png" class="icon" alt="Description"> Description :</span> <span class="value">${poll.description}</span>
@@ -291,7 +291,8 @@
                     <c:forEach var="slot" items="${poll.slots}" varStatus="status">
                         <th onclick="highlightColumn(${status.index})" class="column-${status.index}slot-header">
                             <div class="slot-header">
-                                <div class="date-header">${slot.start.dayOfMonth}/${slot.start.month.value}/${slot.start.year}</div>
+                                <div class="date-header">${slot.dayOfWeek}  ${slot.start.dayOfMonth} ${slot.month} ${slot.start.year}</div>
+
                                 <div class="time-header">${slot.start.hour}:${slot.start.minute < 10 ? '0' : ''}${slot.start.minute} - ${slot.end.hour}:${slot.end.minute < 10 ? '0' : ''}${slot.end.minute}</div>
                             </div>
                         </th>
@@ -334,8 +335,8 @@
             </form:form>
 
             <div class="slot">
-                <span class="date">${slot.start.dayOfMonth}/${slot.start.month.value}/${slot.start.year}</span>
-                <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
+                <span class="date">${slot.dayOfWeek}  ${slot.start.dayOfMonth} ${slot.month} ${slot.start.year}</span>
+                <span class="hour">${slot.start.hour}:${slot.start.minute < 10 ? '0' : ''}${slot.start.minute} - ${slot.end.hour}:${slot.end.minute < 10 ? '0' : ''}${slot.end.minute}</span>
 
 
                 <form id="emailForm" action="${pageContext.request.contextPath}/send-mail" method="get" onsubmit="return submitFormWithDelay(event);">
@@ -372,8 +373,8 @@
     <h3>Créneaux</h3>
     <c:forEach var="slot" items="${poll.slots}">
         <div class="slot">
-            <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}</span>
-            <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
+            <span class="date">${slot.dayOfWeek}  ${slot.start.dayOfMonth} ${slot.month} ${slot.start.year}</span>
+                <span class="hour">${slot.start.hour}:${slot.start.minute < 10 ? '0' : ''}${slot.start.minute} - ${slot.end.hour}:${slot.end.minute < 10 ? '0' : ''}${slot.end.minute}</span>
 
             <form id="emailForms" action="${pageContext.request.contextPath}/send-mail" method="get" onsubmit="return submitFormWithDelay(event);">
                 <input type="hidden" name="senderEmail" value="${poll.creator.email}" />

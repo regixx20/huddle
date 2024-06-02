@@ -41,24 +41,13 @@ public class User implements Serializable {
     private List<Poll> participatedPolls = new ArrayList<>();
 
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
     public String getPasswordConfirm() {
         return password;
     }
-/*
-    @OneToMany(fetch = FetchType.EAGER)
-    @ToString.Exclude
-    private List<Participant> participants = new ArrayList<>();
 
-    public Collection<String> emailParticipants() {
-        List<String> emails = new ArrayList<>();
-        for (Poll poll : polls) {
-            for (Participant participant : poll.getParticipants()) {
-                emails.add(participant.getEmail());
-            }
-        }
-        return emails;
-    }
-*/
 
 
 

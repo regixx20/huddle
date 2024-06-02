@@ -30,10 +30,9 @@ public class Participant {
     @OneToMany(mappedBy = "participant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Vote> votes =new ArrayList<>();
-/*
-    @OneToMany(mappedBy = "participants", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Vote> users =new ArrayList<>();*/
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Poll poll;
 
     public String getFullName() {
         return firstName + " " + lastName;

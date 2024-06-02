@@ -40,9 +40,7 @@ public class PollService {
 
 
     public void savePoll(Poll p) {
-        /*if (p.getId() == null || p.getId().trim().isEmpty()) {
-            p.setId(generateRandomString(16)); // Génère un ID de longueur 16
-        }*/
+
         pollRepository.save(p);
     }
 
@@ -50,14 +48,4 @@ public class PollService {
         pollRepository.delete(p);
     }
 
-    private String generateRandomString(int length) {
-        if (length < 1) throw new IllegalArgumentException("La longueur doit être >= 1");
-
-        String symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        Random random = new SecureRandom();
-        char[] buf = new char[length];
-        for (int idx = 0; idx < buf.length; ++idx)
-            buf[idx] = symbols.charAt(random.nextInt(symbols.length()));
-        return new String(buf);
-    }
 }

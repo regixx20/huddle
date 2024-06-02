@@ -40,6 +40,14 @@
             font-style: normal;
 
         }
+        #calendar-container {
+            max-height: 450px; /* Ajustez la hauteur selon vos besoins */
+            overflow-y: auto; /* Active le défilement vertical si le contenu dépasse la hauteur maximale */
+            padding: 15px;
+            background-color: white; /* Fond blanc pour le calendrier */
+            border: 1px solid #ccc; /* Bordure légère autour du calendrier */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Ombre subtile pour un effet de profondeur */
+        }
 
 
     </style>
@@ -61,9 +69,9 @@
                 unselectAuto: false,
                 selectOverlap: false,
                 allDaySlot: false,
-                scrollTime: '08:00:00',
-                minTime: '08:00:00',
-                maxTime: '20:00:00',
+                scrollTime: '06:00:00',
+                minTime: '00:00:00',
+                maxTime: '23:59:00',
                 height: 'auto',
                 contentHeight: 'auto',
                 editable: true,
@@ -76,7 +84,7 @@
                 },
                 select: function (info) {
                     calendar.addEvent({
-                        title: moment(info.start).format('HH:mm') + " à " + moment(info.end).format('HH:mm'),
+                        //title: moment(info.start).format('HH:mm') + " à " + moment(info.end).format('HH:mm'),
                         start: info.start,
                         end: info.end,
                         allDay: info.allDay,

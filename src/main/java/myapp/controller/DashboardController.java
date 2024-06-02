@@ -50,7 +50,7 @@ public class DashboardController {
         for (User u : userService.findAllUsers()) {
             logger.info("LES CREATEURS DE CHAQUE USER  " + u.getPolls());
         }
-        logger.info(userService.findAllUsers().toString());
+
         return "dashboard";
     }
 

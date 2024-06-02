@@ -67,53 +67,6 @@ public class PollController {
 
 
 
-/*
-    @ModelAttribute("participatedPolls")
-    Collection<Poll> participatedPolls(Principal principal) {
-        if(principal != null) {
-            String email = principal.getName();
-            User user = userService.findUserByEmail(email);
-
-            return user.getParticipatedPolls();
-        }
-        return Collections.emptyList();
-    }*/
-
-
-
-    /*@ModelAttribute("participatedPolls")
-    Collection<Poll> participatedPolls(Principal principal) {
-        if(principal != null) {
-            String email = principal.getName();
-            User user = userService.findUserByEmail(email);
-            List<Poll> participatedPolls = new ArrayList<>();
-            for (Poll poll : pollService.findAllPolls()) {
-                for (Participant participant : poll.getParticipants()) {
-                    if (participant.getEmail().equals(email)) {
-                        participatedPolls.add(poll);
-                    }
-                }
-            }
-            return participatedPolls;
-        }
-        return Collections.emptyList();
-    }*/
-/*
-    @ModelAttribute("participations")
-    Collection<Participant> participants(Principal principal) {
-        if(principal != null) {
-           return participantService.findAllParticipants();
-        }
-        return Collections.emptyList();
-    }
-
-    @ModelAttribute("votes")
-    Collection<Vote> votes() {
-
-        return voteService.findAllVotes();
-
-    }
-*/
     @ModelAttribute
     public Poll newPoll(
              @RequestParam(value = "id", required = false) String id){
@@ -144,17 +97,11 @@ public class PollController {
     @GetMapping("/edit")
     public String editPoll(@ModelAttribute Poll p, Model model, Principal principal) {
         model.addAttribute(                                                                                                                         "email", principal.getName());
-        logger.info("decide : " + p.isDecided());
-        logger.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX" + userService.findUserByEmail(principal.getName()).getParticipatedPolls());
-
         return "newPoll";
     }
 
     @PostMapping("/edit")
     public String savePoll(Model model, @RequestParam("slotsJson") String slotsJson, @RequestParam("creator") String creator, @ModelAttribute Poll p, BindingResult bindingResult, Principal principal) {
-
-
-        logger.info("le createur est : " + creator);
         pollValidator.validate(p, bindingResult);
         if (bindingResult.hasFieldErrors("title")) {
             return "newPoll";
@@ -181,13 +128,9 @@ public class PollController {
            logger.info(p.getTitle());
            logger.info(p.getTitle());
            logger.info(p.getLocation());
-           /*for (Slot s : slots) {
-               s.setPoll(p);
-           }*/
+
             p.setSlots(slots);
             if (principal != null) {
-
-                //logger.info("email : " + principal.getName());
                 String email = principal.getName();
 
                 User c = userService.findUserByEmail(email);
@@ -195,19 +138,14 @@ public class PollController {
                     p.setCreator(c);
                     c.getPolls().add(p);
                 }
-
             }
             else {
                 User creatorNotConnected = new User();
                 creatorNotConnected.setEmail(creator);
                 userService.saveUser(creatorNotConnected);
                 p.setCreator(creatorNotConnected);
-
             }
-
             pollService.savePoll(p);
-            logger.info("createur : " + p.getCreator().getEmail());
-
 
             if(!p.getEmails().contains(creator)){
                 Participant creatorParticipant = new Participant();
@@ -225,47 +163,27 @@ public class PollController {
 
                     slot.getVotes().add(vote);
                     creatorParticipant.getVotes().add(vote);
-
-
                     voteService.saveVote(vote);
-
                     slotService.saveSlot(slot);
-logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
                 }
             }
-
             p.getParticipatedUsers().add(userService.findUserByEmail(creator));
             userService.findUserByEmail(creator).getParticipatedPolls().add(p);
 
 
 
-            logger.info(p.getSlots());
-            logger.info(slotService.findAllSlots());
             logger.info("les slots sont : " + slotService.findAllSlots());
             logger.info("participants : " + voteService.findAllVotes());
             logger.info("slots");
             for (Slot s : slots) {
                 logger.info("slot : " + s.getVotes());
             }
-            logger.info("participantsssssss"+p.getParticipants());
-
-
-            /*for (Poll s : pollService.findPollByTitle("Sondage pour Setondji")){
-                logger.info("le createur de setondji est : " + s.getCreator().getEmail());
-
-            }
-            logger.info("le createur de setondji est : " + pollService.findPollByTitle("Sondage pour Setondji"));*/
-
-            logger.info("decide : " + p.isDecided());
-
-            logger.info("VOTESSS"+ voteService.findAllVotes());
-            logger.info("MES SLOTS" + slotService.findAllSlots());
-
+            logger.info("VOTES: "+ voteService.findAllVotes());
             for(Poll poll : pollService.findAllPolls()){
                 logger.info("LES PARTICIPANTS SONT : " + poll.getParticipants());
             }
-            return "redirect:/meeting"; // Redirection en cas de succès
+            return "redirect:/dashboard"; // Redirection en cas de succès
         } catch (IOException e) {
             e.printStackTrace();
             return "redirect:/"; // Redirection en cas d'erreur

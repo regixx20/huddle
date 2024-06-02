@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +59,14 @@ public class Slot implements Serializable {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE", Locale.FRENCH);
             String day = start.format(formatter);
             return day.substring(0, 1).toUpperCase(Locale.FRENCH) + day.substring(1).toLowerCase(Locale.FRENCH);
+        }
+        return null;
+    }
+
+    @Transient
+    public String getMonth() {
+        if (start != null) {
+            return start.getMonth().getDisplayName(TextStyle.FULL, Locale.FRENCH);
         }
         return null;
     }
