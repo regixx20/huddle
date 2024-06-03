@@ -24,16 +24,17 @@ public class EmailController {
     @GetMapping("/send-mail")
     public RedirectView sendMail(@RequestParam String senderEmail,
                                  @RequestParam String recipientEmail,
-                                 @RequestParam String text,
-                                 RedirectAttributes redirectAttributes) {
+                                 @RequestParam String text
+                                 /*@RequestParam
+                                 RedirectAttributes redirectAttributes*/) {
         User sender = new User();
         sender.setEmail(senderEmail);
-        String subject = "Créneaux choisis ";
+        String subject = "MeetEasy - INVITATION";
 
         List<String> recipients = Arrays.asList(recipientEmail.split(","));
         mailService.sendEmail(sender, recipients, subject, text);
 
-        redirectAttributes.addFlashAttribute("message", "Email de confirmation envoyé");
+        //redirectAttributes.addFlashAttribute("message", "Email de confirmation envoyé");
         return new RedirectView("/dashboard");
     }
 }

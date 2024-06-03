@@ -47,6 +47,7 @@ public class UserController {
 
 
 
+
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new User());
@@ -63,7 +64,7 @@ public class UserController {
         userService.saveUser(user);
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         logger.info("users " + userService.findAllUsers());
-        return "redirect:/";
+        return "redirect:/login";
     }
 
 

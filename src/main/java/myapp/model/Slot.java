@@ -46,12 +46,7 @@ public class Slot implements Serializable {
 
     private boolean isChosen = false;
 
-    public void chooseFinalSlot() {
-        if (poll != null) {
-            poll.getSlots().forEach(s -> s.setChosen(false));
-            isChosen = true;
-        }
-    }
+
 
     @Transient
     public String getDayOfWeek() {

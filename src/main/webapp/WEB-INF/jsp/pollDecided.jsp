@@ -36,12 +36,21 @@
         <c:forEach var="slot" items="${poll.slots}">
            <c:choose>
                <c:when test="${slot.chosen}">
-               <p>Vous avez réservé le créneau du sondage intitulé ${poll.title} de ${slot.start} à ${slot.end}.</p>
-                  </c:when>
+               <p>Vous avez réservé le créneau du sondage intitulé ${poll.title} de ${slot.start.hour}:${slot.start.minute < 10 ? '0' : ''}${slot.start.minute} à ${slot.end.hour}:${slot.end.minute < 10 ? '0' : ''}${slot.end.minute} le ${slot.dayOfWeek}  ${slot.start.dayOfMonth} ${slot.month} ${slot.start.year}
+                   <form id="emailForm" action="${pageContext.request.contextPath}/send-mail" method="get">
+                   <input type="hidden" name="senderEmail" value="${poll.creator.email}" />
+                   <c:forEach var="email" items="${poll.participantMail()}">
+                        <input type="hidden" name="recipientEmail" value="${email}" />
+                    </c:forEach>
+                    <input type="hidden" name="text" value="Le créneau de ${slot.start.hour}:${slot.start.minute < 10 ? '0' : ''}${slot.start.minute} à ${slot.end.hour}:${slot.end.minute < 10 ? '0' : ''}${slot.end.minute} le
+               ${slot.dayOfWeek}  ${slot.start.dayOfMonth} ${slot.month} ${slot.start.year} a été choisi concernant votre participation au sondage ${poll.title}" />
+                    <button type="submit">Informer les participants</button>
+                    </form>
+               </c:when>
             </c:choose>
         </c:forEach>
 
-        <a href="${pageContext.request.contextPath}/" class="btn-home">Retour à l'accueil</a>
+
     </div>
 </body>
 </html>

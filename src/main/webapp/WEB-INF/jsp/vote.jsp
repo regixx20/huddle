@@ -112,14 +112,14 @@
 <div class="container">
    <div class="poll-box" id="creneaux">
       <c:if test="${empty sessionScope.isLoggedIn}">
-      <div class="info-container">
-         <h2>Veuillez vous connecter pour participer au sondage</h2>
-         <p>Si vous n'avez pas de compte, vous pouvez vous inscrire en cliquant sur le bouton ci-dessous.</p>
-         <a href="/register"><button>S'inscrire</button></a>
-         <a href="/login"><button>Se connecter</button></a>
-      </div>
+         <div class="info-container">
+            <h2>Veuillez vous connecter pour participer au sondage</h2>
+            <p>Si vous n'avez pas de compte, vous pouvez vous inscrire en cliquant sur le bouton ci-dessous.</p>
+            <a href="/register-to-participate/${poll.id}"><button>S'inscrire</button></a>
+            <a href="/meeting/participate/${poll.id}"><button>Se connecter</button></a>
+         </div>
 
-        </c:if>
+      </c:if>
       <div class="slots">
       <c:if test="${!empty sessionScope.isLoggedIn}">
 

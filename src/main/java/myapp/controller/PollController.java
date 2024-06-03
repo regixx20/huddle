@@ -193,10 +193,6 @@ public class PollController {
     @GetMapping("/organize/{id}")
     public String showDetails(@PathVariable("id") String id, Model model) {
         Poll poll = pollService.findPollById(id);
-        logger.info("decide : " + poll.isDecided());
-
-
-
         if (poll != null) {
             model.addAttribute("poll", poll);
             return "pollDetails";
@@ -206,18 +202,22 @@ public class PollController {
     }
 
     @PostMapping("/organize/{id}")
-    public String decide(@PathVariable("id") String id, @RequestParam("isDecided") String isDecided) {
+    public String decide(@PathVariable("id") String id, @RequestParam("isDecided") Long slotId ,Model model) {
         Poll poll = pollService.findPollById(id);
         poll.decide();
+        model.addAttribute("poll", poll);
         pollService.savePoll(poll);
 
-        for(Slot s : poll.getSlots()) {
-            s.setChosen(true);
-            slotService.saveSlot(s);
+        for(Slot s : poll.getSlots()){
+            if(Objects.equals(s.getId(), slotId)){
+                s.setChosen(true);
+                slotService.saveSlot(s);
+            }
         }
+        logger.info("le slot choisi est : " + slotId);
 
 
-        logger.info("decideee : " + poll.isDecided());
+
         return "pollDecided";
     }
 
