@@ -10,7 +10,7 @@
    <style>
       body {
          font-family: Arial, sans-serif;
-         background-color: #f4f4f4;
+         background-color: #516C8D;
          margin: 0;
          padding: 0;
       }
@@ -110,7 +110,7 @@
 </head>
 <body>
 <div class="container">
-   <div class="poll-box" id="creneaux">
+
       <c:if test="${empty sessionScope.isLoggedIn}">
          <div class="info-container">
             <h2>Veuillez vous connecter pour participer au sondage</h2>
@@ -139,8 +139,9 @@
                      <div class="time-duration">
                         <div class="time">
                            <label>
-                              <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}
-                              ${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
+                               <div class="date-header">${slot.dayOfWeek}  ${slot.start.dayOfMonth} ${slot.month} ${slot.start.year}</div>
+            <div class="time-header">${slot.start.hour}:${slot.start.minute < 10 ? '0' : ''}${slot.start.minute} - ${slot.end.hour}:${slot.end.minute < 10 ? '0' : ''}${slot.end.minute}</div>
+
 
                               <!--<input type="checkbox"  onclick="toggleCheckbox(this)" data-id="${slot.id}" data-state="unchecked">-->
                               <div class="options">
@@ -173,7 +174,6 @@
 
          </c:if>
       </div>
-   </div>
 </div>
 
 

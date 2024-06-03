@@ -70,6 +70,14 @@ a:hover {
     border: #28385E solid 2px;
     padding: 5px 10px;
 }
+.navbar-left button {
+    color: #28385E;
+    margin-right: 20px;
+    font-size: 18px;
+    border-radius: 30px;
+    border: #28385E solid 2px;
+    padding: 5px 10px;
+}
 
 .btn {
     border: none;
@@ -120,6 +128,26 @@ a:hover {
     gap: 20px;
 }
 .container {
+    width: 45%;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+    text-align: center;
+    border: 5px solid #28385E;
+    border-radius: 8px;
+    margin: 50px auto;
+}
+.confirmation-container {
+    width: 45%;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+    text-align: center;
+    border: 5px solid #28385E;
+    border-radius: 8px;
+    margin: 50px auto;
+}
+.register-container {
     width: 45%;
     padding: 20px;
     background-color: white;

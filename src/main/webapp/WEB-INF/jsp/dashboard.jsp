@@ -16,7 +16,7 @@
         .tab {
             overflow: hidden;
             border-bottom: 1px solid #ccc;
-            background-color: #f1f1f1;
+            background-color: #28385E;
             display: flex;
             justify-content: center;
         }
@@ -31,10 +31,10 @@
             margin: 0 10px;
         }
         .tab button:hover {
-            background-color: #ddd;
+            background-color: #b95e5e;
         }
         .tab button.active {
-            background-color: #ccc;
+            background-color: #0a3b9a;
             border-bottom: 3px solid #007bff;
         }
         .tabcontent {
@@ -78,6 +78,39 @@
         .poll-box a:hover {
             text-decoration: underline;
         }
+        .poll-box-link {
+    text-decoration: none; /* Enlève le soulignement des liens */
+    color: inherit; /* Garde la couleur du texte héritée */
+    display: block; /* Fait que le lien se comporte comme un div */
+}
+
+.poll-box {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: background-color 0.3s ease; /* Animation de fond au survol */
+}
+
+.poll-box:hover {
+    background-color: #e9ecef; /* Change la couleur de fond au survol */
+}
+
+.poll-box div {
+    padding: 5px 0; /* Espacement vertical pour le texte et le lien d'édition */
+}
+
+.poll-box small {
+    font-size: smaller; /* Petite taille pour le texte 'Edit' */
+    color: #007bff; /* Couleur pour le lien d'édition */
+}
+.poll-box:focus, .poll-box:hover {
+    box-shadow: 0 0 5px rgba(0,123,255,0.5); /* Ajoute une ombre au survol ou au focus */
+    cursor: pointer; /* Montre un curseur de pointeur pour indiquer un lien cliquable */
+}
+
+
         footer {
             text-align: center;
             padding: 20px;
@@ -110,26 +143,27 @@
 </head>
 <body>
     <div class="container">
+            <form action="/meeting/edit" method="get">
+                <button type="submit">Créer un sondage</button>
+            </form>
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'MesSondages')" id="defaultOpen">Mes sondages</button>
             <button class="tablinks" onclick="openTab(event, 'MesParticipations')">Mes participations</button>
         </div>
 
         <div id="MesSondages" class="tabcontent">
-            <h2>Créer un nouveau sondage</h2>
-            <form action="/meeting/edit" method="get">
-                <button type="submit">Créer Sondage</button>
-            </form>
+
             <c:if test="${not empty message}">
                 <p>${message}</p>
             </c:if>
-            <h2>Mes sondages</h2>
                     <c:forEach var="poll" items="${polls}">
-                        <div class="poll-box">
-                            <button type="submit" onclick="window.location.href='/meeting/organize/${poll.id}'">${poll.title}</button>
-                            <br><br>
-                            <a href="${pageContext.request.contextPath}/meeting/edit?id=${poll.id}" style="text-decoration: none;">Edit</a>
-                        </div>
+                        <a href="/meeting/organize/${poll.id}" class="poll-box-link">
+                                <div class="poll-box">
+                                    <div>${poll.title}</div>
+                                </div>
+                                        <div><small> <a href="${pageContext.request.contextPath}/meeting/edit?id=${poll.id}" style="text-decoration: none;">Modifier</a></small></div>
+
+</a>
                     </c:forEach>
         </div>
 
@@ -143,8 +177,7 @@
                     </c:forEach>
         </div>
     </div>
-    <footer>
-        <p>© 2024 MeetEasy - Tous droits réservés.</p>
-    </footer>
+
 </body>
+
 </html>

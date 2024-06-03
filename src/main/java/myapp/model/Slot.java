@@ -47,7 +47,6 @@ public class Slot implements Serializable {
     private boolean isChosen = false;
 
 
-
     @Transient
     public String getDayOfWeek() {
         if (start != null) {

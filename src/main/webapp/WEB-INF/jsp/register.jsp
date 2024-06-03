@@ -5,6 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Inscription</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" />
+
     <style>
         .container {
             width: 400px;
@@ -70,7 +72,7 @@
     </style>
 </head>
 <body>
-<div class="container">
+<div class="register-container">
     <h2>Inscription</h2>
     <form:form modelAttribute="user" action="${pageContext.request.contextPath}/register" method="post">
         <div class="form-group">

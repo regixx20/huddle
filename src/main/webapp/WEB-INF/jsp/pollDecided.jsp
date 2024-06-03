@@ -28,6 +28,16 @@
         .confirmation-container .btn-home:hover {
             background-color: #0056b3;
         }
+        .confirmation-container button {
+            display: inline-block;
+            padding: 10px 20px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>

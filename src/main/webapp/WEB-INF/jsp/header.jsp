@@ -28,10 +28,7 @@
             display: flex;
             align-items: center;
         }
-        .navbar-left img {
-            height: 50px; /* Réduction de la taille du logo */
-            margin-right: 20px;
-        }
+
         .nav-link {
             display: flex;
             align-items: center;
@@ -47,7 +44,12 @@
             margin-right: 10px;
         }
 
-        .navbar-right .user-info {
+        .nav-link{
+        font-size: 16px;
+            color: #333;
+        }
+
+        .navbar-right .user-info  {
             display: flex;
             align-items: center;
             margin-right: 20px;
@@ -69,8 +71,10 @@
 <body>
     <header>
         <nav class="navbar">
+
             <div class="navbar-left">
-                <img src="${pageContext.request.contextPath}/images/logo_MeetEasy.png" alt="logo" width="100" height="auto" onclick="window.location.href='/'" style="cursor: pointer;">
+            <img src="${pageContext.request.contextPath}/images/logo2.png" alt="logo" width="70" height="auto" onclick="window.location.href='/'" style="cursor: pointer;">
+
                 <div class="nav-link">
                     <c:if test="${not empty sessionScope.user}">
                         <button type="button" class="btn btn-nav" onclick="window.location.href='/dashboard'">Mon espace</button>
@@ -82,7 +86,7 @@
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
                     <div class="user-info">
-                    <img src="${pageContext.request.contextPath}/images/user-interface.png" alt="Profile Picture">
+                        <img src="${pageContext.request.contextPath}/images/user-interface.png" alt="Profile Picture">
                         <span>${sessionScope.user.firstName} ${sessionScope.user.lastName}</span>
                     </div>
                         <button type="button" class="btn btn-logout" onclick="window.location.href='/logout'">Se déconnecter </button>
@@ -97,6 +101,8 @@
         </nav>
     </header>
 </body>
+
+
 </html>
 
 

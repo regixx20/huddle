@@ -12,21 +12,35 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
         }
         .containerr {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: 1fr;
             gap: 20px;
-            width: 80%;
+            width: 100%;
             margin: 20px auto;
             overflow-y: auto;
             max-height: 600px;
             background-color: white;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
         }
         .slot-entry {
             border: 1px solid #ccc;
@@ -178,16 +192,16 @@
                 document.querySelectorAll('.column-' + currentlySelected).forEach(cell => {
                     cell.classList.remove('highlighted-slot');
                 });
-                currentlySelected = null;  // Réinitialiser la sélection actuelle
+                currentlySelected = null;
             } else {
-                // Nettoyer les sélections précédentes
+
                 if (currentlySelected !== null) {
                     document.querySelectorAll('.column-' + currentlySelected).forEach(cell => {
                         cell.classList.remove('highlighted-slot');
                     });
                 }
 
-                // Sélectionner la nouvelle colonne
+
                 document.querySelectorAll('.column-' + columnIndex).forEach(cell => {
                     cell.classList.add('highlighted-slot');
                 });
@@ -199,7 +213,7 @@
 
 
 
-        // Cette fonction enlève le style de toutes les colonnes
+
         function clearAllHighlights() {
             document.querySelectorAll('.slot-header').forEach(header => {
                 header.classList.remove('active', 'highlighted-slot');
@@ -327,11 +341,9 @@
                 <input type="hidden" id="decideSlotId" name="isDecided" value="" />
         </form:form>
         <c:forEach var="slot" items="${poll.slots}">
-
-
             <div class="slot">
-                <span class="date">${slot.start.dayOfMonth}/${slot.start.month}/${slot.start.year}</span>
-                <span class="hour">${slot.start.hour}H${slot.start.minute} - ${slot.end.hour}H${slot.end.minute}</span>
+                <div class="date-header">${slot.dayOfWeek}  ${slot.start.dayOfMonth} ${slot.month} ${slot.start.year}</div>
+                <div class="time-header">${slot.start.hour}:${slot.start.minute < 10 ? '0' : ''}${slot.start.minute} - ${slot.end.hour}:${slot.end.minute < 10 ? '0' : ''}${slot.end.minute}</div>
 
                 <button type="submit" onclick="submitDecideForm(${slot.id}); setReservationClicked();">Réserver </button>
             </div>
@@ -357,16 +369,9 @@
     <h3>Créneaux</h3>
     <c:forEach var="slot" items="${poll.slots}">
         <div class="slot">
-            <span class="date">${slot.dayOfWeek}  ${slot.start.dayOfMonth} ${slot.month} ${slot.start.year}</span>
-                <span class="hour">${slot.start.hour}:${slot.start.minute < 10 ? '0' : ''}${slot.start.minute} - ${slot.end.hour}:${slot.end.minute < 10 ? '0' : ''}${slot.end.minute}</span>
+            <div class="date-header">${slot.dayOfWeek}  ${slot.start.dayOfMonth} ${slot.month} ${slot.start.year}</div>
+            <div class="time-header">${slot.start.hour}:${slot.start.minute < 10 ? '0' : ''}${slot.start.minute} - ${slot.end.hour}:${slot.end.minute < 10 ? '0' : ''}${slot.end.minute}</div>
 
-            <form id="emailForms" action="${pageContext.request.contextPath}/send-mail" method="get" onsubmit="return submitFormWithDelay(event);">
-                <input type="hidden" name="senderEmail" value="${poll.creator.email}" />
-                <c:forEach var="email" items="${poll.participantMail()}">
-                    <input type="hidden" name="recipientEmail" value="${email}" />
-                </c:forEach>
-                <button type="submit" onclick=>Réserver</button>
-            </form>
             <input type="hidden" id="reservationClicked" name="reservationClicked" value="false" />
         </div>
     </c:forEach>
@@ -380,13 +385,13 @@
     </c:if>
 </c:forEach>
 
-
+</div>
 
 
 
 
 <footer>
-    <p>Mon Sondage © 2024</p>
+    <p>© 2024 MeetEasy - Tous droits réservés.</p>
 </footer>
 
 <script>
@@ -404,4 +409,6 @@
     }
 </script>
 </body>
+
+
 </html>

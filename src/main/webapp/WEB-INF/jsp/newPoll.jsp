@@ -18,6 +18,7 @@
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.css' rel='stylesheet' />
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.css' rel='stylesheet' />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/interaction/main.min.js'></script>
@@ -48,6 +49,18 @@
             border: 1px solid #ccc; /* Bordure légère autour du calendrier */
             box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Ombre subtile pour un effet de profondeur */
         }
+        .fc-event:hover:after {
+            content: '\f00d';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            font-size: 16px;
+            color: white;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            z-index: 10;
+        }
+
 
 
     </style>

@@ -25,8 +25,7 @@ public class EmailController {
     public RedirectView sendMail(@RequestParam String senderEmail,
                                  @RequestParam String recipientEmail,
                                  @RequestParam String text
-                                 /*@RequestParam
-                                 RedirectAttributes redirectAttributes*/) {
+                                 ) {
         User sender = new User();
         sender.setEmail(senderEmail);
         String subject = "MeetEasy - INVITATION";
