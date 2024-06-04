@@ -276,20 +276,13 @@
             </div>
         </div>
 
-        <div class="participants">
-            <h3>Participants</h3>
-            <c:forEach var="participant" items="${poll.participants}">
-                <div class="participant">
-                    <span class="email">${participant.fullName}</span>
-                </div>
-            </c:forEach>
+
             <label>Lien à envoyer aux participants:</label>
             <div style="display: flex; align-items: center;">
                 <input type="text" id="participationLink" value="http://localhost:8081/meeting/participate/${poll.id}/vote" readonly style="flex: 1; margin-right: 10px; height: 40px; box-sizing: border-box;" />
                 <button class="copy-button" onclick="copyToClipboard()" style="height: 40px; display: flex; align-items: center; justify-content:center;">Copier</button>
             </div>
             <div id="copyNotification" class="notification">Lien copié dans le presse-papier</div>
-        </div>
 
         <div class="containerr">
             <table class="table table-bordered">
