@@ -1,0 +1,56 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: meat_easy_db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-meateasy}
+      POSTGRES_USER: ${POSTGRES_USER:-meat}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-meatpass}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-meat} -d ${POSTGRES_DB:-meateasy}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: meat_easy_app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-meateasy}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-meat}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-meatpass}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: meat_easy_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@local}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    restart: unless-stopped
+
+volumes:
+  db_data:
+  pgadmin_data:
