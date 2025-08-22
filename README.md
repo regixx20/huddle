@@ -2,8 +2,6 @@
 
 ## Membres du Projet
 - MEDEDJI Setondji
-- AUGIER Yoann
-- NZE Vincent
 
 ## Tâches Accomplies
 - 
