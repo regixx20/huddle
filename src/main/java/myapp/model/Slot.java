@@ -26,7 +26,7 @@ import myapp.service.CustomLocalDateTimeDeserializer;
 public class Slot implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)

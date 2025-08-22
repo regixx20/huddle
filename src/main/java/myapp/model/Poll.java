@@ -21,7 +21,7 @@ import java.util.*;
 @AllArgsConstructor
 public class Poll implements Serializable {
     @Id
-    @GeneratedValue(generator = "custom-id-gen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "custom-id-gen")
     @GenericGenerator(name = "custom-id-gen", strategy = "myapp.service.CustomIdService")
     private String id;
 
