@@ -9,7 +9,7 @@ import jakarta.mail.internet.MimeMessage;
 import myapp.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,31 +21,35 @@ public class MailService {
 
     private static final Logger log = LoggerFactory.getLogger(MailService.class);
 
-    private final Environment environment;
+    @Value("${spring.mail.host:}")
+    private String smtpHost;
 
-    public MailService(Environment environment) {
-        this.environment = environment;
-    }
+    @Value("${spring.mail.port:25}")
+    private int smtpPort;
+
+    @Value("${spring.mail.username:}")
+    private String smtpUsername;
+
+    @Value("${spring.mail.password:}")
+    private String smtpPassword;
+
+    @Value("${spring.mail.properties.mail.smtp.auth:false}")
+    private String smtpAuth;
+
+    @Value("${spring.mail.properties.mail.smtp.starttls.enable:false}")
+    private String starttlsEnable;
 
     public void sendEmail(User sender, List<String> recipients, String subject, String text) {
-        String smtpHost = environment.getProperty("spring.mail.host");
-        Integer smtpPort = environment.getProperty("spring.mail.port", Integer.class, 25);
-        String smtpUsername = environment.getProperty("spring.mail.username");
-        String smtpPassword = environment.getProperty("spring.mail.password");
-        boolean smtpAuth = environment.getProperty("spring.mail.properties.mail.smtp.auth", Boolean.class, false);
-        boolean starttlsEnable = environment.getProperty("spring.mail.properties.mail.smtp.starttls.enable", Boolean.class, false);
-
         if (smtpHost == null || smtpHost.isBlank()) {
             log.warn("Mail configuration missing host; skipping email send.");
             return;
         }
-        if (smtpPort == null || smtpPort <= 0) {
-            log.warn("Mail configuration has invalid port {}; skipping email send.", smtpPort);
+        if (smtpUsername == null || smtpUsername.isBlank()) {
+            log.warn("Mail configuration missing credentials; skipping email send.");
             return;
         }
-
-        if (smtpAuth && (smtpUsername == null || smtpUsername.isBlank() || smtpPassword == null)) {
-            log.warn("Mail configuration requires authentication but credentials are missing; skipping email send.");
+        if (smtpPort <= 0) {
+            log.warn("Mail configuration has invalid port {}; skipping email send.", smtpPort);
             return;
         }
 
