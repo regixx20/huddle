@@ -16,3 +16,45 @@ En cours de développement
 
 
 ## DERNIER PUSH
+
+## Build
+
+1. `./mvnw clean package`
+
+### Dépannage Maven (erreur 403 sur Spring Boot parent)
+
+Dans certains environnements verrouillés (par exemple les bacs à sable ou réseaux d’entreprise), Maven peut
+échouer avec `HTTP 403` lors du téléchargement du parent `spring-boot-starter-parent`. Cette erreur provient
+d’un blocage réseau et non du projet. Pour contourner le problème :
+
+* Vérifiez que votre proxy/pare-feu autorise l’accès à `https://repo.maven.apache.org/maven2`.
+* Configurez `~/.m2/settings.xml` pour utiliser un miroir Maven interne ou un proxy d’entreprise si nécessaire :
+
+  ```xml
+  <settings>
+    <proxies>
+      <proxy>
+        <id>corp-proxy</id>
+        <active>true</active>
+        <protocol>https</protocol>
+        <host>proxy.example.com</host>
+        <port>8080</port>
+      </proxy>
+    </proxies>
+    <mirrors>
+      <mirror>
+        <id>internal-repo</id>
+        <mirrorOf>central</mirrorOf>
+        <url>https://maven.example.com/repository/maven-public/</url>
+      </mirror>
+    </mirrors>
+  </settings>
+  ```
+
+* Si vous disposez déjà des dépendances en local, lancez la compilation en mode hors-ligne :
+
+  ```bash
+  ./mvnw -o -DskipTests package
+  ```
+
+Une fois l’accès au dépôt Maven rétabli, la commande de build standard fonctionne normalement.

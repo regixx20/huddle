@@ -67,14 +67,6 @@ public class Poll implements Serializable {
         return isDecided;
     }
 
-    public List<String> participantMail(){
-        List<String> mail = new ArrayList<>();
-        for(Participant p : participants){
-            mail.add(p.getEmail());
-        }
-        return mail;
-    }
-
     public List<String> getEmails() {
         List<String> emails = new ArrayList<>();
         for (Participant participant : participants) {
