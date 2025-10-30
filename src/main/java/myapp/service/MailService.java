@@ -21,6 +21,9 @@ public class MailService {
 
     private static final Logger log = LoggerFactory.getLogger(MailService.class);
 
+    @Value("${app.mail.enabled:true}")
+    private boolean mailEnabled;
+
     @Value("${spring.mail.host:}")
     private String smtpHost;
 
@@ -34,22 +37,28 @@ public class MailService {
     private String smtpPassword;
 
     @Value("${spring.mail.properties.mail.smtp.auth:false}")
-    private String smtpAuth;
+    private boolean smtpAuth;
 
     @Value("${spring.mail.properties.mail.smtp.starttls.enable:false}")
-    private String starttlsEnable;
+    private boolean starttlsEnable;
 
     public void sendEmail(User sender, List<String> recipients, String subject, String text) {
+        if (!mailEnabled) {
+            log.info("Mail delivery disabled via configuration; skipping email send.");
+            return;
+        }
+
         if (smtpHost == null || smtpHost.isBlank()) {
             log.warn("Mail configuration missing host; skipping email send.");
             return;
         }
-        if (smtpUsername == null || smtpUsername.isBlank()) {
-            log.warn("Mail configuration missing credentials; skipping email send.");
-            return;
-        }
         if (smtpPort <= 0) {
             log.warn("Mail configuration has invalid port {}; skipping email send.", smtpPort);
+            return;
+        }
+
+        if (smtpAuth && (smtpUsername == null || smtpUsername.isBlank())) {
+            log.warn("Mail configuration requires credentials but username is missing; skipping email send.");
             return;
         }
 
