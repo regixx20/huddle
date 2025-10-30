@@ -7,6 +7,8 @@ import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import myapp.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,25 +18,40 @@ import java.util.Properties;
 @Service
 public class MailService {
 
-    @Value("${spring.mail.host}")
+    private static final Logger log = LoggerFactory.getLogger(MailService.class);
+
+    @Value("${spring.mail.host:}")
     private String smtpHost;
 
-    @Value("${spring.mail.port}")
+    @Value("${spring.mail.port:25}")
     private int smtpPort;
 
-    @Value("${spring.mail.username}")
+    @Value("${spring.mail.username:}")
     private String smtpUsername;
 
-    @Value("${spring.mail.password}")
+    @Value("${spring.mail.password:}")
     private String smtpPassword;
 
-    @Value("${spring.mail.properties.mail.smtp.auth}")
+    @Value("${spring.mail.properties.mail.smtp.auth:false}")
     private String smtpAuth;
 
-    @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
+    @Value("${spring.mail.properties.mail.smtp.starttls.enable:false}")
     private String starttlsEnable;
 
     public void sendEmail(User sender, List<String> recipients, String subject, String text) {
+        if (smtpHost == null || smtpHost.isBlank()) {
+            log.warn("Mail configuration missing host; skipping email send.");
+            return;
+        }
+        if (smtpUsername == null || smtpUsername.isBlank()) {
+            log.warn("Mail configuration missing credentials; skipping email send.");
+            return;
+        }
+        if (smtpPort <= 0) {
+            log.warn("Mail configuration has invalid port {}; skipping email send.", smtpPort);
+            return;
+        }
+
         Properties props = new Properties();
         props.put("mail.smtp.host", smtpHost);
         props.put("mail.smtp.port", smtpPort);
