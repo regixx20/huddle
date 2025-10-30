@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 @Service
@@ -54,15 +55,20 @@ public class MailService {
 
         Properties props = new Properties();
         props.put("mail.smtp.host", smtpHost);
-        props.put("mail.smtp.port", smtpPort);
-        props.put("mail.smtp.auth", smtpAuth);
-        props.put("mail.smtp.starttls.enable", starttlsEnable);
+        props.put("mail.smtp.port", Objects.toString(smtpPort));
+        props.put("mail.smtp.auth", Boolean.toString(smtpAuth));
+        props.put("mail.smtp.starttls.enable", Boolean.toString(starttlsEnable));
 
-        Session session = Session.getInstance(props, new jakarta.mail.Authenticator() {
-            protected jakarta.mail.PasswordAuthentication getPasswordAuthentication() {
-                return new jakarta.mail.PasswordAuthentication(smtpUsername, smtpPassword);
-            }
-        });
+        Session session;
+        if (smtpAuth) {
+            session = Session.getInstance(props, new jakarta.mail.Authenticator() {
+                protected jakarta.mail.PasswordAuthentication getPasswordAuthentication() {
+                    return new jakarta.mail.PasswordAuthentication(smtpUsername, smtpPassword);
+                }
+            });
+        } else {
+            session = Session.getInstance(props);
+        }
 
         try {
             MimeMessage message = new MimeMessage(session);
@@ -74,9 +80,10 @@ public class MailService {
             message.setText(text);
 
             Transport.send(message);
-            System.out.println("Email sent successfully!");
+            log.info("Email sent successfully to {}", recipients);
 
         } catch (MessagingException e) {
+            log.error("Failed to send email", e);
             throw new RuntimeException("Failed to send email", e);
         }
     }
