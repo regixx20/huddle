@@ -1,7 +1,5 @@
 package myapp.service;
 
-
-import myapp.controller.UserController;
 import myapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,15 +7,11 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import java.util.Date;
-
 @Service
 public class RegisterValidator implements Validator {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserController userController;
 
     @Override
     public boolean supports(Class<?> clazz) {
