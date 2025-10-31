@@ -56,7 +56,14 @@
       <artifactId>hsqldb</artifactId>
       <scope>runtime</scope>
     </dependency>
+    
     <!-- Postgres driver (for Docker profile) -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
 
     <!-- Validation -->
     <dependency>
