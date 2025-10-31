@@ -38,26 +38,23 @@ public class InitService {
 
     @PostConstruct
     public void init() {
-        User user0 = new User();
-        user0.setEmail("yoann.augier@etu.univ-amu.fr");
-        user0.setFirstName("Yoann");
-        user0.setLastName("Augier");
-        user0.setPassword("yoann");
-        userService.saveUser(user0);
+        User user0 = getOrCreateUser(
+                "yoann.augier@etu.univ-amu.fr",
+                "Yoann",
+                "Augier",
+                "yoann");
 
-        User user1 = new User();
-        user1.setEmail("setondji.mededji@etu.univ-amu.fr");
-        user1.setFirstName("Setondji");
-        user1.setLastName("Mededji");
-        user1.setPassword("setondji");
-        userService.saveUser(user1);
+        User user1 = getOrCreateUser(
+                "setondji.mededji@etu.univ-amu.fr",
+                "Setondji",
+                "Mededji",
+                "setondji");
 
-        User user2 = new User();
-        user2.setEmail("vincent.nze@etu.univ-amu.fr");
-        user2.setFirstName("Vincent");
-        user2.setLastName("Nze");
-        user2.setPassword("vincent");
-        userService.saveUser(user2);
+        User user2 = getOrCreateUser(
+                "vincent.nze@etu.univ-amu.fr",
+                "Vincent",
+                "Nze",
+                "vincent");
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, 2024);
@@ -157,6 +154,18 @@ public class InitService {
 
     }
 
+    private User getOrCreateUser(String email, String firstName, String lastName, String password) {
+        User existingUser = userService.findUserByEmail(email);
+        if (existingUser != null) {
+            return existingUser;
+        }
 
-
+        User user = new User();
+        user.setEmail(email);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setPassword(password);
+        userService.saveUser(user);
+        return user;
+    }
 }
