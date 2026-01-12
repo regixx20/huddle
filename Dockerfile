@@ -4,16 +4,15 @@ WORKDIR /app
 COPY pom.xml .
 RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests dependency:go-offline
 COPY src ./src
-# Repackage pour obtenir un artefact exécutable (jar ou war bootable)
-RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests package spring-boot:repackage
+RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests package
 
-FROM eclipse-temurin:21-jre
-WORKDIR /app
+FROM tomcat:10.1-jdk17-temurin
 
-# Copie l’artefact (jar ou war bootable) sans renommer
-COPY --from=build /app/target/*.[jw]ar /app/
+# Nettoie les apps par défaut
+RUN rm -rf /usr/local/tomcat/webapps/*
+
+# Copie ton WAR buildé en ROOT.war
+COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 8080
-
-# Lance le premier jar/war trouvé, SANS re-préfixer par /app/
-ENTRYPOINT ["sh","-c","exec java -jar $(ls /app/*.[jw]ar | head -n 1)"]
+CMD ["catalina.sh", "run"]

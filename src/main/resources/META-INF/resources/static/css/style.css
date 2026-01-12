@@ -1,0 +1,330 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin:0;
+    background-color: #516C8D;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+button {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+a:hover {
+    color: #dc3545;
+    transition: all 0.2s ease;
+}
+/* --------------HEADER-------------- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #DDDDDD;
+    padding: 10px 20px;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-left img {
+    cursor: pointer;
+}
+
+.navbar-left span {
+    color: #28385E;
+    margin-right: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.navbar-left span:hover {
+    color: #0056b3;
+    transition: all 0.2s ease;
+}
+
+.navbar-left .nav-link {
+    margin-left: 20px; /* Ajoute un espace entre le logo et le lien "Mon espace" */
+    cursor: pointer; /* Change le curseur pour pointer */
+    transition: color 0.3s ease-in-out; /* Ajoute une transition pour le changement de couleur */
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-right span {
+    color: #28385E;
+    margin-right: 20px;
+    font-size: 18px;
+    border-radius: 30px;
+    border: #28385E solid 2px;
+    padding: 5px 10px;
+}
+.navbar-left button {
+    color: #28385E;
+    margin-right: 20px;
+    font-size: 18px;
+    border-radius: 30px;
+    border: #28385E solid 2px;
+    padding: 5px 10px;
+}
+
+.btn {
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.btn-nav {
+    background-color: #DDDDDD;
+    color: #28385E;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.btn-nav:hover {
+    color: #0056b3;
+}
+
+.btn-login {
+    background-color: #DDDDDD;
+    color: #28385E;
+
+}
+
+.btn-register {
+    background-color: #2E863B;
+}
+
+.btn-logout {
+    background-color: #dc3545;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+/* --------------MAIN-------------- */
+
+.main-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 20px;
+}
+.container {
+    width: 45%;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+    text-align: center;
+    border: 5px solid #28385E;
+    border-radius: 8px;
+    margin: 50px auto;
+}
+.confirmation-container {
+    width: 45%;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+    text-align: center;
+    border: 5px solid #28385E;
+    border-radius: 8px;
+    margin: 50px auto;
+}
+.register-container {
+    width: 45%;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+    text-align: center;
+    border: 5px solid #28385E;
+    border-radius: 8px;
+    margin: 50px auto;
+}
+.container h2 {
+    margin-bottom: 20px;
+}
+.container form {
+    display: flex;
+    justify-content: center;
+}
+.container button {
+    background-color: #304163;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.container button:hover {
+    background-color: #0056b3;
+}
+footer {
+    background-color: #304163;
+    color: white;
+    text-align: center;
+    padding: 10px 20px;
+    bottom: 0;
+    width: 100%;
+    margin-top: auto;
+}
+input {
+    padding: 10px;
+    margin-top: 10px;
+}
+
+main {
+    padding: 20px;
+    background-color: #fff;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+    border: 5px solid #28385E
+}
+
+section h2 {
+    color: #28385E;
+}
+
+section {
+    margin-bottom: 40px; /* Plus d'espace en bas pour respirer */
+    padding: 20px; /* Ajouter du padding pour plus de confort */
+    background-color: #f9f9f9; /* Couleur de fond douce */
+    border-radius: 8px; /* Coins arrondis pour un effet moderne */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre subtile pour la profondeur */
+}
+
+section ul, section ol {
+    text-align: left;
+    margin: 0 auto;
+    padding: 0; /* Retirer le padding par défaut */
+    list-style-position: inside; /* Positionner les puces à l'intérieur */
+}
+
+section ul li, section ol li {
+    margin-bottom: 10px;
+    padding-left: 24px; /* Ajouter de l'espace à gauche pour les icônes */
+    position: relative; /* Nécessaire pour les icônes */
+    font-size: 16px; /* Taille de police confortable */
+    line-height: 1.6; /* Hauteur de ligne pour la lisibilité */
+    color: #333; /* Couleur de texte foncée */
+    transition: color 0.3s ease; /* Transition douce pour le survol */
+}
+
+
+/* --------------CONTACT-------------- */
+
+.formulaire {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+    border: 5px solid #28385E;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: auto;
+
+}
+
+/* --------------DASHBOARD-------------- */
+
+.poll-box {
+    padding: 10px;
+    background-color: #e0e0e0;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+input{
+    padding: 10px;
+    margin-top: 10px;
+}
+
+/* --------------NEW POLL-------------- */
+
+#calendar-container {
+    background-color: white;
+    color : #28385E;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.3);
+}
+.card {
+    max-width: 600px;
+    margin: 0 auto; /* Centrer horizontalement */
+    color: white;
+}
+
+.card-body {
+    padding: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+
+.btn-info {
+    width: 100%; /* Rendre le bouton "Submit" aussi large que son conteneur */
+    padding: 10px 20px; /* Ajouter un remplissage pour le bouton */
+    font-size: 16px; /* Taille de police pour le bouton */
+    background-color: #304163; /* Couleur de fond du bouton */
+    color: #fff; /* Couleur du texte du bouton */
+    border-radius: 8px; /* Bordure arrondie */
+    transition: all 0.3s ease; /* Ajouter une transition en douceur lors du survol */
+    margin-top: 20px;
+}
+.btn-info:hover {
+    background-color: #0056b3; /* Couleur de fond du bouton au survol */
+    border-color: #269abc; /* Bordure du bouton au survol */
+}
+
+.notification {
+    display: none; /* Hide by default */
+    background-color: #4CAF50; /* Green */
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Make sure it appears above other elements */
+}
