@@ -16,7 +16,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>jeeWebApp</name>
   <description>Demo project for Spring Boot Web Application</description>
-  <!-- Switch to wAR for a bootable artifact suitable for Docker -->
+  <!-- Switch to WAR for a bootable artifact suitable for Docker -->
   <packaging>war</packaging>
 
   <properties>

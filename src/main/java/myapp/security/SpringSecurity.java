@@ -25,6 +25,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 
 @Configuration
 @EnableWebSecurity
@@ -51,7 +54,10 @@ public class SpringSecurity {
                 "/meeting/**",
                 "/login",
                 "/register",
-                "/contact"
+                "/contact",
+                "/api/**",
+                "api/me",
+                "/homePage"
         };
         http.authorizeHttpRequests(config -> {//
             config.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll();
@@ -77,6 +83,21 @@ public class SpringSecurity {
         http.csrf(config -> {
             config.ignoringRequestMatchers(anonymousRequests);
         });
+        // http.exceptionHandling(exception -> exception
+        //     .defaultAuthenticationEntryPointFor(
+        //         (request, response, authException) -> {
+        //             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        //         },
+        //         new AntPathRequestMatcher("/api/**")
+        //     )
+        // );
+
+        // http.authorizeHttpRequests(auth -> auth
+        //     .requestMatchers(anonymousRequests).permitAll()
+        //     .anyRequest().authenticated()
+        // );
+
+
         return http.build();
     }
 
