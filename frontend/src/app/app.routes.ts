@@ -1,7 +1,8 @@
+
 import { Routes } from '@angular/router';
-import { PollsComponent } from './pages/polls/polls';
+import { HomeComponent } from './pages/home/home';
+
 
 export const routes: Routes = [
-  { path: '', component: PollsComponent }
+  { path: '', component: HomeComponent },
 ];
-
